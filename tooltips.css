@@ -10,7 +10,7 @@
     pointer-events: none;
     width: 350px;
     padding: 20px;
-    background: #0c0e14;
+    background: #0f111a;
     border: 1px solid #ca9337;
     border-radius: 6px;
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
@@ -21,7 +21,7 @@
 .t-header-content {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 5px;
 }
 
@@ -156,11 +156,11 @@
     gap: 5px;
     font-size: 14px;
     font-weight: 700;
-    color: #ffb93b;
+    color: #F5CBA7;
 }
 
 /* Para İkonu */
-.coin-icon {
+.gold-icon {
     width: 14px;
     height: 14px;
     object-fit: contain;
@@ -203,3 +203,100 @@
 .champ-tooltip.cost-4 { border-color: #893088; }
 .champ-tooltip.cost-5 { border-color: #ca9337; }
 .champ-tooltip.cost-7 { border-color: #ff4e50; }
+
+/* ==========================================================================
+   3. ITEM TOOLTIP (Eşya Detay Paneli - Modern & Estetik)
+   ========================================================================== */
+
+#global-trait-tooltip {
+    background: #0d0f14 !important;
+    padding: 10px; /* Dış ana çerçeve boşluğu */
+    border-radius: 6px;
+    border: 1px solid #3c3c41;
+    border-top: 2px solid #ca9337;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    min-width: 280px;
+}
+
+/* Üst Bölüm: Sol (İsim+Stat) ve Sağ (Bileşenler) Dengesi */
+.item-tooltip-top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch; /* İçerik boyuna göre esneklik sağlar */
+    padding: 5px; /* Belirttiğin 5px iç boşluk */
+    margin-bottom: 10px;
+    gap: 12px;
+}
+
+/* Sol Taraf: Dikey hizalanmış İsim ve Statlar */
+.item-header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Metinleri dikeyde ortalar */
+    gap: 4px;
+}
+
+.item-tooltip-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f0d494;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+.item-tooltip-stats-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.tooltip-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Sağ Taraf: Bileşen İkon Grubu */
+.item-header-right {
+    display: flex;
+    align-items: center;
+}
+
+.item-recipe-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.recipe-icon {
+    /* Başlık ve statların kapladığı dikey alana uygun boyut */
+    width: 42px; 
+    height: 42px;
+    border-radius: 4px;
+    object-fit: cover;
+    background: #1a1c23;
+    border: none; /* Çerçeveyi kaldırdık */
+}
+
+.recipe-plus {
+    color: #555;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Açıklama Alanı */
+.item-tooltip-body {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 5px 5px 5px; /* Her yönden 5px içeride durması için */
+    font-size: 13px;
+    line-height: 1.5;
+    color: #cbd5e0;
+}
+
+.item-tooltip-body b {
+    color: #fff;
+}

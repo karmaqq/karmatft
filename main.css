@@ -337,6 +337,121 @@ body {
 .cost-5 { border: 1px solid var(--c5); }
 .cost-7 { border: 1px solid var(--c7); }
 
+/* Bölüm Başlıkları */
+.panel-section-title {
+    font-size: 12px;
+    color: #ca9337;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin: 0px 0 10px 10px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+/* Ara Çizgi */
+.panel-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(202, 147, 55, 0.4), transparent);
+    margin: 10px 0;
+}
+
+/* ==========================================================================
+   EŞYA SİSTEMİ (Kategorize Edilmiş)
+   ========================================================================== */
+
+/* Her bir kategori grubunu (Başlık + Grid) sarmalar */
+.item-category-group {
+    margin-bottom: 20px; /* Gruplar arası mesafe */
+}
+
+.item-tabs-menu {
+    display: flex;
+    gap: 5px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap; /* Mobilde veya dar ekranda taşmaması için */
+}
+
+.item-tab-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(202, 147, 55, 0.3);
+    color: #a0a0a0;
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+
+.item-tab-btn:hover {
+    background: rgba(202, 147, 55, 0.1);
+    color: #fff;
+}
+
+.item-tab-btn.active {
+    background: #ca9337;
+    color: #000;
+    font-weight: bold;
+    border-color: #ca9337;
+}
+
+/* Kategori içindeki eşyaların dizildiği grid */
+.items-grid {
+    display: grid;
+    /* Şampiyon gridiyle uyum için repeat(10, 1fr) veya otomatik sığdırma */
+    grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); 
+    gap: 8px;
+    padding: 0 10px;
+}
+
+/* Eşya Kartı Ana Yapısı */
+.item-card {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    width: 42px; /* Sabit genişlik */
+    transition: opacity 0.2s ease, transform 0.2s ease;
+
+}
+
+/* İkon Çerçevesi */
+.item-icon-wrapper {
+    width: 42px;
+    height: 42px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #0a0a0c; /* Daha koyu arka plan */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-icon-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    image-rendering: auto; /* İkon netliği için */
+}
+
+/* Hover Efektleri */
+.item-card:hover {
+    z-index: 5;
+    transform: translateY(-3px);
+}
+
+.item-card:hover .item-icon-wrapper {
+    border-color: #ca9337;
+    box-shadow: 0 4px 12px rgba(202, 147, 55, 0.3);
+}
+
+/* Özel Eşya Türleri İçin Hafif Renk Vurguları (Opsiyonel) */
+/* Örn: Yadigar eşyalar için farklı bir border rengi eklenebilir */
+.item-card[data-category="artifact"] .item-icon-wrapper { border-color: #00cfbc; }
+.item-card[data-category="radiant"] .item-icon-wrapper { border-color: #ffdf7e; }
+
 /* ==========================================================================
     RESET BUTONU & ŞAMPİYON ARAMA
    ========================================================================== */

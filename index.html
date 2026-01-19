@@ -24,14 +24,31 @@
                 <h2>Takımın (<span id="team-count">0</span>/10)</h2>
                 <button id="reset-team" class="btn-reset" title="Takımı Temizle">X</button>
             </div>
+            
             <div id="active-team-grid"></div>
         </section>
 
         <section class="panel selection-panel">
             <div id="champ-search-container">
-                <input type="text" id="champ-search" placeholder="Şampiyon veya özellik ara..." autocomplete="off">
+                <input type="text" id="champ-search" placeholder="Şampiyon, özellik veya eşya ara..." autocomplete="off">
             </div>
+            <div class="panel-divider"></div>
+            <div class="panel-section-title">ŞAMPİYONLAR</div>
             <div id="champions-grid"></div>
+
+            <div class="panel-divider"></div>
+
+            <div class="panel-section-title">EŞYALAR</div>
+
+            <div id="item-tabs" class="item-tabs-menu">
+                <button class="item-tab-btn active" data-cat="normal">Normal</button>
+                <button class="item-tab-btn" data-cat="artifact">Yadigar</button>
+                <button class="item-tab-btn" data-cat="radiant">Işıltılı</button>
+                <button class="item-tab-btn" data-cat="emblem">Amblem</button>
+                <button class="item-tab-btn" data-cat="special">Özel</button>
+            </div>
+
+            <div id="items-container"></div>
         </section>
 
     </main>

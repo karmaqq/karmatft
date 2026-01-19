@@ -1,6 +1,6 @@
-/**
- * Türkçe karakter duyarlı küçük harf dönüştürücü.
- */
+/* ==========================================================================
+GÜVENLİ KÜÇÜK HARF FONKSİYONU
+========================================================================== */
 export function safeLowercase(str) {
     if (!str) return "";
     return str
@@ -9,30 +9,27 @@ export function safeLowercase(str) {
         .toLowerCase()
         .replace(/ı/g, "i");
 }
-
-/**
- * [iconName] formatındaki metinleri <img> etiketine dönüştürür.
- */
+/* ==========================================================================
+GÜVENLİ RESİM FİLTRELEME
+========================================================================== */
 export function parseStatIcons(text) {
     if (!text) return "";
-    let parsed = text.replace(/\[(\w+)\]/g, (match, iconName) => {
-        const name = iconName.toLowerCase();
-        // İkon bulunamazsa PNG dene, o da yoksa boş ver
-        return `<img src="img/stats/${name}.svg" class="stat-icon-img" alt="${name}"
-            onerror="this.onerror=null; this.src='img/stats/${name}.png';">`;
+    
+    return text.replace(/\[([^\]]+)\]/g, (match, iconName) => {
+        const name = iconName.toLowerCase().trim();
+        
+        return `<img src="img/stats/${name}.svg" 
+                     class="stat-icon-img" 
+                     alt="${name}"
+                     onerror="this.onerror=null; this.src='img/stats/${name}.png'; this.onerror=function(){this.style.display='none'};">`;
     });
-
-    return parsed;
 }
-
-/**
- * ÖZELLİK (Trait) Tooltip HTML üretici.
- * Sol menüdeki trait üzerine gelince çalışır.
- */
+/* ==========================================================================
+TRAIT TOOLTIP GENEL YAPISI
+========================================================================== */
 export function generateTraitTooltipHTML(data) {
     const { traitName, count, steps, traitData } = data;
     
-    // 1. HARF FİLTRESİ VE İKON YOLU (DÜZENLENDİ)
     const iconName = traitName.toLowerCase()
         .replace(/ğ/g, "g")
         .replace(/ü/g, "u")
@@ -40,11 +37,12 @@ export function generateTraitTooltipHTML(data) {
         .replace(/ı/g, "i")
         .replace(/ö/g, "o")
         .replace(/ç/g, "c")
-        .replace(/[^a-z0-9]/g, ''); // Boşlukları ve tüm özel karakterleri siler
+        .replace(/[^a-z0-9]/g, '');
 
     const finalIconPath = `img/traits/${iconName}.png`;
-    
-    // 2. EŞİK (THRESHOLD) MANTIĞI
+/* ==========================================================================
+EŞİK HESAPLAMA
+========================================================================== */
     const hasStepDescriptions = steps && steps.some(s => s.desc);
 
     const thresholdsListHTML = !hasStepDescriptions ? "" : steps.map((s, index) => {
@@ -66,8 +64,9 @@ export function generateTraitTooltipHTML(data) {
     
     const hasTop = !!(traitData.generalDesc || traitData.preDesc);
     const hasBottom = !!(thresholdsListHTML || traitData.postDesc);
-
-    // 3. HTML ÇIKTISI (finalIconPath BURADA KULLANILDI)
+/* ==========================================================================
+TRAITS TOOLTIP ARAYÜZÜ OLUŞTURMA
+========================================================================== */
     return `
         <div class="t-tooltip-header">
             <div class="t-header-content">
@@ -89,18 +88,16 @@ export function generateTraitTooltipHTML(data) {
             ${traitData.postDesc ? `<p class="t-tooltip-post-info">${parseStatIcons(traitData.postDesc)}</p>` : ''}
         </div>`;
 }
-
-/**
- * ŞAMPİYON Tooltip HTML üretici.
- * Sağ taraftaki şampiyon listesi veya takımdaki şampiyon üzerine gelince çalışır.
- */
+/* ==========================================================================
+   ŞAMPİYON TOOLTIP GENEL YAPISI
+   ========================================================================== */
 export function generateChampionTooltipHTML(champ) {
-    // Şampiyonun traitlerini döngüye alıp ikonlarını oluşturuyoruz.
+
     const traitsHTML = champ.traits.map(t => {
-        // Dosya adı temizliği (türkçe karakter ve boşluk silme)
+        
         const safeIcon = safeLowercase(t)
             .replace(/[ğüşıöç]/g, m => ({ğ:'g',ü:'u',ş:'s',ı:'i',ö:'o',ç:'c'}[m]))
-            .replace(/[^a-z0-9]/g, ''); // Sadece harf ve rakam kalsın
+            .replace(/[^a-z0-9]/g, '');
 
         return `
             <div class="ct-trait-item">
@@ -108,14 +105,51 @@ export function generateChampionTooltipHTML(champ) {
                 <span class="ct-trait-name">${t}</span>
             </div>`;
     }).join("");
-
+/* ==========================================================================
+    ŞAMPİYON TOOLTIP ARAYÜZÜ OLUŞTURMA
+========================================================================== */
     return `
         <div class="ct-header">
             <span class="ct-name">${champ.name}</span>
             <div class="ct-cost border-cost-${champ.cost}">
-                <img src="img/coin.png" class="coin-icon" onerror="this.style.display='none'"> 
+                <img src="img/stats/gold.png" class="gold-icon" onerror="this.style.display='none'"> 
                 ${champ.cost}
             </div>
         </div>
         <div class="ct-traits-list">${traitsHTML}</div>`;
+}
+/* ==========================================================================
+   EŞYA TOOLTIP GENEL YAPISI
+========================================================================== */
+export function generateItemTooltipHTML(item) {
+    // Bileşenler (Components) - Doğrudan img/items/ klasöründen PNG olarak çeker
+    const componentsHTML = item.components ? `
+        <div class="item-recipe-group">
+            <img src="img/items/${item.components[0]}.png" class="recipe-icon" onerror="this.src='img/items/default.png'">
+            <span class="recipe-plus">+</span>
+            <img src="img/items/${item.components[1]}.png" class="recipe-icon" onerror="this.src='img/items/default.png'">
+        </div>
+    ` : '';
+
+    // Statlar - parseStatIcons fonksiyonu ile PNG/SVG kontrolü yapar
+    const statsHTML = item.stats ? item.stats.map(s => `
+        <div class="tooltip-stat">
+            ${parseStatIcons(s.icon)} <span>${s.value}</span>
+        </div>
+    `).join('') : '';
+
+    return `
+        <div class="item-tooltip-top-section">
+            <div class="item-header-left">
+                <div class="item-tooltip-title">${item.name}</div>
+                <div class="item-tooltip-stats-row">${statsHTML}</div>
+            </div>
+            <div class="item-header-right">
+                ${componentsHTML}
+            </div>
+        </div>
+        <div class="item-tooltip-body">
+            ${parseStatIcons(item.desc)}
+        </div>
+    `;
 }
