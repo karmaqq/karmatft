@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karma TFT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="tooltips.css">
+</head>
+<body>
+
+    <main id="app" class="main-container">
+
+        <aside class="panel traits-panel">
+            <div class="panel-header">
+                <h2>Özellikler</h2>
+            </div>
+            <div id="trait-list"></div>
+        </aside>
+
+        <section class="panel team-panel">
+            <div class="panel-header">
+                <h2>Takımın (<span id="team-count">0</span>/10)</h2>
+                <button id="reset-team" class="btn-reset" title="Takımı Temizle">X</button>
+            </div>
+            <div id="active-team-grid"></div>
+        </section>
+
+        <section class="panel selection-panel">
+            <div id="champ-search-container">
+                <input type="text" id="champ-search" placeholder="Şampiyon veya özellik ara..." autocomplete="off">
+            </div>
+            <div id="champions-grid"></div>
+        </section>
+
+    </main>
+
+    <div id="global-trait-tooltip" class="trait-tooltip-global"></div>
+
+    <script type="module" src="main.js"></script>
+
+    <script>
+
+        window.handleImageError = function(img) {
+            img.onerror = null;
+            img.src = 'img/placeholder.png'; // Eksik resimler için varsayılan ikon
+        };
+    </script>
+
+</body>
+</html>

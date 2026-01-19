@@ -1,0 +1,205 @@
+/* ==========================================================================
+   1. GLOBAL TRAIT TOOLTIP (Sol Menü Detay Paneli)
+   ========================================================================== */
+/* Genel Konteyner */
+#global-trait-tooltip {
+    position: fixed;
+    left: 285px; 
+    z-index: 9999;
+    display: none;
+    pointer-events: none;
+    width: 350px;
+    padding: 20px;
+    background: #0c0e14;
+    border: 1px solid #ca9337;
+    border-radius: 6px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* Tooltip Başlık Alanı (İkon + İsim) */
+.t-header-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 5px;
+}
+
+/* Başlık İkonu */
+.t-header-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+/* Başlık Metni */
+.t-tooltip-title {
+    font-size: 22px; 
+    font-weight: 900;
+    color: #ffb93b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* Ayırıcı Çizgi */
+.t-tooltip-divider {
+    height: 1px;
+    background: #32353d;
+    margin: 15px 0;
+}
+
+/* Açıklama Metinleri */
+.t-tooltip-general, 
+.t-tooltip-pre-info, 
+.t-tooltip-post-info {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+/* Son Bilgi Stili */
+.t-tooltip-post-info {
+    color: #a0a0a0; /* Alt bilgi biraz daha soluk */
+    font-style: italic;
+}
+
+/* Kademeler Listesi */
+.t-tooltip-steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+/* Her Bir Kademe Satırı */
+.t-tooltip-step {
+    display: flex;
+    align-items: flex-start;
+    font-size: 15px;
+    line-height: 1.4;
+    color: #666; /* Pasif kademeler gri */
+    transition: color 0.2s ease;
+}
+
+/* Kademe Değerleri */
+.t-threshold-val {
+    min-width: 40px;
+    font-weight: 900;
+    color: inherit;
+}
+
+/* Aktif ve Geçilmiş Kademeler */
+.t-tooltip-step.is-passed,
+.t-tooltip-step.is-current-active {
+    color: #ffffff !important;
+}
+
+/* Vurgulu Aktif Kademe */
+.t-tooltip-step.is-current-active {
+    border-radius: 4px;
+    padding: 2px 0;
+}
+
+/* Stat İkonları ve Vurgular */
+.stat-icon-img {
+    width: 18px;
+    height: 18px;
+    margin: 0 4px;
+    vertical-align: middle;
+}
+
+/* Vurgulanmış Metin */
+.t-highlight {
+    color: #ffb93b !important;
+    font-weight: 800;
+}
+
+/* ==========================================================================
+   2. CHAMPION TOOLTIP (Şampiyon Kart Detayı)
+   ========================================================================== */
+
+/* Şampiyon Tooltip */
+.champ-tooltip {
+    position: fixed;
+    z-index: 1000000;
+    pointer-events: none;
+    background: #0f111a;
+    border-radius: 8px;
+    padding: 12px;
+    width: 220px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    border: 1px solid #32353d;
+    display: none;
+}
+
+/* Şampiyon Başlık Bölümü */
+.ct-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Şampiyon İsmi */
+.ct-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+/* Şampiyon Maliyeti */
+.ct-cost {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffb93b;
+}
+
+/* Para İkonu */
+.coin-icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+
+/* Şampiyonun Özellik Listesi */
+.ct-traits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 10px;
+}
+
+/* Her Bir Özellik Öğesi */
+.ct-trait-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Özellik İkonu */
+.ct-trait-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    filter: brightness(0.8);
+}
+
+/* Özellik İsmi */
+.ct-trait-name {
+    font-size: 13px;
+    color: #a0a0a0;
+}
+
+/* Maliyete Göre Dinamik Çerçeve Renkleri */
+.champ-tooltip.cost-1 { border-color: #213042; }
+.champ-tooltip.cost-2 { border-color: #156831; }
+.champ-tooltip.cost-3 { border-color: #12407c; }
+.champ-tooltip.cost-4 { border-color: #893088; }
+.champ-tooltip.cost-5 { border-color: #ca9337; }
+.champ-tooltip.cost-7 { border-color: #ff4e50; }
