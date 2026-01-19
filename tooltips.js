@@ -30,25 +30,29 @@ export function parseStatIcons(text) {
  * Sol menüdeki trait üzerine gelince çalışır.
  */
 export function generateTraitTooltipHTML(data) {
-    // main.js'den gelen zenginleştirilmiş veri paketini alıyoruz
     const { traitName, count, steps, traitData } = data;
     
-    // ARTIK MANUEL LİSTEYE GEREK YOK!
-    // Bir trait'in detaylı seviye listesi (Örn: 3: ... 5: ...) olup olmadığını
-    // verinin içindeki 'desc' (açıklama) alanına bakarak anlıyoruz.
-    // Eğer adımların içinde açıklama (desc) yoksa (Örn: Targon veya Ejder Muhafızları), listeyi gizle.
+    // 1. HARF FİLTRESİ VE İKON YOLU (DÜZENLENDİ)
+    const iconName = traitName.toLowerCase()
+        .replace(/ğ/g, "g")
+        .replace(/ü/g, "u")
+        .replace(/ş/g, "s")
+        .replace(/ı/g, "i")
+        .replace(/ö/g, "o")
+        .replace(/ç/g, "c")
+        .replace(/[^a-z0-9]/g, ''); // Boşlukları ve tüm özel karakterleri siler
+
+    const finalIconPath = `img/traits/${iconName}.png`;
+    
+    // 2. EŞİK (THRESHOLD) MANTIĞI
     const hasStepDescriptions = steps && steps.some(s => s.desc);
 
     const thresholdsListHTML = !hasStepDescriptions ? "" : steps.map((s, index) => {
         const stepThreshold = s.count || s;
-        // Mevcut sayı bu eşiği geçti mi?
         const isReached = count >= stepThreshold;
         
-        // Bu eşik şu anki aktif eşik mi? (Örn: 3'ü geçtik ama 5 olmadık, o zaman 3 aktif)
-        // Son adımdayız VEYA sayımız bir sonraki adımdan küçük
         const nextStep = steps[index + 1];
         const nextStepCount = nextStep ? (nextStep.count || nextStep) : Infinity;
-        
         const isCurrentActive = isReached && count < nextStepCount;
         
         return `
@@ -60,14 +64,14 @@ export function generateTraitTooltipHTML(data) {
 
     const divider = `<div class="t-tooltip-divider"></div>`;
     
-    // Üst ve Alt kısımların doluluğunu kontrol et (Gereksiz çizgi çekmemek için)
     const hasTop = !!(traitData.generalDesc || traitData.preDesc);
     const hasBottom = !!(thresholdsListHTML || traitData.postDesc);
 
+    // 3. HTML ÇIKTISI (finalIconPath BURADA KULLANILDI)
     return `
         <div class="t-tooltip-header">
             <div class="t-header-content">
-                 <img src="img/traits/${safeLowercase(traitName).replace(/[^a-z0-9]/g, '')}.png" class="t-header-icon" onerror="this.style.display='none'">
+                 <img src="${finalIconPath}" class="t-header-icon" onerror="this.src='img/traits/default.png'">
                  <span class="t-tooltip-title">${traitData.name || traitName}</span>
             </div>
         </div>
