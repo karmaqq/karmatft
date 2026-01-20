@@ -42,9 +42,6 @@ if %errorlevel% equ 0 (
 )
 
 echo %yellow%[2/4]%white% Yeni dosyalar listeye ekleniyor...
-echo %cyan%      ------------------------------------------%white%
-
-:: DOSYA DURUMUNU TÜRKÇELEŞTİRME DÖNGÜSÜ
 for /f "tokens=1,*" %%a in ('git status -s') do (
     set "status_code=%%a"
     set "file_name=%%b"
@@ -58,7 +55,6 @@ for /f "tokens=1,*" %%a in ('git status -s') do (
     
     echo %cyan%      =^> !status_text! : !file_name!
 )
-echo %cyan%      ------------------------------------------%white%
 
 git add .
 if %errorlevel% equ 0 (
@@ -67,7 +63,6 @@ if %errorlevel% equ 0 (
     echo %red%      [HATA] Dosyalar eklenirken bir sorun oluştu.%white%
 )
 
-:: --- [3/4] KAYIT (COMMIT) ---
 echo %yellow%[3/4]%white% Kayıt mesajı oluşturuluyor...
 git commit -m "!final_msg!" >nul 2>&1
 if %errorlevel% equ 0 (
@@ -84,7 +79,6 @@ if %errorlevel% equ 0 (
     echo %red%      [HATA] Yükleme başarısız.%white%
 )
 
-:: Final Ekranı
 echo.
 echo %cyan%====================================================
 echo    İŞLEM TAMAMLANDI: Tüm veriler eşitlendi
