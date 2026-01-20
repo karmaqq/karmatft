@@ -41,8 +41,9 @@ if %errorlevel% equ 0 (
 ) else (
     echo %red%      [HATA] Sunucudan veri çekilemedi.%white%
 )
-echo %cyan%      ------------------------------------------%white%
+
 echo %yellow%[2/4]%white% Yeni dosyalar listeye ekleniyor...
+echo %cyan%      ------------------------------------------%white%
 for /f "tokens=*" %%a in ('git status -s') do (
     echo %cyan%      =^>%white% %%a
 )
