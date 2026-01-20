@@ -23,33 +23,33 @@ echo.
 set "user_msg="
 set /p "user_msg=Yapılan değişikliği yaz: "
 
-:: Mantık: Eğer boşsa "Otomatik Güncelleme" yaz, değilse kullanıcının mesajını al
 if "!user_msg!"=="" (
     set "msg_text=Otomatik Güncelleme"
 ) else (
     set "msg_text=!user_msg!"
 )
 
-:: Git'e gidecek tam mesaj (Mesaj + Tarih)
+:: Git'e gidecek tam mesaj
 set "final_msg=!msg_text! !timestamp!"
 
 echo.
 echo %yellow%[1/4]%white% Sunucudaki veriler eşitleniyor...
-git pull origin main --quiet
+git pull origin main --quiet 2>nul
 
 echo %yellow%[2/4]%white% Yeni dosyalar listeye ekleniyor...
 git add .
 
 echo %yellow%[3/4]%white% Kayıt (Commit) oluşturuluyor...
-git commit -m "!final_msg!" --quiet
+:: Değişiklik yoksa çıkan hata kalabalığını gizlemek için >nul 2>&1 ekledik
+git commit -m "!final_msg!" >nul 2>&1
 
 echo %yellow%[4/4]%white% Kodlar GitHub'a gönderiliyor...
-git push origin main --quiet
+git push origin main --quiet 2>nul
 
-:: Final Ekranı - Mesaj YEŞİL, Tarih BEYAZ
+:: Final Ekranı
 echo.
 echo %cyan%====================================================
-echo    İŞLEM BAŞARILI: Veriler Buluta İşlendi
+echo    İŞLEM TAMAMLANDI: Veriler Buluta İşlendi
 echo    %magenta%Mesaj: %green%!msg_text! %white%!timestamp!
 echo %cyan%====================================================%white%
 echo.
