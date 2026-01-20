@@ -29,7 +29,7 @@ set "user_msg="
 set /p "user_msg=Yapılan değişikliği yaz: "
 
 :: [DÜZELTME] SES ÇALMA (PowerShell kullanarak hatasız Bip sesi)
-powershell -c "[console]::beep(800,300)" >nul 2>&1
+powershell -c "[console]::beep(800,200)" >nul 2>&1
 
 if "!user_msg!"=="" (set "msg_text=Otomatik Güncelleme") else (set "msg_text=!user_msg!")
 set "final_msg=!msg_text! !timestamp!"
@@ -71,8 +71,9 @@ if %errorlevel% equ 0 (
     echo %yellow%      [BİLGİ] Kaydedilecek değişiklik bulunamadı.%white%
 )
 
-:: --- [4/4] GÖNDERME (PUSH) ---
+echo %cyan%      ------------------------------------------%white%
 echo %yellow%[4/4]%white% Kodlar GitHub'a gönderiliyor...
+echo %cyan%      ------------------------------------------%white%
 git push origin main --quiet 2>nul
 if %errorlevel% equ 0 (
     echo %green%      [OK] Yükleme başarılı.%white%
