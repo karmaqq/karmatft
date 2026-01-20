@@ -29,7 +29,7 @@ set "user_msg="
 set /p "user_msg=Yapılan değişikliği yaz: "
 
 :: [DÜZELTME] SES ÇALMA (PowerShell kullanarak hatasız Bip sesi)
-powershell -c "[console]::beep(500,300)" >nul 2>&1
+powershell -c "[console]::beep(200,300)" >nul 2>&1
 
 if "!user_msg!"=="" (set "msg_text=Otomatik Güncelleme") else (set "msg_text=!user_msg!")
 set "final_msg=!msg_text! !timestamp!"
