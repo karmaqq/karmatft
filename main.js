@@ -1,15 +1,16 @@
 /* ==========================================================================
-   TFT BUILDER PRO - MAIN JS (BAĞLANTILAR SAĞLANDI)
+   BAĞLANTILAR VE KURULUM
    ========================================================================== */
 import { champions, traits as TRAIT_THRESHOLDS } from './data.js';
+import { allItemsMap, renderCategory, initItems } from './items.js';
 import { 
     generateTraitTooltipHTML, 
     generateChampionTooltipHTML, 
     generateItemTooltipHTML, 
     safeLowercase,
-    applySmartPosition // tooltips.js'den gelen yeni motor
+    applySmartPosition,
+    initItemTooltips // tooltips.js'e taşıdığımızı varsayıyoruz
 } from './tooltips.js';
-import { allItemsMap, renderCategory, initItems } from './items.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     /* --- STATE & ELEMENTS --- */
@@ -22,14 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const teamCountEl = document.getElementById("team-count");
     const globalTooltip = document.getElementById("global-trait-tooltip");
 
+    // Tooltip verilerini saklamak için geçici bir depo (Global dinleyici için)
+    let currentTraitsData = new Map();
+
     initItems(); 
 
-    // Şampiyon Tooltip elementini oluştur
     const champTooltip = document.createElement("div");
     champTooltip.className = "champ-tooltip";
     document.body.appendChild(champTooltip);
 
-    /* --- 1. ÖZELLİK MANTIK SİSTEMİ (DOKUNULMADI) --- */
+/* ==========================================================================
+   [SOL PANEL] - ÖZELLİKLER (TRAITS) SİSTEMİ
+   ========================================================================== */
     function findTraitInfo(key) {
         const safeKey = safeLowercase(key);
         if (TRAIT_THRESHOLDS.specialTraits?.[safeKey]) return { data: TRAIT_THRESHOLDS.specialTraits[safeKey], type: 'special' };
@@ -40,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderTraits() {
         traitListEl.innerHTML = "";
+        currentTraitsData.clear(); // Eski verileri temizle
+
         const traitCounts = selectedComp.reduce((acc, champ) => {
             champ.traits.forEach(t => {
                 const cleanName = safeLowercase(t);
@@ -61,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const isActive = !!activeTier;
             const isPrismatic = activeTier?.rank === "tier-prismatic";
 
-            // AĞIRLIK SİSTEMİ
+            // PUANLAMA VE SIRALAMA MANTIĞI
             let weight = isActive ? 50 : 0;
             if (isActive) {
                 if (isPrismatic) weight = 95;
@@ -77,7 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 weight += (count / stepsArray[0].count);
             }
 
-            return { traitName: traitData.name, count, traitData, activeTier, isActive, isPrismatic, reachedTierCount, weight, steps: stepsArray, type: traitType };
+            const finalData = { traitName: traitData.name, count, traitData, activeTier, isActive, isPrismatic, reachedTierCount, weight, steps: stepsArray, type: traitType };
+            
+            // Global dinleyici için datayı sakla
+            currentTraitsData.set(safeLowercase(traitData.name), finalData);
+            
+            return finalData;
         }).filter(Boolean);
         
         processedTraits
@@ -85,13 +97,14 @@ document.addEventListener("DOMContentLoaded", () => {
             .forEach(data => traitListEl.appendChild(createTraitSimpleElement(data)));
     }
 
-    /* --- 2. UI BİLEŞENLERİ (TOOLTIPS.JS BAĞLANTILARI) --- */
     function createTraitSimpleElement(data) {
         const li = document.createElement("li");
         const { traitName, count, activeTier, isActive, steps, reachedTierCount, type } = data;
         const tierClass = isActive ? (data.isPrismatic ? "tier-prismatic" : (activeTier.rank || `tier-${reachedTierCount}`)) : "inactive";
         
         li.className = `trait-item ${isActive ? 'active' : ''} ${tierClass} trait-type-${type}`;
+        li.setAttribute("data-trait-key", safeLowercase(traitName)); // Dinleyici için anahtar
+
         const safeIcon = safeLowercase(traitName).replace(/[ğüşıöç]/g, m => ({ğ:'g',ü:'u',ş:'s',ı:'i',ö:'o',ç:'c'}[m])).replace(/[^a-z0-9]/g, '');
 
         li.innerHTML = `
@@ -108,63 +121,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     }).join('<span class="t-sep">></span>') : `<span class="t-step is-off">${count} / ${steps[0].count || steps[0]}</span>`}
                 </div>
             </div>`;
-
-        li.addEventListener("mouseenter", () => {
-            globalTooltip.innerHTML = generateTraitTooltipHTML(data);
-            applySmartPosition(globalTooltip, li.getBoundingClientRect(), "trait");
-        });
-        li.addEventListener("mouseleave", () => globalTooltip.style.display = "none");
         return li;
     }
 
-    function createChampElement(champ, isInComp = false) {
-        const div = document.createElement("div");
-        div.className = isInComp ? `comp-champ cost-border-${champ.cost}` : `champ-item cost-${champ.cost}`;
-        div.setAttribute("data-name", champ.name);
-        div.setAttribute("data-traits", champ.traits.map(t => safeLowercase(t)).join(","));
-
-        const img = document.createElement("img");
-        img.src = champ.img;
-        div.appendChild(img);
-
-        div.addEventListener("mouseenter", () => {
-            globalTooltip.style.display = "none"; 
-            champTooltip.innerHTML = generateChampionTooltipHTML(champ);
-            champTooltip.className = `champ-tooltip cost-${champ.cost}`;
-            // Context: Takım gridindeyse "team", havuzdaysa "champion"
-            applySmartPosition(champTooltip, div.getBoundingClientRect(), isInComp ? "team" : "champion");
-        });
-        
-        div.addEventListener("mouseleave", () => champTooltip.style.display = "none");
-        div.addEventListener("click", () => { champTooltip.style.display = "none"; toggleChampion(champ); });
-        return div;
-    }
-
-    /* --- 3. EŞYA TOOLTIP SİSTEMİ --- */
-    function setupItemTooltips() {
-        document.addEventListener("mouseover", (e) => {
-            const card = e.target.closest(".item-card");
-            if (!card) return;
-
-            const itemId = card.getAttribute("data-id");
-            const item = allItemsMap.get(itemId);
-
-            if (item) {
-                champTooltip.style.display = "none";
-                globalTooltip.innerHTML = generateItemTooltipHTML(item);
-                globalTooltip.style.display = "block";
-                applySmartPosition(globalTooltip, card.getBoundingClientRect(), "item");
-            }
-        });
-
-        document.addEventListener("mouseout", (e) => { 
-            if (e.target.closest(".item-card")) globalTooltip.style.display = "none"; 
-        });
-    }
-
-    setupItemTooltips();
-
-    /* --- 4. DİĞER FONKSİYONLAR (GÜNCELLENDİ) --- */
+/* ==========================================================================
+   [ORTA PANEL] - TAKIM KURMA (TEAM GRID)
+   ========================================================================== */
     function toggleChampion(champ) {
         const idx = selectedComp.findIndex(c => c.name === champ.name);
         if (idx >= 0) selectedComp.splice(idx, 1);
@@ -181,6 +143,84 @@ document.addEventListener("DOMContentLoaded", () => {
         renderTraits();
     }
 
+/* ==========================================================================
+   [SAĞ PANEL] - ŞAMPİYON HAVUZU VE EŞYALAR
+   ========================================================================== */
+    function createChampElement(champ, isInComp = false) {
+        const div = document.createElement("div");
+        div.className = isInComp ? `comp-champ cost-border-${champ.cost}` : `champ-item cost-${champ.cost}`;
+        div.setAttribute("data-name", champ.name);
+        div.setAttribute("data-traits", champ.traits.map(t => safeLowercase(t)).join(","));
+
+        const img = document.createElement("img");
+        img.src = champ.img;
+        div.appendChild(img);
+
+        div.addEventListener("click", () => { 
+            champTooltip.style.display = "none"; 
+            toggleChampion(champ); 
+        });
+        return div;
+    }
+
+/* ==========================================================================
+   MERKEZİ TOOLTIP YÖNETİMİ (GLOBAL DELEGATION)
+   - Tüm panellerin tooltip mantığı burada toplanmıştır.
+   ========================================================================== */
+    function initGlobalTooltips() {
+        document.addEventListener("mouseover", (e) => {
+            // 1. ŞAMPİYONLAR (Havuz veya Takım)
+            const champEl = e.target.closest(".champ-item, .comp-champ");
+            if (champEl) {
+                const name = champEl.getAttribute("data-name");
+                const champ = champions.find(c => c.name === name);
+                if (champ) {
+                    globalTooltip.style.display = "none"; 
+                    champTooltip.innerHTML = generateChampionTooltipHTML(champ);
+                    champTooltip.className = `champ-tooltip cost-${champ.cost}`;
+                    const context = champEl.classList.contains("comp-champ") ? "team" : "champion";
+                    applySmartPosition(champTooltip, champEl.getBoundingClientRect(), context);
+                }
+                return;
+            }
+
+            // 2. ÖZELLİKLER (Sol Panel)
+            const traitEl = e.target.closest(".trait-item");
+            if (traitEl) {
+                const key = traitEl.getAttribute("data-trait-key");
+                const data = currentTraitsData.get(key);
+                if (data) {
+                    champTooltip.style.display = "none";
+                    globalTooltip.innerHTML = generateTraitTooltipHTML(data);
+                    applySmartPosition(globalTooltip, traitEl.getBoundingClientRect(), "trait");
+                }
+                return;
+            }
+
+            // 3. EŞYALAR (Items)
+            const itemCard = e.target.closest(".item-card");
+            if (itemCard) {
+                const itemId = itemCard.getAttribute("data-id");
+                const item = allItemsMap.get(itemId);
+                if (item) {
+                    champTooltip.style.display = "none";
+                    globalTooltip.innerHTML = generateItemTooltipHTML(item);
+                    globalTooltip.style.display = "block";
+                    applySmartPosition(globalTooltip, itemCard.getBoundingClientRect(), "item");
+                }
+            }
+        });
+
+        // Kapatma Mantığı
+        document.addEventListener("mouseout", (e) => {
+            if (e.target.closest(".champ-item, .comp-champ")) champTooltip.style.display = "none";
+            if (e.target.closest(".trait-item, .item-card")) globalTooltip.style.display = "none";
+        });
+    }
+
+/* ==========================================================================
+   GLOBAL KONTROLLER VE BAŞLATMA
+   ========================================================================== */
     searchInput.addEventListener("input", e => {
         const term = safeLowercase(e.target.value);
         document.querySelectorAll(".champ-item").forEach(el => {
@@ -211,5 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .forEach(c => championListEl.appendChild(createChampElement(c)));
     };
 
+    // Tüm sistemi başlat
+    initGlobalTooltips();
     renderChampionPool();
 });

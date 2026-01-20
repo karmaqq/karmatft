@@ -12,18 +12,12 @@ export function safeLowercase(str) {
 
 export function parseStatIcons(text) {
     if (!text) return "";
-    
-    // Riot Games Community Dragon (CDragon) CDN Base URL
-    const riotAssetBase = "https://raw.communitydragon.org/latest/game/assets/ux/tft/stats/";
-
     return text.replace(/\[([^\]]+)\]/g, (match, iconName) => {
         const name = iconName.toLowerCase().trim();
-        
-        // Önce yerel dosyayı dene, hata verirse Riot CDN'e git
         return `<img src="img/stats/${name}.svg" 
                      class="stat-icon-img" 
                      alt="${name}"
-                     onerror="this.onerror=null; this.src='${riotAssetBase}${name}.png';">`;
+                     onerror="this.onerror=null; this.src='img/stats/${name}.png'; this.onerror=function(){this.style.display='none'};">`;
     });
 }
 
@@ -37,7 +31,6 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
     const viewHeight = window.innerHeight;
     const scrollY = window.scrollY;
     
-    // Boyutları doğru ölçmek için geçici olarak görünür yap
     el.style.display = "block";
     const tWidth = el.offsetWidth;
     const tHeight = el.offsetHeight;
@@ -45,22 +38,17 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
     let left, top;
 
     if (context === "champion") {
-        // ŞAMPİYON HAVUZU: Önce SOL (Görsel alan açmak için)
         left = anchorRect.left - tWidth - padding;
         if (left < 10) left = anchorRect.right + padding;
-
-        // Dikey: Alt yarıdaysa yukarı, üst yarıdaysa aşağı doğru açıl
         top = (anchorRect.top > viewHeight / 2) 
             ? anchorRect.bottom - tHeight + scrollY 
             : anchorRect.top + scrollY;
     } 
     else if (context === "team") {
-        // TAKIM GRID: Sadece Alt (Sağ-Sol-Üst Yasak)
         left = anchorRect.left + (anchorRect.width / 2) - (tWidth / 2);
         top = anchorRect.bottom + padding + scrollY;
     } 
     else if (context === "trait") {
-        // ÖZELLİKLER (Sol Panel): Sağda Sabit, Akıllı Dikey Hizalama
         left = anchorRect.right + padding;
         if (anchorRect.top < 200) {
             top = anchorRect.top + scrollY;
@@ -71,7 +59,6 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
         }
     } 
     else if (context === "item") {
-        // EŞYALAR: Üstte Ortalı
         left = anchorRect.left + (anchorRect.width / 2) - (tWidth / 2);
         top = anchorRect.top - tHeight - padding + scrollY;
     }
@@ -87,11 +74,10 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
 }
 
 /* ==========================================================================
-   3. TRAIT TOOLTIP ÜRETİCİ
+   3. TOOLTIP HTML ÜRETİCİLERİ
    ========================================================================== */
 export function generateTraitTooltipHTML(data) {
     const { traitName, count, steps, traitData } = data;
-    
     const iconName = traitName.toLowerCase()
         .replace(/[ğüşıöç]/g, m => ({ğ:'g',ü:'u',ş:'s',ı:'i',ö:'o',ç:'c'}[m]))
         .replace(/[^a-z0-9]/g, '');
@@ -135,9 +121,6 @@ export function generateTraitTooltipHTML(data) {
         </div>`;
 }
 
-/* ==========================================================================
-   4. ŞAMPİYON TOOLTIP ÜRETİCİ
-   ========================================================================== */
 export function generateChampionTooltipHTML(champ) {
     const traitsHTML = champ.traits.map(t => {
         const safeIcon = safeLowercase(t)
@@ -162,9 +145,6 @@ export function generateChampionTooltipHTML(champ) {
         <div class="ct-traits-list">${traitsHTML}</div>`;
 }
 
-/* ==========================================================================
-   5. EŞYA TOOLTIP ÜRETİCİ
-   ========================================================================== */
 export function generateItemTooltipHTML(item) {
     const componentsHTML = (item.components && item.components.length > 0) ? `
         <div class="item-recipe-group">
@@ -172,9 +152,7 @@ export function generateItemTooltipHTML(item) {
             <span class="recipe-plus">+</span>
             <img src="img/items/${item.components[1]}.png" class="recipe-icon" onerror="this.src='img/items/default.png'">
         </div>
-    ` : `
-        <div class="item-non-craftable">Üretilemez</div>
-    `;
+    ` : `<div class="item-non-craftable">Üretilemez</div>`;
 
     const statsHTML = item.stats ? item.stats.map(s => `
         <div class="tooltip-stat">
@@ -193,4 +171,29 @@ export function generateItemTooltipHTML(item) {
         <div class="item-tooltip-body">
             ${parseStatIcons(item.desc)}
         </div>`;
+}
+
+/* ==========================================================================
+   4. GLOBAL BAŞLATICI (DİĞER MODÜLLER İÇİN)
+   ========================================================================== */
+export function initItemTooltips(globalTooltip, champTooltip, allItemsMap) {
+    // Eşyalar için global dinleyici
+    document.addEventListener("mouseover", (e) => {
+        const card = e.target.closest(".item-card");
+        if (!card) return;
+
+        const itemId = card.getAttribute("data-id");
+        const item = allItemsMap.get(itemId);
+
+        if (item) {
+            if (champTooltip) champTooltip.style.display = "none";
+            globalTooltip.innerHTML = generateItemTooltipHTML(item);
+            globalTooltip.style.display = "block";
+            applySmartPosition(globalTooltip, card.getBoundingClientRect(), "item");
+        }
+    });
+
+    document.addEventListener("mouseout", (e) => { 
+        if (e.target.closest(".item-card")) globalTooltip.style.display = "none"; 
+    });
 }
