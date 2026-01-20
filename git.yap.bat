@@ -24,11 +24,9 @@ echo    KARMA TFT PROJESİ - OTOMATİK GÜNCELLEME İŞLEMİ
 echo ====================================================%white%
 echo.
 
-:: 1. Mesaj Alma
 set "user_msg="
 set /p "user_msg=Yapılan değişikliği yaz: "
 
-:: [DÜZELTME] SES ÇALMA (PowerShell kullanarak hatasız Bip sesi)
 powershell -c "[console]::beep(800,200)" >nul 2>&1
 
 if "!user_msg!"=="" (set "msg_text=Otomatik Güncelleme") else (set "msg_text=!user_msg!")
@@ -38,21 +36,17 @@ echo.
 echo %cyan%      ------------------------------------------%white%
 echo %yellow%[1/4]%white% Sunucudaki veriler eşitleniyor...
 git pull origin main --quiet 2>nul
-echo %cyan%      ------------------------------------------%white%
 if %errorlevel% equ 0 (
     echo %green%      [OK] Sunucu ile bağlantı güncel.%white%
 ) else (
     echo %red%      [HATA] Sunucudan veri çekilemedi.%white%
 )
-
-
 echo %cyan%      ------------------------------------------%white%
 echo %yellow%[2/4]%white% Yeni dosyalar listeye ekleniyor...
 for /f "tokens=*" %%a in ('git status -s') do (
     echo %cyan%      =^>%white% %%a
 )
 echo %cyan%      ------------------------------------------%white%
-
 git add .
 if %errorlevel% equ 0 (
     echo %green%      [OK] Tüm dosyalar başarıyla eklendi.%white%
@@ -60,10 +54,8 @@ if %errorlevel% equ 0 (
     echo %red%      [HATA] Dosyalar eklenirken bir sorun oluştu.%white%
 )
 
-echo %cyan%      ------------------------------------------%white%
 :: --- [3/4] KAYIT (COMMIT) ---
 echo %yellow%[3/4]%white% Kayıt mesajı oluşturuluyor...
-echo %cyan%      ------------------------------------------%white%
 git commit -m "!final_msg!" >nul 2>&1
 if %errorlevel% equ 0 (
     echo %green%      [OK] Açıklama mesajı yayınlandı.%white%
@@ -71,16 +63,15 @@ if %errorlevel% equ 0 (
     echo %yellow%      [BİLGİ] Kaydedilecek değişiklik bulunamadı.%white%
 )
 
-echo %cyan%      ------------------------------------------%white%
 echo %yellow%[4/4]%white% Kodlar GitHub'a gönderiliyor...
-echo %cyan%      ------------------------------------------%white%
+
 git push origin main --quiet 2>nul
 if %errorlevel% equ 0 (
     echo %green%      [OK] Yükleme başarılı.%white%
 ) else (
     echo %red%      [HATA] Yükleme başarısız.%white%
 )
-
+echo %cyan%      ------------------------------------------%white%
 :: [ÖZELLİK] FİNAL VE TIKLANABİLİR LİNK
 echo.
 echo %cyan%====================================================
