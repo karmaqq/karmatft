@@ -23,9 +23,9 @@ set "user_msg="
 set /p "user_msg=Yapılan değişikliği yaz: "
 
 if "!user_msg!"=="" (
-    set "final_msg=Otomatik Güncelleme: %date% %current_time%"
+    set "final_msg=Otomatik Güncelleme %date% %current_time%"
 ) else (
-    set "final_msg=!user_msg! (%date% %current_time%)"
+    set "final_msg=!user_msg! %date% %current_time%"
 )
 
 echo.
@@ -34,7 +34,6 @@ git pull origin main --quiet
 
 echo %yellow%[2/4]%white% Yeni dosyalar listeye ekleniyor...
 git add .
-echo %green%      =^> Dosyalar hazır!%white%
 
 echo %yellow%[3/4]%white% Kayıt (Commit) oluşturuluyor...
 git commit -m "!final_msg!" --quiet
@@ -42,7 +41,6 @@ git commit -m "!final_msg!" --quiet
 echo %yellow%[4/4]%white% Kodlar GitHub'a gönderiliyor...
 git push origin main --quiet
 
-:: Final Ekranı
 echo.
 echo %cyan%====================================================
 echo    İŞLEM BAŞARILI: Veriler Buluta İşlendi
