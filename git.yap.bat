@@ -11,6 +11,7 @@ set "magenta=[95m"
 
 :: Saat ayarı (Salisesiz)
 set "current_time=%time:~0,8%"
+set "timestamp=%date% !current_time!"
 
 cls
 echo %cyan%====================================================
@@ -22,11 +23,15 @@ echo.
 set "user_msg="
 set /p "user_msg=Yapılan değişikliği yaz: "
 
+:: Mantık: Eğer boşsa "Otomatik Güncelleme" yaz, değilse kullanıcının mesajını al
 if "!user_msg!"=="" (
-    set "final_msg=Otomatik Güncelleme %date% %current_time%"
+    set "msg_text=Otomatik Güncelleme"
 ) else (
-    set "final_msg=!user_msg! %date% %current_time%"
+    set "msg_text=!user_msg!"
 )
+
+:: Git'e gidecek tam mesaj (Mesaj + Tarih)
+set "final_msg=!msg_text! !timestamp!"
 
 echo.
 echo %yellow%[1/4]%white% Sunucudaki veriler eşitleniyor...
@@ -41,10 +46,11 @@ git commit -m "!final_msg!" --quiet
 echo %yellow%[4/4]%white% Kodlar GitHub'a gönderiliyor...
 git push origin main --quiet
 
+:: Final Ekranı - Mesaj YEŞİL, Tarih BEYAZ
 echo.
 echo %cyan%====================================================
 echo    İŞLEM BAŞARILI: Veriler Buluta İşlendi
-echo    %magenta%Mesaj: %green%!final_msg!%white%
+echo    %magenta%Mesaj: %green%!msg_text! %white%!timestamp!
 echo %cyan%====================================================%white%
 echo.
 pause
