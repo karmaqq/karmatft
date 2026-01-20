@@ -42,19 +42,24 @@ if %errorlevel% equ 0 (
 )
 
 echo %yellow%[2/4]%white% Yeni dosyalar listeye ekleniyor...
+echo %cyan%      ------------------------------------------%white%
+
+:: HİZALANMIŞ DOSYA LİSTESİ DÖNGÜSÜ
 for /f "tokens=1,*" %%a in ('git status -s') do (
     set "status_code=%%a"
     set "file_name=%%b"
-    set "status_text=Bilinmiyor"
     
-    if "!status_code!"=="M"  set "status_text=%yellow%Değiştirildi%white%"
-    if "!status_code!"=="A"  set "status_text=%green%Yeni Eklendi %white%"
-    if "!status_code!"=="D"  set "status_text=%red%Silindi      %white%"
-    if "!status_code!"=="??" set "status_text=%cyan%Yeni Dosya   %white%"
-    if "!status_code!"=="R"  set "status_text=%magenta%Adı Değişti  %white%"
+    :: Durum metinlerini sabit genişliğe tamamlıyoruz (12 karakter + boşluk)
+    if "!status_code!"=="M"  set "display_status=Değiştirildi  " & set "c=%yellow%"
+    if "!status_code!"=="A"  set "display_status=Yeni Eklendi  " & set "c=%green%"
+    if "!status_code!"=="D"  set "display_status=Silindi       " & set "c=%red%"
+    if "!status_code!"=="??" set "display_status=Yeni Dosya    " & set "c=%cyan%"
+    if "!status_code!"=="R"  set "display_status=Adı Değişti   " & set "c=%magenta%"
     
-    echo %cyan%      =^> !status_text! : !file_name!
+    :: Dosya adını bir TAB (4 boşluk) içeriden başlatıyoruz
+    echo       %cyan%=^>%white% !c!!display_status!%white%    !file_name!
 )
+echo %cyan%      ------------------------------------------%white%
 
 git add .
 if %errorlevel% equ 0 (
@@ -79,6 +84,7 @@ if %errorlevel% equ 0 (
     echo %red%      [HATA] Yükleme başarısız.%white%
 )
 
+:: Final Ekranı
 echo.
 echo %cyan%====================================================
 echo    İŞLEM TAMAMLANDI: Tüm veriler eşitlendi
