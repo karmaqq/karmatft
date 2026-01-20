@@ -35,20 +35,19 @@ if "!user_msg!"=="" (set "msg_text=Otomatik Güncelleme") else (set "msg_text=!u
 set "final_msg=!msg_text! !timestamp!"
 echo.
 
-:: --- [1/4] SUNUCU EŞİTLEME ---
+echo %cyan%      ------------------------------------------%white%
 echo %yellow%[1/4]%white% Sunucudaki veriler eşitleniyor...
 git pull origin main --quiet 2>nul
+echo %cyan%      ------------------------------------------%white%
 if %errorlevel% equ 0 (
     echo %green%      [OK] Sunucu ile bağlantı güncel.%white%
 ) else (
     echo %red%      [HATA] Sunucudan veri çekilemedi.%white%
 )
 
-:: --- [2/4] DOSYA EKLEME ---
-echo %yellow%[2/4]%white% Yeni dosyalar listeye ekleniyor...
 
-:: DOSYA LİSTESİ HİZALAMA (M, A, D harflerini daha estetik gösterir)
 echo %cyan%      ------------------------------------------%white%
+echo %yellow%[2/4]%white% Yeni dosyalar listeye ekleniyor...
 for /f "tokens=*" %%a in ('git status -s') do (
     echo %cyan%      =^>%white% %%a
 )
@@ -61,8 +60,10 @@ if %errorlevel% equ 0 (
     echo %red%      [HATA] Dosyalar eklenirken bir sorun oluştu.%white%
 )
 
+echo %cyan%      ------------------------------------------%white%
 :: --- [3/4] KAYIT (COMMIT) ---
 echo %yellow%[3/4]%white% Kayıt mesajı oluşturuluyor...
+echo %cyan%      ------------------------------------------%white%
 git commit -m "!final_msg!" >nul 2>&1
 if %errorlevel% equ 0 (
     echo %green%      [OK] Açıklama mesajı yayınlandı.%white%
