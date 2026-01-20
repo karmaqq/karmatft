@@ -1,5 +1,23 @@
 /* ==========================================================================
-   1. GLOBAL TRAIT TOOLTIP (Sol Menü Detay Paneli)
+   GENEL AYARLAR VE STAT RENK PALETİ (Tüm Tooltipler İçin)
+   ========================================================================== */
+
+.t-highlight { color: #ffb93b !important;font-weight: 800; }   
+.txt-info  { color: #00f5e1 !important; font-size: 400; font-style: italic; }
+.txt-uniq  { color: #e23420 !important; font-weight: 800; }
+.txt-rad  { color: #e7bf3a !important; font-weight: 800; }
+.txt-bold  { color: #ffffff !important; font-weight: 800; }
+
+/* Stat İkon Stili (Metin içi ve başlık altı) */
+.stat-icon-img {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin: 0px;
+    display: inline-block;
+}
+/* ==========================================================================
+   1.TRAIT TOOLTIP (Sol Menü Detay Paneli)
    ========================================================================== */
 /* Genel Konteyner */
 #global-trait-tooltip {
@@ -9,12 +27,14 @@
     display: none;
     pointer-events: none;
     width: 350px;
-    padding: 20px;
-    background: #0f111a;
-    border: 1px solid #ca9337;
+    min-width: 280px;
+    padding: 10px;
+    background: #0d0f14 !important; /* Tam Siyah */
+    border: 1px solid #3c3c41;
+    border-top: 2px solid #ca9337;
     border-radius: 6px;
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
-    font-family: 'Inter', 'Segoe UI', sans-serif;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    font-family: 'Inter', sans-serif;
 }
 
 /* Tooltip Başlık Alanı (İkon + İsim) */
@@ -37,7 +57,7 @@
     font-size: 22px; 
     font-weight: 900;
     color: #ffb93b;
-    text-transform: uppercase;
+    text-transform: capitalize;
     letter-spacing: 1.5px;
 }
 
@@ -80,11 +100,12 @@
     line-height: 1.4;
     color: #666; /* Pasif kademeler gri */
     transition: color 0.2s ease;
+    margin-bottom: 4px; /* Satırlar arası ferahlık için eklenebilir */
 }
 
 /* Kademe Değerleri */
 .t-threshold-val {
-    min-width: 40px;
+    min-width: 20px;
     font-weight: 900;
     color: inherit;
 }
@@ -100,26 +121,9 @@
     border-radius: 4px;
     padding: 2px 0;
 }
-
-/* Stat İkonları ve Vurgular */
-.stat-icon-img {
-    width: 18px;
-    height: 18px;
-    margin: 0 4px;
-    vertical-align: middle;
-}
-
-/* Vurgulanmış Metin */
-.t-highlight {
-    color: #ffb93b !important;
-    font-weight: 800;
-}
-
 /* ==========================================================================
-   2. CHAMPION TOOLTIP (Şampiyon Kart Detayı)
+   2. CHAMPION TOOLTIP (Şampiyon Kart Detayı) - GÜNCEL
    ========================================================================== */
-
-/* Şampiyon Tooltip */
 .champ-tooltip {
     position: fixed;
     z-index: 1000000;
@@ -141,12 +145,13 @@
     margin-bottom: 10px;
 }
 
-/* Şampiyon İsmi */
+/* ŞAMPİYON İSMİ - BURASI DÜZELTİLDİ */
 .ct-name {
     font-size: 16px;
     font-weight: 800;
-    color: #fff;
+    color: #ffb93b; /* Beyaz (#fff) yerine sarı tonu eklendi */
     letter-spacing: 0.5px;
+    text-transform: capitalize;
 }
 
 /* Şampiyon Maliyeti */
@@ -205,62 +210,58 @@
 .champ-tooltip.cost-7 { border-color: #ff4e50; }
 
 /* ==========================================================================
-   3. ITEM TOOLTIP (Eşya Detay Paneli - Modern & Estetik)
+   ITEM TOOLTIP (Eşya Detay Paneli)
    ========================================================================== */
 
-#global-trait-tooltip {
-    background: #0d0f14 !important;
-    padding: 10px; /* Dış ana çerçeve boşluğu */
-    border-radius: 6px;
-    border: 1px solid #3c3c41;
-    border-top: 2px solid #ca9337;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-    min-width: 280px;
-}
-
-/* Üst Bölüm: Sol (İsim+Stat) ve Sağ (Bileşenler) Dengesi */
+/* Üst Bölüm: İsim, Statlar ve Sağdaki Bileşenler */
 .item-tooltip-top-section {
     display: flex;
     justify-content: space-between;
-    align-items: stretch; /* İçerik boyuna göre esneklik sağlar */
-    padding: 5px; /* Belirttiğin 5px iç boşluk */
+    align-items: center; /* Dikeyde her şeyi ortalar */
+    padding: 5px;
     margin-bottom: 10px;
     gap: 12px;
 }
 
-/* Sol Taraf: Dikey hizalanmış İsim ve Statlar */
+/* Sol Taraf: İsim ve Altında Stat Grid'i */
 .item-header-left {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Metinleri dikeyde ortalar */
-    gap: 4px;
+    gap: 6px;
 }
 
 .item-tooltip-title {
     font-size: 15px;
     font-weight: 700;
     color: #f0d494;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    line-height: 1.2;
+    text-transform: capitalize;
 }
 
+/* STAT ROW: Tam olarak 3'lü sütun düzeni */
 .item-tooltip-stats-row {
-    display: flex;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(3, auto); /* Yan yana 3 sütun */
+    gap: 4px 12px; /* Satır arası 4px, sütun arası 12px */
     align-items: center;
 }
 
 .tooltip-stat {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
     font-size: 12px;
     font-weight: 600;
     color: #fff;
+    white-space: nowrap;
 }
 
-/* Sağ Taraf: Bileşen İkon Grubu */
+.tooltip-stat img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* Sağ Taraf: Bileşen İkonları veya Üretilemez Yazısı */
 .item-header-right {
     display: flex;
     align-items: center;
@@ -269,17 +270,14 @@
 .item-recipe-group {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
 }
 
 .recipe-icon {
-    /* Başlık ve statların kapladığı dikey alana uygun boyut */
-    width: 42px; 
-    height: 42px;
+    width: 40px; 
+    height: 40px;
     border-radius: 4px;
-    object-fit: cover;
     background: #1a1c23;
-    border: none; /* Çerçeveyi kaldırdık */
 }
 
 .recipe-plus {
@@ -288,15 +286,22 @@
     font-weight: bold;
 }
 
-/* Açıklama Alanı */
+.item-non-craftable {
+    color: #ff4e50;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 78, 80, 0.3);
+    padding: 3px 6px;
+    border-radius: 4px;
+    background: rgba(255, 78, 80, 0.05);
+}
+
+/* Alt Bölüm: Açıklama */
 .item-tooltip-body {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px 5px 5px 5px; /* Her yönden 5px içeride durması için */
+    padding: 10px 5px;
     font-size: 13px;
     line-height: 1.5;
     color: #cbd5e0;
-}
-
-.item-tooltip-body b {
-    color: #fff;
 }

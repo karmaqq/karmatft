@@ -104,11 +104,24 @@ body {
 .trait-item {
     display: flex;
     align-items: center;
-    background: transparent !important; 
-    border: none !important;
-    padding: 2px 0;
+    background: transparent; 
+    border: 1px solid transparent; /* Geçişte titremeyi önlemek için */
+    padding: 6px 8px; /* Kutucuk yapısı için iç boşluğu artırdık */
     gap: 8px; 
     margin-bottom: 4px;
+    border-radius: 6px; /* Kutucuk köşeleri */
+    transition: all 0.3s ease;
+}
+
+/* AKTİF ÖZELLİK: Gri Arka Plan ve Kutucuk Görünümü */
+.trait-item.active {
+    background: rgba(255, 255, 255, 0.05) !important; /* Çok hafif gri/transparan arka plan */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); /* İç derinlik */
+}
+
+/* Hover efekti (İsteğe bağlı: fareyle üzerine gelince biraz daha belli olur) */
+.trait-item:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
 }
 
 /* Altgen Kapsayıcı */
@@ -145,7 +158,7 @@ body {
 
 /* Sayaç Rozeti */
 .trait-count-badge {
-    background: #999999 !important;
+    background: #585858 !important;
     color: #fff;
     font-size: 11px;
     font-weight: 900;
@@ -154,6 +167,13 @@ body {
     min-width: 18px;
     text-align: center;
     border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Sayaç Rozeti - Aktifken daha parlak olması için */
+.active .trait-count-badge {
+    background: #32353d !important; /* Aktifken rozet rengini koyulaştırıp metni öne çıkarabilirsin */
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Özellik Eşik Renkleri */
@@ -169,7 +189,7 @@ body {
 .trait-info-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 5px;
 }
 
 /* Özellik Adı */
@@ -502,4 +522,16 @@ body {
     border-color: var(--accent);
     box-shadow: 0 0 10px rgba(202, 147, 55, 0.2);
     background: #12141a;
+}
+
+/* Arama sırasında eşleşmeyenleri tamamen kaldır ama DOM'da tut */
+.is-searching-hidden {
+    display: none !important;
+}
+
+/* Şampiyonlar için senin istediğin o opaklık görselini koruyalım */
+.champ-item.not-matching {
+    opacity: 0.2;
+    pointer-events: none;
+    filter: grayscale(1); /* Görsel deneyimi artırır */
 }
