@@ -44,7 +44,7 @@ git push origin main --quiet
 echo.
 echo %cyan%====================================================
 echo    İŞLEM BAŞARILI: Veriler Buluta İşlendi
-echo    %magenta%Mesaj: !final_msg!%white%
+echo    %magenta%Mesaj: %green%!final_msg!%white%
 echo %cyan%====================================================%white%
 echo.
 pause
