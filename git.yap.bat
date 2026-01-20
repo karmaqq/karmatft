@@ -10,13 +10,11 @@ set "magenta=[95m"
 
 cls
 echo %cyan%====================================================
-echo    TFT KURUCU - GELİŞMİŞ GÜNCELLEME SİSTEMİ
+echo    KARMA TFT PROJESİ - OTOMATİK GÜNCELLEME İŞLEMİ
 echo ====================================================%white%
-
-echo %magenta%Şu anki tarih: %date% %time%%white%
 echo.
 set "user_msg="
-set /p "user_msg=Yapılan değişikliği yaz. Varsayılan mesaj için sadece ENTER bas: "
+set /p "user_msg=Yapılan değişikliği yaz: "
 
 
 if "!user_msg!"=="" (
@@ -35,7 +33,7 @@ echo %green%      =^> Yeni dosyalar başarıyla eklendi!%white%
 
 echo %yellow%[3/4]%white% Kayıt oluşturuluyor...
 git commit -m "!final_msg!" --quiet
-echo %green%      =^> "!final_msg!" mesajı ile commit atıldı!%white%
+echo %green%      =^> "!final_msg!" mesajı eklendi!%white%
 
 echo %yellow%[4/4]%white% Kodlar GitHub'a gönderiliyor...
 git push origin main --quiet
@@ -43,7 +41,6 @@ git push origin main --quiet
 echo.
 echo %cyan%====================================================
 echo    İŞLEM BAŞARILI: Tüm kodlar başarıyla güncellendi!
-echo    Final Mesajı: !final_msg!
 echo ====================================================%white%
 echo.
 pause
