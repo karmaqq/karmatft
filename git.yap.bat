@@ -1,29 +1,41 @@
 @echo off
 chcp 65001 >nul
-setlocal
+setlocal enabledelayedexpansion
 
 set "green=[92m"
 set "yellow=[93m"
 set "cyan=[96m"
 set "white=[0m"
+set "magenta=[95m"
 
 cls
 echo %cyan%====================================================
-echo    KARMA TFT VERİ GÜNCELLEME İŞLEMİ
+echo    TFT KURUCU - GELİŞMİŞ GÜNCELLEME SİSTEMİ
 echo ====================================================%white%
 
-echo %yellow%[1/4]%white% Sunucudaki son değişiklikler kontrol ediliyor...
+echo %magenta%Şu anki tarih: %date% %time%%white%
+echo.
+set "user_msg="
+set /p "user_msg=Yapılan değişikliği yaz. Varsayılan mesaj için sadece ENTER bas: "
+
+
+if "!user_msg!"=="" (
+    set "final_msg=Otomatik Güncelleme: %date% %time%"
+) else (
+    set "final_msg=!user_msg! (%date% %time%)"
+)
+
+echo.
+echo %yellow%[1/4]%white% Sunucudaki veriler eşitleniyor...
 git pull origin main --quiet
 
 echo %yellow%[2/4]%white% Yeni dosyalar listeye ekleniyor...
 git add .
 echo %green%      =^> Yeni dosyalar başarıyla eklendi!%white%
 
-echo %yellow%[3/4]%white% Otomatik mesaj oluşturuluyor...
-:: Tarih ve saat bilgisini içeren mesaj
-set "msg=Otomatik Güncelleme: %date% %time%"
-git commit -m "%msg%" --quiet
-echo %green%      =^> Veriler eşitlendi ve açıklama yapıldı!%white%
+echo %yellow%[3/4]%white% Kayıt oluşturuluyor...
+git commit -m "!final_msg!" --quiet
+echo %green%      =^> "!final_msg!" mesajı ile commit atıldı!%white%
 
 echo %yellow%[4/4]%white% Kodlar GitHub'a gönderiliyor...
 git push origin main --quiet
@@ -31,7 +43,7 @@ git push origin main --quiet
 echo.
 echo %cyan%====================================================
 echo    İŞLEM BAŞARILI: Tüm kodlar başarıyla güncellendi!
-echo    Mesaj: %msg%
+echo    Final Mesajı: !final_msg!
 echo ====================================================%white%
 echo.
 pause
