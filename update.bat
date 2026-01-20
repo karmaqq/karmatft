@@ -2,10 +2,8 @@
 chcp 65001 >nul
 setlocal enabledelayedexpansion
 
-:: --- AYARLAR ---
 set "REPO_URL=https://karmatft.netlify.app/"
 
-:: Renk Kodları
 set "green=[92m"
 set "yellow=[93m"
 set "cyan=[96m"
@@ -13,7 +11,6 @@ set "white=[0m"
 set "magenta=[95m"
 set "red=[91m"
 
-:: Saat ayarı
 set "current_time=%time:~0,8%"
 set "timestamp=%date% !current_time!"
 
