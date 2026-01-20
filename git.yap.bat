@@ -47,10 +47,12 @@ if %errorlevel% equ 0 (
 :: --- [2/4] DOSYA EKLEME ---
 echo %yellow%[2/4]%white% Yeni dosyalar listeye ekleniyor...
 
-:: [ÖZELLİK] DEĞİŞEN DOSYALARI LİSTELE
-echo %cyan%------------------------------------------%white%
-git status -s
-echo %cyan%------------------------------------------%white%
+:: DOSYA LİSTESİ HİZALAMA (M, A, D harflerini daha estetik gösterir)
+echo %cyan%      ------------------------------------------%white%
+for /f "tokens=*" %%a in ('git status -s') do (
+    echo %cyan%      =^>%white% %%a
+)
+echo %cyan%      ------------------------------------------%white%
 
 git add .
 if %errorlevel% equ 0 (
