@@ -384,14 +384,16 @@ body {
     margin-bottom: 20px; /* Gruplar arası mesafe */
 }
 
+/* Eşya menüsü */
 .item-tabs-menu {
     display: flex;
     gap: 5px;
     padding: 0 10px;
     margin-bottom: 10px;
-    flex-wrap: wrap; /* Mobilde veya dar ekranda taşmaması için */
+    flex-wrap: wrap;
 }
 
+/* Eşya menü butonları */
 .item-tab-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(202, 147, 55, 0.3);
@@ -404,11 +406,13 @@ body {
     text-transform: uppercase;
 }
 
+/* Eşya menü hover */
 .item-tab-btn:hover {
     background: rgba(202, 147, 55, 0.1);
     color: #fff;
 }
 
+/* Eşya menü aktif butonu */
 .item-tab-btn.active {
     background: #ca9337;
     color: #000;
@@ -416,62 +420,50 @@ body {
     border-color: #ca9337;
 }
 
-/* Kategori içindeki eşyaların dizildiği grid */
+/* Eşya grid */
 .items-grid {
     display: grid;
-    /* Şampiyon gridiyle uyum için repeat(10, 1fr) veya otomatik sığdırma */
     grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); 
     gap: 8px;
     padding: 0 10px;
 }
 
-/* Eşya Kartı Ana Yapısı */
+/* Eşya kartları */
 .item-card {
     position: relative;
     cursor: pointer;
     transition: transform 0.2s ease;
-    width: 42px; /* Sabit genişlik */
+    width: 42px;
     transition: opacity 0.2s ease, transform 0.2s ease;
-
 }
 
-/* İkon Çerçevesi */
+/* Eşya ikonları genel kapsayıcı */
 .item-icon-wrapper {
     width: 42px;
     height: 42px;
-    border: 1px solid #444;
     border-radius: 4px;
     overflow: hidden;
-    background: #0a0a0c; /* Daha koyu arka plan */
+    background: #0a0a0c;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Eşya ikon resimleri */
 .item-icon-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    image-rendering: auto; /* İkon netliği için */
-}
-
-/* Hover Efektleri */
-.item-card:hover {
-    z-index: 5;
-    transform: translateY(-3px);
+    image-rendering: auto;
 }
 
 .item-card:hover .item-icon-wrapper {
     border-color: #ca9337;
     box-shadow: 0 4px 12px rgba(202, 147, 55, 0.3);
+    z-index: 5;
+    transform: translateY(-3px);
 }
-
-/* Özel Eşya Türleri İçin Hafif Renk Vurguları (Opsiyonel) */
-/* Örn: Yadigar eşyalar için farklı bir border rengi eklenebilir */
-.item-card[data-category="artifact"] .item-icon-wrapper { border-color: #00cfbc; }
-.item-card[data-category="radiant"] .item-icon-wrapper { border-color: #ffdf7e; }
-
 /* ==========================================================================
     RESET BUTONU & ŞAMPİYON ARAMA
    ========================================================================== */
