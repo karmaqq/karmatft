@@ -22,18 +22,18 @@
     outline: none; 
 }
 
-/* Genel Body */
 body {
     background: radial-gradient(circle at center, #11141d 0%, #08090c 100%);
     font-family: 'Inter', sans-serif;
     color: var(--text-main);
     margin: 0;
     padding: 15px;
-    height: 100vh;
-    width: 100vw;
+    min-height: 100vh; /* Sabit yükseklik yerine en az ekran kadar dedik */
+    width: 100%;       /* vw yerine % daha güvenlidir */
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-y: auto;  /* İhtiyaç olduğunda aşağı doğru kaydırabilmelisin */
+    overflow-x: hidden; 
     box-sizing: border-box;
 }
 
@@ -47,14 +47,14 @@ body {
    GENEL PLAN YAPISI
    ========================================================================== */
 
-/* Ana Konteyner */
 .main-container {
     display: flex;
     justify-content: center;
     gap: 15px;
     max-width: 1600px;
     margin: 0 auto;
-    height: calc(100vh - 30px);    
+    height: calc(100vh - 30px); 
+    min-height: 0; 
     padding: 5px 20px 0 20px;
     width: 100%;
     box-sizing: border-box;
@@ -74,7 +74,7 @@ body {
 
 /* Panel Başlık Stili */
 .panel-header {
-    height: 45px;
+    height: 50px;
     background: var(--panel-header);
     padding: 0 16px;
     display: flex;
@@ -83,12 +83,19 @@ body {
     border-bottom: 1px solid var(--border);
 }
 
+.panel-header, .traits-header, .team-header {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
 /* Panel Başlık Metni */
 .panel-header h2 {
-    font-size: 22px;
+    font-size: 14px;
     letter-spacing: 1.5px;
     margin: 0;
     color: var(--accent-light);
+    flex-grow: 1;
+    margin-right: auto;
 }
 
 /* ==========================================================================
@@ -158,12 +165,41 @@ body {
     filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 1px #000);
 }
 
-/* Özellik Eşik Renkleri */
-.tier-1 .trait-hex { background: #8e5a3c !important; }
-.tier-2 .trait-hex { background: #949494 !important; }
-.tier-3 .trait-hex { background: #c79510 !important; }
-.tier-special .trait-hex { background: #14cc73 !important; }
-.tier-prismatic .trait-hex { background: linear-gradient(135deg, #fe88ff, #ff1717) !important; 
+/* Bronz (Tier 1) - Daha bakırımsı ve metalik */
+.tier-1 .trait-hex { 
+    background: linear-gradient(180deg, #cd7f32 0%, #8e5a3c 100%) !important; 
+    box-shadow: 0 0 5px rgba(142, 90, 60, 0.5);
+}
+
+/* Gümüş (Tier 2) - Daha soğuk ve parlak gri */
+.tier-2 .trait-hex { 
+    background: linear-gradient(180deg, #d1d1d1 0%, #949494 100%) !important; 
+    box-shadow: 0 0 5px rgba(148, 148, 148, 0.5);
+}
+
+/* Altın (Tier 3) - Daha canlı ve sıcak altın */
+.tier-3 .trait-hex { 
+    background: linear-gradient(180deg, #ffdc81 0%, #c79510 100%) !important; 
+    box-shadow: 0 0 8px rgba(199, 149, 16, 0.6);
+}
+
+/* Özel (Special/Unique) - Turkuaz/Zümrüt karışımı */
+.tier-special .trait-hex { 
+    background: linear-gradient(180deg, #2ae792 0%, #14cc73 100%) !important; 
+    box-shadow: 0 0 10px rgba(20, 204, 115, 0.5);
+}
+
+/* Prizmatik - Pembe, Mor ve Mavi geçişli (TFT İmzası) */
+.tier-prismatic .trait-hex { 
+    background: linear-gradient(135deg, #ff8cff 0%, #7e57ff 50%, #00c2ff 100%) !important; 
+    box-shadow: 0 0 15px rgba(255, 140, 255, 0.7);
+    animation: prismatic-glow 3s infinite alternate;
+}
+
+/* Prizmatik için hafif parlama animasyonu (Opsiyonel) */
+@keyframes prismatic-glow {
+    from { filter: brightness(1) saturate(1); }
+    to { filter: brightness(1.2) saturate(1.3); }
 }
 
 /* Özellik İkonu */
@@ -249,8 +285,8 @@ body {
 
 /* Takım Paneli */
 .team-panel { 
-    flex: 0 1 910px !important;
-    min-width: 910px;
+    flex: 1!important;
+    min-width: 920px;
     display: flex !important;
     flex-direction: column !important;
     height: 100% !important;
@@ -258,21 +294,107 @@ body {
     position: relative !important;
 }
 
-/* Aktif Takım Grid */
+/* Reset Butonu */
+.btn-reset {
+    margin-left: auto;
+    background: rgba(255, 78, 80, 0.1);
+    border: 1px solid #ff4e50;
+    color: #ff4e50;
+    border-radius: 4px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
 #active-team-grid {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px 20px;
+    padding: 40px 0px;
     background: radial-gradient(circle, #1a1f28 0%, #0d1117 100%);
     border-radius: 12px;
-    margin: 10px;
+    
+    /* 1. HATALI SATIRI SİL/DÜZELT: */
+    /* margin-left: -45px;  <-- Bu satırı tamamen sil */
+    
+    /* 2. KUTUYU ORTALAMAK İÇİN: */
+    margin: 20px auto; /* Üstten/alttan 20px, sağdan/soldan otomatik (ortalama) */
+    width: 95%;        /* Panel içinde biraz nefes alması için genişliği kısıtla */
+    
+    /* 3. İÇERİĞİ (ALTIGENLERİ) DENGELEMEK İÇİN:
+       Çift satırlar 45px sağa kaydığı için, tüm bloğu 
+       görsel olarak ortalamak adına sağdan 45px boşluk veriyoruz. */
+    padding-right: 45px; 
 }
 
-/* Hex Sıra */
+.view-toggle-btn {
+    background: rgba(202, 147, 55, 0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+    min-width: 140px; /* Metin değişiminde butonun boyutunun değişmesini engeller */
+    text-align: center;
+    white-space: nowrap;
+    /* Başlığın titremesini durduracak kritik ayar: */
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.view-toggle-btn:hover {
+    background: var(--accent);
+    color: #111;
+}
+
+/* Soldaki Yazı */
+.pool-divider span {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    padding-right: 10px;
+    white-space: nowrap;
+}
+
+/* Genel Ayırıcı Yapısı */
+.pool-divider {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    margin: 15px 5px 8px 0;
+}
+
+/* Sağdaki Çizgi (Yazıdan sonra başlar) */
+.pool-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    /* Soldan sağa renkli başlayıp şeffaflaşan çizgi */
+    background: linear-gradient(to right, currentColor 0%, transparent 100%);
+    opacity: 0.4;
+}
+
+/* Maliyet Renk Atamaları (currentColor sayesinde çizgi de renklenir) */
+.cost-divider-1 { color: var(--c1); }
+.cost-divider-2 { color: var(--c2); }
+.cost-divider-3 { color: var(--c3); }
+.cost-divider-4 { color: var(--c4); }
+.cost-divider-5 { color: var(--c5); }
+.cost-divider-7 { color: var(--c7); }
+
 .hex-row {
     display: flex;
     margin-top: -14px;
+    justify-content: center; /* Satırları kendi içinde merkezde tut */
 }
 
 /* Hex İlk Sıra */
@@ -282,7 +404,8 @@ body {
 
 /* Hex İkinci Sıra */
 .hex-row:nth-child(even) {
-    transform: translateX(45px);
+    /* Sadece kaydırmayı bırakıyoruz, başka hizalama yapmıyoruz */
+    transform: translateX(45px); 
 }
 
 /* Hex Dış Çerçeve */
@@ -328,8 +451,10 @@ body {
 
 /* Sürüklenen kartın hali */
 .dragging {
-    opacity: 0.4;
+    
     cursor: grabbing;
+    opacity: 0.5;
+    transform: scale(0.8);
 }
 
 /* Üzerine gelinen boş slotun parlaması */
@@ -459,23 +584,70 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+/* Reset Butonu Hover */
+.btn-reset:hover {
+    background: #ff4e50;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(255, 78, 80, 0.3);
+}
+
+/* Şampiyon Arama Kutusu */
+#champ-search-container {
+    padding: 10px;
+}
+
+/* Şampiyon Arama Girişi */
+#champ-search {
+    width: 100%;
+    background: #0d0e12;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 8px 15px;
+    color: #fff;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+/* Şampiyon Arama Girişi Odaklanma */
+#champ-search:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(202, 147, 55, 0.2);
+    background: #12141a;
+}
+
+/* Eşleşmeyen Eşya */
+.is-searching-hidden {
+    display: none !important;
+}
+
+/* Eşleşmeyen Şampiyon */
+.champ-item.not-matching {
+    opacity: 0.2;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
 /* Şampiyonlar Grid */
 #champions-grid {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    gap: 6px;
-    padding: 10px;
+    grid-auto-rows: min-content; /* Satır yüksekliği içeriğe göre belirlensin, ezilmesin */
+    gap: 10px; /* Boşluğu biraz artırarak nefes aldırıyoruz */
+    padding: 15px;
     overflow-y: auto;
-    padding-bottom: 40px; /* Alttaki yapışmayı önler */
+    align-content: start; /* Her şeyi yukarıdan başlat */
 }
 
 /* Şampiyon Ögesi */
 .champ-item {
     position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1; 
     border-radius: 4px;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.1s ease;
+    display: block; /* Flex bazen dikeyde ezebilir, block daha güvenli */
 }
 
 /* Şampiyon Ögesi Hover */
@@ -485,10 +657,11 @@ body {
 }
 
 /* Şampiyon Resmi */
-.champ-item img { 
-    width: 100%; 
-    display: block; 
-    aspect-ratio: 1/1; 
+.champ-item img {
+    width: 100%;
+    height: 100%; /* Yüksekliği %100'e sabitle */
+    object-fit: cover;
+    display: block;
 }
 
 /* Seçilmiş Şampiyon */
@@ -537,63 +710,3 @@ body {
 /* ==========================================================================
     RESET BUTONU & ŞAMPİYON ARAMA
    ========================================================================== */
-
-/* Reset Butonu */
-.btn-reset {
-    margin-left: auto;
-    background: rgba(255, 78, 80, 0.1);
-    border: 1px solid #ff4e50;
-    color: #ff4e50;
-    border-radius: 4px;
-    width: 22px;
-    height: 22px;
-    cursor: pointer;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-/* Reset Butonu Hover */
-.btn-reset:hover {
-    background: #ff4e50;
-    color: #fff;
-    box-shadow: 0 0 10px rgba(255, 78, 80, 0.3);
-}
-
-/* Şampiyon Arama Kutusu */
-#champ-search-container {
-    padding: 10px;
-}
-
-/* Şampiyon Arama Girişi */
-#champ-search {
-    width: 100%;
-    background: #0d0e12;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 8px 15px;
-    color: #fff;
-    font-size: 12px;
-    transition: all 0.3s ease;
-}
-
-/* Şampiyon Arama Girişi Odaklanma */
-#champ-search:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 10px rgba(202, 147, 55, 0.2);
-    background: #12141a;
-}
-
-/* Eşleşmeyen Eşya */
-.is-searching-hidden {
-    display: none !important;
-}
-
-/* Eşleşmeyen Şampiyon */
-.champ-item.not-matching {
-    opacity: 0.2;
-    pointer-events: none;
-    filter: grayscale(1);
-}
