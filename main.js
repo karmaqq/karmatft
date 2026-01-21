@@ -5,13 +5,9 @@ import {
     generateChampionTooltipHTML, 
     generateItemTooltipHTML, 
     safeLowercase,
-    applySmartPosition,
-    initItemTooltips
+    applySmartPosition
 } from './tooltips.js';
-
-// Planner modülünden gelecek fonksiyonları import edeceğiz
-// Şimdilik burayı boş bırakıyorum, planner.js'i hazırladığımızda ekleyeceğiz
-import { initPlanner, renderChampionPool, updateUI } from './planner.js';
+import { initPlanner, updateUI } from './planner.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     // --- ELEMENTLER ---
@@ -27,19 +23,51 @@ document.addEventListener("DOMContentLoaded", () => {
     champTooltip.className = "champ-tooltip";
     document.body.appendChild(champTooltip);
 
+    // --- MERKEZİ ARAMA FONKSİYONU ---
+    function handleSearch() {
+        const term = safeLowercase(searchInput.value || "");
+
+        document.querySelectorAll(".champ-item").forEach(el => {
+            const name = safeLowercase(el.getAttribute("data-name") || "");
+            const traits = safeLowercase(el.getAttribute("data-traits") || "");
+            const isMatch = name.includes(term) || traits.includes(term);
+            el.classList.toggle("not-matching", term !== "" && !isMatch);
+        });
+
+        document.querySelectorAll(".item-card").forEach(el => {
+            const itemName = safeLowercase(el.getAttribute("data-name") || "");
+            const isMatch = itemName.includes(term);
+            el.style.display = (term === "" || isMatch) ? "block" : "none";
+        });
+        
+        document.querySelectorAll(".pool-divider").forEach(divider => {
+            if (term === "") {
+                divider.style.display = "flex";
+                return;
+            }
+            const costClass = Array.from(divider.classList).find(c => c.startsWith('cost-divider-'));
+            const cost = costClass ? costClass.split('-').pop() : null;
+            const hasMatch = Array.from(document.querySelectorAll(`.champ-item.cost-${cost}`))
+                                  .some(item => !item.classList.contains("not-matching"));
+            divider.style.display = hasMatch ? "flex" : "none";
+        });
+    }
+
+    window.refreshSearch = handleSearch;
+
     // --- BAŞLATMA ---
     initItems();
     
-    // Planner modülünü başlatıyoruz (Bağımlılıkları enjekte ediyoruz)
     initPlanner({
         champions,
         searchInput,
         champTooltip,
-        updateUI_Callback: updateUI, // Planner içindeki updateUI'ı kullanacak
-        renderTraits_Callback: renderTraits
+        updateUI_Callback: updateUI,
+        renderTraits_Callback: renderTraits,
+        onPoolRender_Callback: handleSearch 
     });
 
-    // --- SİNERJİ MANTIĞI (TRAITS) ---
+    // --- SİNERJİ MANTIĞI ---
     function findTraitInfo(key) {
         const safeKey = safeLowercase(key);
         if (TRAIT_THRESHOLDS.specialTraits?.[safeKey]) return { data: TRAIT_THRESHOLDS.specialTraits[safeKey], type: 'special' };
@@ -97,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function createTraitSimpleElement(data) {
         const li = document.createElement("li");
         const { traitName, count, activeTier, isActive, steps, reachedTierCount, type } = data;
-        const tierClass = isActive ? (data.isPrismatic ? "tier-prismatic" : (activeTier.rank || `tier-${reachedTierCount}`)) : "inactive";
+        const tierClass = isActive ? (activeTier.rank || `tier-${reachedTierCount}`) : "inactive";
         
         li.className = `trait-item ${isActive ? 'active' : ''} ${tierClass} trait-type-${type}`;
         li.setAttribute("data-trait-key", safeLowercase(traitName));
@@ -121,10 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return li;
     }
 
-    // --- TOOLTIP EVENTLERI (GLOBAL) ---
     function initGlobalTooltips() {
         document.addEventListener("mouseover", (e) => {
-            // Şampiyon Tooltip
             const champEl = e.target.closest(".champ-item, .comp-champ");
             if (champEl) {
                 const champ = champions.find(c => c.name === champEl.getAttribute("data-name"));
@@ -134,12 +160,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     champTooltip.className = `champ-tooltip cost-${champ.cost}`;
                     const context = champEl.classList.contains("comp-champ") ? "team" : "champion";
                     applySmartPosition(champTooltip, champEl.getBoundingClientRect(), context);
-                    champTooltip.style.display = "block";
                 }
                 return;
             }
 
-            // Trait Tooltip
             const traitEl = e.target.closest(".trait-item");
             if (traitEl) {
                 const data = currentTraitsData.get(traitEl.getAttribute("data-trait-key"));
@@ -152,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Item Tooltip
             const itemCard = e.target.closest(".item-card");
             if (itemCard) {
                 const item = allItemsMap.get(itemCard.getAttribute("data-id"));
@@ -171,63 +194,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- MERKEZİ ARAMA FONKSİYONU ---
-// Hem şampiyonları hem eşyaları anlık DOM üzerinden süzer
-    function handleSearch() {
-        const term = safeLowercase(searchInput.value || "");
-
-        // 1. Şampiyonları Filtrele
-        document.querySelectorAll(".champ-item").forEach(el => {
-            const name = safeLowercase(el.getAttribute("data-name") || "");
-            const traits = safeLowercase(el.getAttribute("data-traits") || "");
-            const isMatch = name.includes(term) || traits.includes(term);
-            
-            // Eşleşmiyorsa yarı saydam/gizli yap
-            el.classList.toggle("not-matching", term !== "" && !isMatch);
-            // Eğer arama kutusu boşsa tüm not-matching sınıflarını temizle
-            if (term === "") el.classList.remove("not-matching");
-        });
-
-        // 2. Eşyaları Filtrele
-        document.querySelectorAll(".item-card, .item-icon").forEach(el => {
-            const itemName = safeLowercase(el.getAttribute("data-name") || "");
-            const isMatch = itemName.includes(term);
-            el.style.display = (term === "" || isMatch) ? "block" : "none";
-        });
-    }
-
-    // Global erişim sağla (items.js veya planner.js içinden çağrılabilmesi için)
-    window.refreshSearch = handleSearch;
-
     // --- OLAY DİNLEYİCİLERİ ---
-
     searchInput.addEventListener("input", handleSearch);
 
     if (resetBtn) {
         resetBtn.addEventListener("click", () => {
-            // 1. Arama Kutusunu Sıfırla
             searchInput.value = ""; 
-
-            // 2. Planner'ı Sıfırla (selectedComp'u boşaltır ve havuzu render eder)
-            if (window.resetPlanner) {
-                window.resetPlanner(); 
-            }
-
-            // 3. Eşyaları 'normal' kategorisine döndür ve render et
-            const defaultCat = 'normal'; 
-            document.querySelectorAll('.item-tab-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-cat') === defaultCat);
-            });
-            renderCategory(defaultCat, ""); 
-
-            // 4. KRİTİK: Tüm filtreleri temizle (DOM güncellendikten sonra)
-            // setTimeout ile bir sonraki frame'e bırakmak render hatalarını önler
-            setTimeout(() => {
-                handleSearch();
-            }, 0);
+            if (window.resetPlanner) window.resetPlanner(); 
+            const activeBtn = document.querySelector('.item-tab-btn.active');
+            const currentCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'normal';
+            renderCategory(currentCat); 
+            setTimeout(() => handleSearch(), 0);
         });
     }
 
-    // Başlat
     initGlobalTooltips();
 });
