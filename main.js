@@ -1,9 +1,9 @@
 import { champions, traits as TRAIT_THRESHOLDS } from './data.js';
 import { allItemsMap, renderCategory, initItems } from './items.js';
-import { 
-    generateTraitTooltipHTML, 
-    generateChampionTooltipHTML, 
-    generateItemTooltipHTML, 
+import {
+    generateTraitTooltipHTML,
+    generateChampionTooltipHTML,
+    generateItemTooltipHTML,
     safeLowercase,
     applySmartPosition
 } from './tooltips.js';
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const isMatch = itemName.includes(term);
             el.style.display = (term === "" || isMatch) ? "block" : "none";
         });
-        
+
         document.querySelectorAll(".pool-divider").forEach(divider => {
             if (term === "") {
                 divider.style.display = "flex";
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const costClass = Array.from(divider.classList).find(c => c.startsWith('cost-divider-'));
             const cost = costClass ? costClass.split('-').pop() : null;
             const hasMatch = Array.from(document.querySelectorAll(`.champ-item.cost-${cost}`))
-                                  .some(item => !item.classList.contains("not-matching"));
+                .some(item => !item.classList.contains("not-matching"));
             divider.style.display = hasMatch ? "flex" : "none";
         });
     }
@@ -57,14 +57,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- BAŞLATMA ---
     initItems();
-    
+
+    // main.js içinde DOMContentLoaded içinde:
     initPlanner({
-        champions,
-        searchInput,
-        champTooltip,
-        updateUI_Callback: updateUI,
-        renderTraits_Callback: renderTraits,
-        onPoolRender_Callback: handleSearch 
+        champions: champions,
+        searchInput: searchInput,
+        champTooltip: champTooltip,
+        // Planner bir değişiklik yaptığında renderTraits'i çalıştır:
+        onUpdate: (comp) => {
+            renderTraits(comp); 
+        },
+        // Arama senkronizasyonu için:
+        onPoolRender_Callback: handleSearch
     });
 
     // --- SİNERJİ MANTIĞI ---
@@ -90,12 +94,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const processedTraits = Object.entries(traitCounts).map(([key, count]) => {
             const info = findTraitInfo(key);
-            if (!info) return null; 
+            if (!info) return null;
             const { data: traitData, type: traitType } = info;
-            
+
             let stepsArray = traitData.thresholds || (Array.isArray(traitData) ? traitData : [traitData]);
             stepsArray = stepsArray.map(s => typeof s === 'number' ? { count: s } : s);
-            
+
             const activeTier = [...stepsArray].reverse().find(s => count >= s.count);
             const reachedTierCount = stepsArray.filter(s => count >= s.count).length;
             const isActive = !!activeTier;
@@ -107,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 else if (traitType === 'special') weight = 80;
                 else if (traitType === 'origin') weight = 70;
                 else weight = 60;
-                weight += (reachedTierCount * 2); 
+                weight += (reachedTierCount * 2);
             } else {
                 weight += (count / stepsArray[0].count);
             }
@@ -126,12 +130,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const li = document.createElement("li");
         const { traitName, count, activeTier, isActive, steps, reachedTierCount, type } = data;
         const tierClass = isActive ? (activeTier.rank || `tier-${reachedTierCount}`) : "inactive";
-        
+
         li.className = `trait-item ${isActive ? 'active' : ''} ${tierClass} trait-type-${type}`;
         li.setAttribute("data-trait-key", safeLowercase(traitName));
-        
-        const safeIcon = safeLowercase(traitName).replace(/[ğüşıöç]/g, m => ({ğ:'g',ü:'u',ş:'s',ı:'i',ö:'o',ç:'c'}[m])).replace(/[^a-z0-9]/g, '');
-        
+
+        const safeIcon = safeLowercase(traitName).replace(/[ğüşıöç]/g, m => ({ ğ: 'g', ü: 'u', ş: 's', ı: 'i', ö: 'o', ç: 'c' }[m])).replace(/[^a-z0-9]/g, '');
+
         li.innerHTML = `
             <div class="trait-hex-container">
                 <div class="trait-hex"><img src="img/traits/${safeIcon}.png" class="t-icon" onerror="this.src='img/traits/default.png'"></div>
@@ -141,9 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="t-name">${traitName}</div>
                 <div class="t-steps-row">
                     ${isActive ? steps.map(s => {
-                        const v = s.count || s;
-                        return `<span class="t-step ${activeTier && v === activeTier.count ? 'is-current' : (count >= v ? 'is-reached' : 'is-off')}">${v}</span>`;
-                    }).join('<span class="t-sep">></span>') : `<span class="t-step is-off">${count} / ${steps[0].count || steps[0]}</span>`}
+            const v = s.count || s;
+            return `<span class="t-step ${activeTier && v === activeTier.count ? 'is-current' : (count >= v ? 'is-reached' : 'is-off')}">${v}</span>`;
+        }).join('<span class="t-sep">></span>') : `<span class="t-step is-off">${count} / ${steps[0].count || steps[0]}</span>`}
                 </div>
             </div>`;
         return li;
@@ -155,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (champEl) {
                 const champ = champions.find(c => c.name === champEl.getAttribute("data-name"));
                 if (champ) {
-                    globalTooltip.style.display = "none"; 
+                    globalTooltip.style.display = "none";
                     champTooltip.innerHTML = generateChampionTooltipHTML(champ);
                     champTooltip.className = `champ-tooltip cost-${champ.cost}`;
                     const context = champEl.classList.contains("comp-champ") ? "team" : "champion";
@@ -199,11 +203,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (resetBtn) {
         resetBtn.addEventListener("click", () => {
-            searchInput.value = ""; 
-            if (window.resetPlanner) window.resetPlanner(); 
+            searchInput.value = "";
+            if (window.resetPlanner) window.resetPlanner();
             const activeBtn = document.querySelector('.item-tab-btn.active');
             const currentCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'normal';
-            renderCategory(currentCat); 
+            renderCategory(currentCat);
             setTimeout(() => handleSearch(), 0);
         });
     }
