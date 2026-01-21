@@ -139,7 +139,7 @@ export const itemCategories = {
 
         { id: "nashorundisi", name: "Nashor'un Dişi",
             components: ["nisanciyayi", "asiribuyuksopa"],
-            stats: [ { icon: "[ap]", value: "+15" },{ icon: "[as]", value: "+10" },{ icon: "[critchance]", value: "+20" },{ icon: "[hp]", value: "+150" } ], 
+            stats: [ { icon: "[ap]", value: "+20" },{ icon: "[as]", value: "+10" },{ icon: "[critchance]", value: "+20" },{ icon: "[hp]", value: "+150" } ], 
             desc: "Kullanıcının saldırıları 2 İlave Mana yeniler. Kritik vuruş yaparsa bu ilave artarak 4 olur." },
 
         { id: "olumkilici", name: "Ölüm Kılıcı",
@@ -216,7 +216,7 @@ export const itemCategories = {
             desc: "Kullanıcı Darkin özelliği kazanır.<br><br>Ayrıca 2 hücrelik bir alanın içindeki rakiplere her saniye azami canının %1 kadarına eşdeğer miktarda büyü hasarı verir. Kullanıcı bu alanda bir rakip katledildiğinde azami canının %2 kadarını yeniler." },
 
         { id: "darkintirpan", name: "Darkin Tırpan", 
-            stats: [ { icon: "[ad]", value: "+25%" },{ icon: "[ap]", value: "+25" } ],
+            stats: [ { icon: "[ad]", value: "+25%" },{ icon: "[hp]", value: "+250" } ],
             desc: "Kullanıcı Darkin özelliği kazanır.<br><br>Ayrıca her 4 saniyede bir bitişiğindeki rakiplere saldırarak normal saldırı hasarının %200 kadarına eşdeğer miktarda fiziksel hasar verir. Kullanıcı bir rakibi alt ettiğinde veya atıldığında yeniden saldırır.<br><br>Atılma Bekleme Süresi: 1.5 saniye" },
 
         { id: "darkinyay", name: "Darkin Yay", 
@@ -284,15 +284,15 @@ export const itemCategories = {
             desc: "Kullanıcı küçülür ve hareket hızı artışı kazanır. Ayrıca <b class='txt-bold'>buz tutma</b>, <b class='txt-bold'>yakma</b> ve <b class='txt-bold'>yara</b> etkilerine karşı bağışıklığa sahip olur.<br><br> <b class='txt-info'>Buz Tutma: Buz tutan birimlerin saldırı hızı azalır. <br>Yakma: Yanan birimler her saniye azami canlarının belli bir oranına eşdeğer miktarda gerçek hasar alır.<br>Yara: Yaralanan birimlerin aldığı iyileştirme etkileri azalır.</br>"  },
 
         { id: "purdikkatnisanci", name: "Pürdikkat Nişancı", 
-            stats: [ { icon: "[ad]", value: "+20%" },{ icon: "[ap]", value: "+20" },{ icon: "[as]", value: "+20" } ],
+            stats: [ { icon: "[ad]", value: "+25%" },{ icon: "[ap]", value: "+25" },{ icon: "[as]", value: "+20" } ],
             desc: "Kullanıcı 4 veya daha fazla hücre uzağındaki hedeflere karşı %40 Hasar Artışı kazanır." },
 
         { id: "rizikocununbicagi", name: "Rizikocunun Bıçağı", 
             stats: [ { icon: "[as]", value: "+45" } ],
-            desc: "Kullanıcı, biriktirdiğin altın [gold] başına %1 İlave Saldırı Hızı [as] kazanır (en fazla 30 [gold]).<br><br>Kullanıcının her saldırısı %5 ihtimalle 1 Altın [gold] kazandırabilir.<br><br><b class='txt-info'>Bu Oyunda Kazanılan Altın: 0</br><br><b class='txt-uniq'>Özel - şampiyon başına sadece bir adet</br>" },
+            desc: "Kullanıcı, biriktirdiğin altın [gold] başına %1 İlave Saldırı Hızı [as] kazanır (en fazla 30 [gold]).<br><br>Kullanıcının her saldırısı %6 ihtimalle 1 Altın [gold] kazandırabilir.<br><br><b class='txt-info'>Bu Oyunda Kazanılan Altın: 0</br><br><b class='txt-uniq'>Özel - şampiyon başına sadece bir adet</br>" },
 
         { id: "safaginozu", name: "Şafağın Özü", 
-            stats: [ { icon: "[ad]", value: "+10%" },{ icon: "[ap]", value: "+10" } ],
+            stats: [ { icon: "[ad]", value: "+15%" },{ icon: "[ap]", value: "+15" } ],
             desc: "Kullanıcının azami manası 10 azalır. İlkinden sonraki yetenek kullanımları azami manayı %10 azaltır. Azami mana en az 10 olabilir." },
 
         { id: "safakkalkani", name: "Şafak Kalkanı", 
@@ -313,7 +313,7 @@ export const itemCategories = {
 
         { id: "tezbicak", name: "Tezbıçak", 
             stats: [ { icon: "[ap]", value: "+10" },{ icon: "[as]", value: "+12" } ],
-            desc: "Saldırılar birikecek şekilde %5 Saldırı Hızı sağlar. Her 5 saldırı aynı zamanda %2 Saldırı Gücü ve %2 Yetenek Gücü kazandırır." },
+            desc: "Saldırılar birikecek şekilde %6 Saldırı Hızı sağlar. Her 5 saldırı aynı zamanda %2 Saldırı Gücü ve %2 Yetenek Gücü kazandırır." },
 
         { id: "ufukgetiren", name: "Ufukgetiren", 
             stats: [ { icon: "[armor]", value: "+20" },{ icon: "[hp]", value: "+250" },{ icon: "[mr]", value: "+20" },{ icon: "[mana]", value: "+2" } ],
@@ -325,7 +325,7 @@ export const itemCategories = {
 
         { id: "yenilmez", name: "Yenilmez", 
             stats: [ { icon: "[mr]", value: "+20" },{ icon: "[ap]", value: "+500" },{ icon: "[mr]", value: "+20" } ],
-            desc: "Kullanıcının hareket hızı büyük ölçüde azalır.<br><br>Kullanıcı %12 Azami Can ve sersemletme etkilerine karşı bağışıklık kazanır. Ayrıca mevcut hedefini yakın dövüş menziline çeker." },
+            desc: "Kullanıcının hareket hızı büyük ölçüde azalır.<br><br>Kullanıcı %15 Azami Can ve sersemletme etkilerine karşı bağışıklık kazanır. Ayrıca mevcut hedefini yakın dövüş menziline çeker." },
 
         { id: "zhonyanindongusu", name: "Zhonya'nın Döngüsü", 
             stats: [ { icon: "[ap]", value: "+25" },{ icon: "[armor]", value: "+25" },{ icon: "[mr]", value: "+25" } ],
@@ -445,7 +445,7 @@ export const itemCategories = {
             desc: "Kullanıcı yeteneğiyle kritik vuruş yapabilir.<br><br>Kullanıcı halihazırda yeteneğiyle kritik vuruş yapabiliyorsa bunun yerine %10 Kritik Vuruş Hasarı kazanır." },
 
         { id: "radnashorundisi", name: "Işıltılı Nashor'un Dişi",
-            stats: [ { icon: "[ap]", value: "+30" }, { icon: "[as]", value: "+20" }, { icon: "[critchance]", value: "+40" }, { icon: "[hp]", value: "+300" } ],
+            stats: [ { icon: "[ap]", value: "+40" }, { icon: "[as]", value: "+20" }, { icon: "[critchance]", value: "+40" }, { icon: "[hp]", value: "+300" } ],
             desc: "Kullanıcının saldırıları <b class='txt-rad'>4</b> İlave Mana yeniler. Kritik vuruş yaparsa bu ilave artarak <b class='txt-rad'>8</b> olur." },
 
         { id: "radolumkilici", name: "Işıltılı Ölüm Kılıcı",
