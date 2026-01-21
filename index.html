@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="tooltips.css">
 </head>
+
 <body>
 
     <main id="app" class="main-container">
@@ -22,19 +24,46 @@
         <section class="panel team-panel">
             <div class="panel-header">
                 <h2>Takımın (<span id="team-count">0</span>/10)</h2>
-                <button id="reset-team" class="btn-reset" title="Takımı Temizle">X</button>
+                <button id="reset-team" class="btn-reset">X</button>
             </div>
-            
-            <div id="active-team-grid"></div>
-        </section>
-
-        <section class="panel selection-panel">
-            <div id="champ-search-container">
-                <input type="text" id="champ-search" placeholder="Şampiyon, özellik veya eşya ara..." autocomplete="off">
+            <div id="active-team-grid">
+                <div class="hex-row">
+                    <div class="empty-slot" id="slot-0"></div>
+                    <div class="empty-slot" id="slot-1"></div>
+                    <div class="empty-slot" id="slot-2"></div>
+                    <div class="empty-slot" id="slot-3"></div>
+                    <div class="empty-slot" id="slot-4"></div>
+                    <div class="empty-slot" id="slot-5"></div>
+                    <div class="empty-slot" id="slot-6"></div>
+                </div>
+                <div class="hex-row">
+                    <div class="empty-slot" id="slot-7"></div>
+                    <div class="empty-slot" id="slot-8"></div>
+                    <div class="empty-slot" id="slot-9"></div>
+                    <div class="empty-slot" id="slot-10"></div>
+                    <div class="empty-slot" id="slot-11"></div>
+                    <div class="empty-slot" id="slot-12"></div>
+                    <div class="empty-slot" id="slot-13"></div>
+                </div>
+                <div class="hex-row">
+                    <div class="empty-slot" id="slot-14"></div>
+                    <div class="empty-slot" id="slot-15"></div>
+                    <div class="empty-slot" id="slot-16"></div>
+                    <div class="empty-slot" id="slot-17"></div>
+                    <div class="empty-slot" id="slot-18"></div>
+                    <div class="empty-slot" id="slot-19"></div>
+                    <div class="empty-slot" id="slot-20"></div>
+                </div>
+                <div class="hex-row">
+                    <div class="empty-slot" id="slot-21"></div>
+                    <div class="empty-slot" id="slot-22"></div>
+                    <div class="empty-slot" id="slot-23"></div>
+                    <div class="empty-slot" id="slot-24"></div>
+                    <div class="empty-slot" id="slot-25"></div>
+                    <div class="empty-slot" id="slot-26"></div>
+                    <div class="empty-slot" id="slot-27"></div>
+                </div>
             </div>
-            <div class="panel-divider"></div>
-            <div class="panel-section-title">ŞAMPİYONLAR</div>
-            <div id="champions-grid"></div>
 
             <div class="panel-divider"></div>
 
@@ -47,8 +76,17 @@
                 <button class="item-tab-btn" data-cat="emblem">Amblem</button>
                 <button class="item-tab-btn" data-cat="special">Özel</button>
             </div>
-
             <div id="items-container"></div>
+        </section>
+
+        <section class="panel selection-panel">
+            <div id="champ-search-container">
+                <input type="text" id="champ-search" placeholder="Şampiyon, özellik veya eşya ara..."
+                    autocomplete="off">
+            </div>
+            <div class="panel-divider"></div>
+            <div class="panel-section-title">ŞAMPİYONLAR</div>
+            <div id="champions-grid"></div>
         </section>
 
     </main>
@@ -59,11 +97,12 @@
 
     <script>
 
-        window.handleImageError = function(img) {
+        window.handleImageError = function (img) {
             img.onerror = null;
             img.src = 'img/placeholder.png'; // Eksik resimler için varsayılan ikon
         };
     </script>
 
 </body>
+
 </html>
