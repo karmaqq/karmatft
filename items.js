@@ -19,12 +19,10 @@ export function initItems() {
         btn.addEventListener('click', () => {
             tabs.forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
-
             const categoryKey = btn.getAttribute('data-cat');
             renderCategory(categoryKey);
         });
     });
-
     renderCategory('normal');
 }
 
@@ -35,8 +33,6 @@ export function renderCategory(catKey) {
     const category = itemCategories[catKey];
     if (!category) return;
 
-    // ARAMA FİLTRESİ BURADA YAPILMIYOR: 
-    // Kartlar basılır, main.js'deki handleSearch gizleme/gösterme yapar.
     const itemsHTML = category.items.map(item => `
         <div class="item-card" data-id="${item.id}" data-name="${item.name.toLowerCase()}">
             <div class="item-icon-wrapper">
@@ -47,8 +43,5 @@ export function renderCategory(catKey) {
 
     container.innerHTML = `<div class="items-grid">${itemsHTML}</div>`;
 
-    // Yeni elemanlar eklenince ana arama fonksiyonunu tetikle (Görünürlüğü ayarlasın)
-    if (window.refreshSearch) {
-        window.refreshSearch();
-    }
+    if (window.refreshSearch) window.refreshSearch();
 }

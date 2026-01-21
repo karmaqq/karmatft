@@ -471,6 +471,7 @@ body {
 .cost-border-3 { background: #207ac7 !important; }
 .cost-border-4 { background: #c419da !important; }
 .cost-border-5 { background: #ffb93b !important; }
+.cost-border-7 { background: #ff4e50 !important;}
 .empty-slot { background: rgba(145, 114, 62, 0.3); }
 
 /* ==========================================================================
@@ -682,12 +683,12 @@ body {
 }
 
 /* Şampiyon Cost Çerçevesi */
-.cost-1 { border: 1px solid var(--c1); }
-.cost-2 { border: 1px solid var(--c2); }
-.cost-3 { border: 1px solid var(--c3); }
-.cost-4 { border: 1px solid var(--c4); }
-.cost-5 { border: 1px solid var(--c5); }
-.cost-7 { border: 1px solid var(--c7); }
+.cost-1 { border: 2px solid var(--c1); }
+.cost-2 { border: 2px solid var(--c2); }
+.cost-3 { border: 2px solid var(--c3); }
+.cost-4 { border: 2px solid var(--c4); }
+.cost-5 { border: 2px solid var(--c5); }
+.cost-7 { border: 2px solid var(--c7); }
 
 /* Bölüm Başlıkları */
 .panel-section-title {

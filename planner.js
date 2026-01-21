@@ -3,20 +3,20 @@ import { safeLowercase } from './tooltips.js';
 // --- GLOBAL STATE ---
 let selectedComp = [];
 let currentViewMode = "all"; // 'all' veya 'cost'
-let config = {}; // main.js'den enjekte edilen veriler
+let config = {}; // main.js'den enjekte edilen bağımlılıklar
 
 /**
  * Planner modülünü başlatır
  */
 export function initPlanner(settings) {
     config = settings;
-    
+
     initBoardSlots();
-    
-    // Görünüm Değiştirme Butonu (Maliyet vs Hepsi)
+
+    // Görünüm Değiştirme (Maliyet vs Alfabetik)
     const toggleBtn = document.getElementById("toggle-pool-view");
     if (toggleBtn) {
-        toggleBtn.addEventListener("click", (e) => {
+        toggleBtn.onclick = (e) => {
             if (currentViewMode === "all") {
                 currentViewMode = "cost";
                 e.target.textContent = "Hepsini Göster";
@@ -25,37 +25,35 @@ export function initPlanner(settings) {
                 e.target.textContent = "Maliyete Göre Sıralı";
             }
             renderChampionPool();
-        });
+        };
     }
 
-    // Tahta dışına bırakınca şampiyonu silme desteği
+    // Tahta dışına (boşluğa) bırakınca şampiyonu silme
     document.addEventListener("drop", (e) => {
         if (e.target.closest('[id^="slot-"]')) return;
+
         const originSlot = e.dataTransfer.getData("origin-slot");
         if (originSlot !== "") {
             const slotIdx = parseInt(originSlot);
-            const champToRemove = selectedComp.find(c => c.slot === slotIdx);
-            if (champToRemove) toggleChampion(champToRemove);
+            const champToRemove = selectedComp.find(c => c.slotId === slotIdx);
+            if (champToRemove) toggleChampion(champToRemove, null);
         }
     });
 
     document.addEventListener("dragover", (e) => e.preventDefault());
 
-    // İlk yüklemede havuzu çiz
+    // Reset fonksiyonunu globalden erişilebilir yap (Main.js için)
+    window.resetPlanner = () => {
+        selectedComp = [];
+        renderChampionPool();
+        updateUI();
+    };
+
     renderChampionPool();
 }
 
-// --- YARDIMCI FONKSİYONLAR ---
-
-function checkMatch(champ, term) {
-    if (!term) return true;
-    const name = safeLowercase(champ.name || "");
-    const traits = (champ.traits || []).map(t => safeLowercase(t)).join(" ");
-    return name.includes(term) || traits.includes(term);
-}
-
 /**
- * Şampiyon Havuzunu Çizer
+ * Şampiyon Havuzunu Render Eder
  */
 export function renderChampionPool() {
     const championListEl = document.getElementById("champions-grid");
@@ -65,7 +63,6 @@ export function renderChampionPool() {
     const searchTerm = safeLowercase(config.searchInput?.value || "");
     let displayChamps = [...config.champions];
 
-    // ÖNEMLİ: Her iki modda da maliyete (1'den 5'e) göre sıralıyoruz
     displayChamps.sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name));
 
     if (currentViewMode === "cost") {
@@ -73,18 +70,16 @@ export function renderChampionPool() {
         displayChamps.forEach(c => {
             const isMatch = checkMatch(c, searchTerm);
 
-            // Maliyet başlıklarını (divider) ekle
             if (lastCost !== c.cost) {
                 const divider = document.createElement("div");
                 divider.className = `pool-divider cost-divider-${c.cost}`;
                 divider.innerHTML = `<span>${c.cost} ALTIN</span>`;
-                
-                // Arama yapılıyorsa ve o maliyette eşleşen yoksa başlığı gizle
-                const hasMatchInThisCost = displayChamps.some(champ => 
+
+                const hasMatchInThisCost = displayChamps.some(champ =>
                     champ.cost === c.cost && checkMatch(champ, searchTerm)
                 );
                 if (searchTerm !== "" && !hasMatchInThisCost) divider.style.display = "none";
-                
+
                 championListEl.appendChild(divider);
             }
             lastCost = c.cost;
@@ -92,154 +87,144 @@ export function renderChampionPool() {
             const el = createChampElement(c);
             if (searchTerm !== "" && !isMatch) el.classList.add("not-matching");
             if (selectedComp.some(target => target.name === c.name)) el.classList.add("selected");
+
             championListEl.appendChild(el);
         });
     } else {
-        // 10x10 Modu (Başlıksız ama maliyet sıralı)
         displayChamps.forEach(c => {
             const isMatch = checkMatch(c, searchTerm);
             const el = createChampElement(c);
+
             if (searchTerm !== "" && !isMatch) el.classList.add("not-matching");
             if (selectedComp.some(target => target.name === c.name)) el.classList.add("selected");
+
             championListEl.appendChild(el);
         });
     }
 
-    // Arama sonrası main.js'deki ekstra filtreleri tetikle
     if (config.onPoolRender_Callback) config.onPoolRender_Callback();
 }
 
-/**
- * Şampiyon Kartı Oluşturur
- */
-function createChampElement(champ, isInComp = false) {
-    const div = document.createElement("div");
-    // Tahtadaki şampiyonlar ile havuzdakiler farklı class alır
-    div.className = isInComp ? `comp-champ cost-border-${champ.cost}` : `champ-item cost-${champ.cost}`;
-    
-    const img = document.createElement("img");
-    img.src = champ.img;
-    div.appendChild(img);
-    
-    div.setAttribute("data-name", champ.name);
-    div.setAttribute("data-traits", champ.traits.map(t => safeLowercase(t)).join(","));
-    
-    // Tıklayınca ekle/çıkar
-    div.onclick = (e) => {
-        e.stopPropagation();
-        if (config.champTooltip) config.champTooltip.style.display = "none";
-        toggleChampion(champ);
-    };
-
-    // Sürükleme özellikleri
-    div.ondragstart = (e) => {
-        div.classList.add("dragging");
-        e.dataTransfer.setData("text/plain", champ.name);
-        // Eğer tahtadan sürükleniyorsa hangi slottan geldiğini kaydet
-        const slotAttr = div.getAttribute("data-slot");
-        e.dataTransfer.setData("origin-slot", slotAttr !== null ? slotAttr : "");
-    };
-    div.ondragend = () => div.classList.remove("dragging");
-    div.draggable = true;
-
-    return div;
+function checkMatch(champ, term) {
+    if (term === "") return true;
+    const nameMatch = safeLowercase(champ.name).includes(term);
+    const traitMatch = champ.traits.some(t => safeLowercase(t).includes(term));
+    return nameMatch || traitMatch;
 }
 
 /**
- * Şampiyonu Takıma Ekle veya Çıkar
+ * Tahtayı ve Sinerjileri Günceller
  */
-function toggleChampion(champ, targetSlot = -1) {
-    const existingIdx = selectedComp.findIndex(c => c.name === champ.name);
+export function updateUI() {
+    const MAX_SLOTS = 28;
+    const teamCountEl = document.getElementById("team-count");
 
-    // Eğer zaten takımdaysa ve boşluğa tıklandıysa: Çıkar
-    if (existingIdx > -1 && targetSlot === -1) {
-        selectedComp.splice(existingIdx, 1);
-    } else {
-        // Takım dolu mu? (Maks 10)
-        if (selectedComp.length >= 10 && existingIdx === -1) return;
+    for (let i = 0; i < MAX_SLOTS; i++) {
+        const slotEl = document.getElementById(`slot-${i}`);
+        if (slotEl) {
+            slotEl.innerHTML = "";
+            slotEl.className = "empty-slot";
+            slotEl.onclick = null;
+            slotEl.removeAttribute("draggable");
+        }
+    }
 
-        // Belirli bir slota bırakıldıysa
-        if (targetSlot !== -1) {
-            // Slotta başka biri varsa onu kov
-            const occupantIdx = selectedComp.findIndex(c => c.slot === targetSlot);
-            if (occupantIdx > -1) selectedComp.splice(occupantIdx, 1);
-            
-            if (existingIdx > -1) {
-                selectedComp[existingIdx].slot = targetSlot;
-            } else {
-                selectedComp.push({ ...champ, slot: targetSlot });
-            }
+    selectedComp.forEach((champ) => {
+        const slotEl = document.getElementById(`slot-${champ.slotId}`);
+        if (slotEl) {
+            const champDiv = createChampElement(champ, true);
+            slotEl.className = champDiv.className;
+            slotEl.innerHTML = champDiv.innerHTML;
+            slotEl.classList.add("has-champ");
+
+            slotEl.onclick = (e) => {
+                e.stopPropagation();
+                toggleChampion(champ, null);
+            };
+
+            slotEl.setAttribute("draggable", "true");
+            slotEl.addEventListener("dragstart", (e) => {
+                e.dataTransfer.setData("text/plain", champ.name);
+                e.dataTransfer.setData("origin-slot", champ.slotId.toString());
+                if (config.champTooltip) config.champTooltip.style.display = "none";
+            });
+        }
+    });
+
+    if (teamCountEl) teamCountEl.textContent = selectedComp.length;
+
+    // --- KRİTİK BAĞLANTI: Main.js'deki Sinerji Fonksiyonunu Çağır ---
+    if (config.onUpdate) {
+        config.onUpdate(selectedComp);
+    }
+
+    document.querySelectorAll(".champ-item").forEach(el => {
+        const isSelected = selectedComp.some(c => c.name === el.getAttribute("data-name"));
+        el.classList.toggle("selected", isSelected);
+    });
+}
+
+function toggleChampion(champ, targetSlot = null) {
+    const sourceChamp = selectedComp.find(c => c.name === champ.name);
+    const occupantChamp = targetSlot !== null ? selectedComp.find(c => c.slotId === targetSlot) : null;
+
+    if (sourceChamp) {
+        if (targetSlot !== null) {
+            const oldSourceSlot = sourceChamp.slotId;
+            selectedComp = selectedComp.map(c => {
+                if (c.name === sourceChamp.name) return { ...c, slotId: targetSlot };
+                if (occupantChamp && c.name === occupantChamp.name) return { ...c, slotId: oldSourceSlot };
+                return c;
+            });
         } else {
-            // Otomatik boş slot bul (Havuzdan tıklayınca)
-            for (let i = 0; i < 10; i++) {
-                if (!selectedComp.some(c => c.slot === i)) {
-                    selectedComp.push({ ...champ, slot: i });
-                    break;
-                }
-            }
+            selectedComp = selectedComp.filter(c => c.name !== champ.name);
+        }
+    } else {
+        if (targetSlot !== null) {
+            if (occupantChamp) selectedComp = selectedComp.filter(c => c.slotId !== targetSlot);
+            selectedComp.push({ ...champ, slotId: targetSlot });
+        } else if (selectedComp.length < 10) {
+            const occupiedSlots = selectedComp.map(c => c.slotId);
+            const firstFree = Array.from({ length: 28 }, (_, i) => i).find(i => !occupiedSlots.includes(i));
+            if (firstFree !== undefined) selectedComp.push({ ...champ, slotId: firstFree });
         }
     }
-    updateUI(selectedComp);
-    renderChampionPool();
+    updateUI();
 }
 
-/**
- * Şampiyonu Tahtada Bir Slottan Diğerine Taşı
- */
-function moveChampion(fromSlot, toSlot) {
-    const fromIdx = selectedComp.findIndex(c => c.slot === parseInt(fromSlot));
-    const toIdx = selectedComp.findIndex(c => c.slot === parseInt(toSlot));
+function moveChampion(fromSlotId, toSlotId) {
+    const startId = parseInt(fromSlotId);
+    const endId = parseInt(toSlotId);
+    if (startId === endId) return;
 
-    if (fromIdx > -1) {
-        const champ = selectedComp[fromIdx];
-        if (toIdx > -1) {
-            // Yer değiştir
-            selectedComp[toIdx].slot = parseInt(fromSlot);
-        }
-        champ.slot = parseInt(toSlot);
-        updateUI(selectedComp);
+    const mover = selectedComp.find(c => c.slotId === startId);
+    const target = selectedComp.find(c => c.slotId === endId);
+
+    if (mover) {
+        selectedComp = selectedComp.map(c => {
+            if (c.slotId === startId) return { ...c, slotId: endId };
+            if (target && c.slotId === endId) return { ...c, slotId: startId };
+            return c;
+        });
+        updateUI();
     }
 }
 
-/**
- * Tahtayı ve Takım Listesini Günceller
- */
-export function updateUI(comp) {
-    selectedComp = comp;
-    for (let i = 0; i < 10; i++) {
-        const slot = document.getElementById(`slot-${i}`);
-        if (!slot) continue;
-        slot.innerHTML = "";
-        slot.classList.remove("has-champ");
-
-        const champ = selectedComp.find(c => c.slot === i);
-        if (champ) {
-            const el = createChampElement(champ, true);
-            el.setAttribute("data-slot", i);
-            slot.appendChild(el);
-            slot.classList.add("has-champ");
-        }
-    }
-    // Sinerjileri hesaplaması için main.js'e haber ver
-    if (config.onUpdate) config.onUpdate(selectedComp);
-}
-
-/**
- * Tahta Slotlarını Hazırlar
- */
 function initBoardSlots() {
-    for (let i = 0; i < 10; i++) {
-        const slot = document.getElementById(`slot-${i}`);
-        if (!slot) continue;
+    for (let i = 0; i < 28; i++) {
+        const slotEl = document.getElementById(`slot-${i}`);
+        if (!slotEl) continue;
 
-        slot.ondragover = (e) => {
+        slotEl.addEventListener("dragover", (e) => {
             e.preventDefault();
-            slot.classList.add("slot-hover");
-        };
-        slot.ondragleave = () => slot.classList.remove("slot-hover");
-        slot.ondrop = (e) => {
+            slotEl.classList.add("slot-hover");
+        });
+        slotEl.addEventListener("dragleave", () => slotEl.classList.remove("slot-hover"));
+        slotEl.addEventListener("drop", (e) => {
             e.preventDefault();
-            slot.classList.remove("slot-hover");
+            e.stopPropagation();
+            slotEl.classList.remove("slot-hover");
+
             const champName = e.dataTransfer.getData("text/plain");
             const originSlot = e.dataTransfer.getData("origin-slot");
 
@@ -249,18 +234,36 @@ function initBoardSlots() {
                 const champ = config.champions.find(c => c.name === champName);
                 if (champ) toggleChampion(champ, i);
             }
-        };
+        });
     }
 }
 
-/**
- * Takımı Tamamen Sıfırlar
- */
-export function resetPlanner() {
-    selectedComp = [];
-    updateUI(selectedComp);
-    renderChampionPool();
-}
+function createChampElement(champ, isInComp = false) {
+    const div = document.createElement("div");
+    div.className = isInComp ? `comp-champ cost-border-${champ.cost}` : `champ-item cost-${champ.cost}`;
 
-// Global erişim için (main.js reset butonu için)
-window.resetPlanner = resetPlanner;
+    const img = document.createElement("img");
+    img.src = champ.img;
+    img.onerror = () => img.src = 'img/profiles/default.png';
+    div.appendChild(img);
+
+    div.setAttribute("data-name", champ.name);
+    div.setAttribute("data-traits", (champ.traits || []).map(t => safeLowercase(t)).join(","));
+
+    div.onclick = (e) => {
+        e.stopPropagation();
+        if (config.champTooltip) config.champTooltip.style.display = "none";
+        toggleChampion(champ);
+    };
+
+    div.ondragstart = (e) => {
+        div.classList.add("dragging");
+        e.dataTransfer.setData("text/plain", champ.name);
+        e.dataTransfer.setData("origin-slot", "");
+        if (config.champTooltip) config.champTooltip.style.display = "none";
+    };
+
+    div.ondragend = () => div.classList.remove("dragging");
+
+    return div;
+}
