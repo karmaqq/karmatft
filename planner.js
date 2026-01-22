@@ -3,7 +3,7 @@ import { safeLowercase } from './tooltips.js';
 // --- GLOBAL STATE ---
 let selectedComp = [];
 let currentViewMode = "all"; // 'all' veya 'cost'
-let config = {}; // main.js'den enjekte edilen bağımlılıklar
+let config = {}; 
 
 /**
  * Planner modülünü başlatır
@@ -28,7 +28,7 @@ export function initPlanner(settings) {
         };
     }
 
-    // Tahta dışına (boşluğa) bırakınca şampiyonu silme
+    // Tahta dışına bırakınca şampiyonu silme
     document.addEventListener("drop", (e) => {
         if (e.target.closest('[id^="slot-"]')) return;
 
@@ -42,7 +42,6 @@ export function initPlanner(settings) {
 
     document.addEventListener("dragover", (e) => e.preventDefault());
 
-    // Reset fonksiyonunu globalden erişilebilir yap (Main.js için)
     window.resetPlanner = () => {
         selectedComp = [];
         renderChampionPool();
@@ -53,51 +52,37 @@ export function initPlanner(settings) {
 }
 
 /**
- * Şampiyon Havuzunu Render Eder
+ * Şampiyon havuzunu ekrana basar
  */
 export function renderChampionPool() {
     const championListEl = document.getElementById("champions-grid");
     if (!championListEl) return;
 
     championListEl.innerHTML = "";
-    const searchTerm = safeLowercase(config.searchInput?.value || "");
     let displayChamps = [...config.champions];
 
+    // Önce maliyete, sonra isme göre sırala
     displayChamps.sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name));
 
     if (currentViewMode === "cost") {
         let lastCost = null;
         displayChamps.forEach(c => {
-            const isMatch = checkMatch(c, searchTerm);
-
             if (lastCost !== c.cost) {
                 const divider = document.createElement("div");
                 divider.className = `pool-divider cost-divider-${c.cost}`;
                 divider.innerHTML = `<span>${c.cost} ALTIN</span>`;
-
-                const hasMatchInThisCost = displayChamps.some(champ =>
-                    champ.cost === c.cost && checkMatch(champ, searchTerm)
-                );
-                if (searchTerm !== "" && !hasMatchInThisCost) divider.style.display = "none";
-
                 championListEl.appendChild(divider);
             }
             lastCost = c.cost;
 
             const el = createChampElement(c);
-            if (searchTerm !== "" && !isMatch) el.classList.add("not-matching");
             if (selectedComp.some(target => target.name === c.name)) el.classList.add("selected");
-
             championListEl.appendChild(el);
         });
     } else {
         displayChamps.forEach(c => {
-            const isMatch = checkMatch(c, searchTerm);
             const el = createChampElement(c);
-
-            if (searchTerm !== "" && !isMatch) el.classList.add("not-matching");
             if (selectedComp.some(target => target.name === c.name)) el.classList.add("selected");
-
             championListEl.appendChild(el);
         });
     }
@@ -105,20 +90,14 @@ export function renderChampionPool() {
     if (config.onPoolRender_Callback) config.onPoolRender_Callback();
 }
 
-function checkMatch(champ, term) {
-    if (term === "") return true;
-    const nameMatch = safeLowercase(champ.name).includes(term);
-    const traitMatch = champ.traits.some(t => safeLowercase(t).includes(term));
-    return nameMatch || traitMatch;
-}
-
 /**
- * Tahtayı ve Sinerjileri Günceller
+ * Arayüzü (Tahtayı ve Seçili Şampiyonları) Güncelle
  */
 export function updateUI() {
     const MAX_SLOTS = 28;
     const teamCountEl = document.getElementById("team-count");
 
+    // Tüm slotları temizle
     for (let i = 0; i < MAX_SLOTS; i++) {
         const slotEl = document.getElementById(`slot-${i}`);
         if (slotEl) {
@@ -129,6 +108,7 @@ export function updateUI() {
         }
     }
 
+    // Seçili şampiyonları yerleştir
     selectedComp.forEach((champ) => {
         const slotEl = document.getElementById(`slot-${champ.slotId}`);
         if (slotEl) {
@@ -153,11 +133,11 @@ export function updateUI() {
 
     if (teamCountEl) teamCountEl.textContent = selectedComp.length;
 
-    // --- KRİTİK BAĞLANTI: Main.js'deki Sinerji Fonksiyonunu Çağır ---
     if (config.onUpdate) {
         config.onUpdate(selectedComp);
     }
 
+    // Havuzdaki seçilme durumunu güncelle
     document.querySelectorAll(".champ-item").forEach(el => {
         const isSelected = selectedComp.some(c => c.name === el.getAttribute("data-name"));
         el.classList.toggle("selected", isSelected);
@@ -248,7 +228,6 @@ function createChampElement(champ, isInComp = false) {
     div.appendChild(img);
 
     div.setAttribute("data-name", champ.name);
-    div.setAttribute("data-traits", (champ.traits || []).map(t => safeLowercase(t)).join(","));
 
     div.onclick = (e) => {
         e.stopPropagation();

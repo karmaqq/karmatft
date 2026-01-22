@@ -1,7 +1,3 @@
-/* ==========================================================================
-    GENEL STİL AYARLARI
-   ========================================================================== */
-/* Renk Değişkenleri */
 :root {
     --bg-dark: #08090c;
     --panel-bg: #16181d;
@@ -12,14 +8,13 @@
     --text-main: #e0e0e0;
     --text-muted: #a0a0a0;
 
-    /* Cost Renkleri */
-    --c1: #808080; --c2: #14cc73; --c3: #207ac7; 
+    --c1: #808080; --c2: #14cc73; --c3: #207ac7;
     --c4: #c419da; --c5: #ffb93b; --c7: #ff4e50;
 }
 
-* { 
-    box-sizing: border-box; 
-    outline: none; 
+* {
+    box-sizing: border-box;
+    outline: none;
 }
 
 body {
@@ -28,41 +23,51 @@ body {
     color: var(--text-main);
     margin: 0;
     padding: 15px;
-    min-height: 100vh; /* Sabit yükseklik yerine en az ekran kadar dedik */
-    width: 100%;       /* vw yerine % daha güvenlidir */
+    min-height: 100vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;  /* İhtiyaç olduğunda aşağı doğru kaydırabilmelisin */
-    overflow-x: hidden; 
+    overflow-y: auto;
+    overflow-x: hidden;
     box-sizing: border-box;
 }
 
-/* Scrollbars Gizleme */
 #champions-grid::-webkit-scrollbar,
 #active-team-grid::-webkit-scrollbar,
-#trait-list::-webkit-scrollbar { display: none; 
+#trait-list::-webkit-scrollbar {
+    display: none;
 }
-
-/* ==========================================================================
-   GENEL PLAN YAPISI
-   ========================================================================== */
 
 .main-container {
     display: flex;
     justify-content: center;
     gap: 15px;
-    max-width: 1600px;
+    max-width: 1800px;
     margin: 0 auto;
-    height: calc(100vh - 30px); 
-    min-height: 0; 
+    height: calc(100vh - 30px);
     padding: 5px 20px 0 20px;
     width: 100%;
     box-sizing: border-box;
 }
 
-/* Panel Genel Stili */
-.panel {
+.traits-panel {
+    flex: 0 0 320px;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+}
+
+.middle-layout {
+    display: flex;
+    flex-direction: column;
     height: 100%;
+    width: fit-content;
+    min-width: 860px;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.panel {
     background: var(--panel-bg);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -72,7 +77,23 @@ body {
     position: relative;
 }
 
-/* Panel Başlık Stili */
+.middle-layout .team-panel {
+    height: auto !important;
+    flex: 0 0 auto;
+    background: var(--panel-bg);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.middle-layout .items-section {
+    flex: 1;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
 .panel-header {
     height: 50px;
     background: var(--panel-header);
@@ -81,36 +102,27 @@ body {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--border);
-}
-
-.panel-header, .traits-header, .team-header {
     flex-shrink: 0;
-    white-space: nowrap;
 }
 
-/* Panel Başlık Metni */
 .panel-header h2 {
     font-size: 14px;
     letter-spacing: 1.5px;
     margin: 0;
     color: var(--accent-light);
-    flex-grow: 1;
-    margin-right: auto;
+    text-transform: uppercase;
+}
+.panel-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(202, 147, 55, 0.4), transparent);
+    margin: 0;
+    flex-shrink: 0;
 }
 
 /* ==========================================================================
     SOL PANEL: ÖZELLİKLER LİSTESİ
    ========================================================================== */
 
-/* Özelliker Paneli */
-.traits-panel { 
-    flex: 0 0 320px;
-    display: flex;
-    flex-direction: column;
-    max-height: 100%;
-}
-
-/* Özellik listesi */
 #trait-list {
     flex: 1;
     display: flex;
@@ -122,42 +134,37 @@ body {
     scrollbar-width: none;
 }
 
-/* Özellik Ögesi */
 .trait-item {
     display: flex;
     align-items: center;
-    background: transparent; 
+    background: transparent;
     border: 1px solid transparent;
     padding: 6px 8px;
-    gap: 8px; 
+    gap: 8px;
     margin-bottom: 4px;
     border-radius: 6px;
     transition: all 0.3s ease;
 }
 
-/* Aktif Özellik */
 .trait-item.active {
     background: rgba(255, 255, 255, 0.05) !important;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Hover Efekti */
 .trait-item:hover {
     background: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Altgen Kapsayıcı */
 .trait-hex-container {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* Altıgen */
 .trait-hex {
     width: 38px;
     height: 42px;
-    background: #32353d; 
+    background: #32353d;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     display: flex;
     align-items: center;
@@ -165,44 +172,27 @@ body {
     filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 1px #000);
 }
 
-/* Bronz (Tier 1) - Daha bakırımsı ve metalik */
-.tier-1 .trait-hex { 
-    background: linear-gradient(180deg, #cd7f32 0%, #8e5a3c 100%) !important; 
-    box-shadow: 0 0 5px rgba(142, 90, 60, 0.5);
-}
-
-/* Gümüş (Tier 2) - Daha soğuk ve parlak gri */
-.tier-2 .trait-hex { 
-    background: linear-gradient(180deg, #d1d1d1 0%, #949494 100%) !important; 
-    box-shadow: 0 0 5px rgba(148, 148, 148, 0.5);
-}
-
-/* Altın (Tier 3) - Daha canlı ve sıcak altın */
-.tier-3 .trait-hex { 
-    background: linear-gradient(180deg, #ffdc81 0%, #c79510 100%) !important; 
-    box-shadow: 0 0 8px rgba(199, 149, 16, 0.6);
-}
-
-/* Özel (Special/Unique) - Turkuaz/Zümrüt karışımı */
-.tier-special .trait-hex { 
-    background: linear-gradient(180deg, #2ae792 0%, #14cc73 100%) !important; 
-    box-shadow: 0 0 10px rgba(20, 204, 115, 0.5);
-}
-
-/* Prizmatik - Pembe, Mor ve Mavi geçişli (TFT İmzası) */
-.tier-prismatic .trait-hex { 
-    background: linear-gradient(135deg, #ff8cff 0%, #7e57ff 50%, #00c2ff 100%) !important; 
+.tier-1 .trait-hex {
+    background: linear-gradient(180deg, #cd7f32 0%, #8e5a3c 100%) !important;
+    box-shadow: 0 0 5px rgba(142, 90, 60, 0.5); }
+.tier-2 .trait-hex {
+    background: linear-gradient(180deg, #d1d1d1 0%, #949494 100%) !important;
+    box-shadow: 0 0 5px rgba(148, 148, 148, 0.5); }
+.tier-3 .trait-hex {
+    background: linear-gradient(180deg, #ffdc81 0%, #c79510 100%) !important;
+    box-shadow: 0 0 8px rgba(199, 149, 16, 0.6); }
+.tier-special .trait-hex {
+    background: linear-gradient(180deg, #2ae792 0%, #14cc73 100%) !important;
+    box-shadow: 0 0 10px rgba(20, 204, 115, 0.5); }
+.tier-prismatic .trait-hex {
+    background: linear-gradient(135deg, #ff8cff 0%, #7e57ff 50%, #00c2ff 100%) !important;
     box-shadow: 0 0 15px rgba(255, 140, 255, 0.7);
-    animation: prismatic-glow 3s infinite alternate;
-}
+    animation: prismatic-glow 3s infinite alternate; }
 
-/* Prizmatik için hafif parlama animasyonu (Opsiyonel) */
 @keyframes prismatic-glow {
     from { filter: brightness(1) saturate(1); }
-    to { filter: brightness(1.2) saturate(1.3); }
-}
+    to { filter: brightness(1.2) saturate(1.3);} }
 
-/* Özellik İkonu */
 .t-icon {
     width: 22px;
     height: 22px;
@@ -210,12 +200,10 @@ body {
     transition: filter 0.3s ease;
 }
 
-/* Aktif Özellik İkonu */
 .active .t-icon {
     filter: grayscale(0) brightness(1.2);
 }
 
-/* Sayaç Rozeti */
 .trait-count-badge {
     background: #585858 !important;
     color: #fff;
@@ -225,24 +213,21 @@ body {
     border-radius: 3px;
     min-width: 18px;
     text-align: center;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Sayaç Rozeti Aktif */
 .active .trait-count-badge {
     background: #32353d !important;
     color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Özellik Bilgi Kapsayıcı */
 .trait-info-wrapper {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-/* Özellik Adı */
 .t-name {
     font-size: 13px;
     font-weight: 600;
@@ -250,165 +235,85 @@ body {
     color: #888;
 }
 
-/* Aktif Özellik Adı */
 .active .t-name {
     color: #fff;
     font-weight: 700;
 }
 
-/* Özellik Eşik Satırı */
 .t-steps-row {
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
-/* Özellik Eşik Metni */
 .t-step {
     font-size: 12px;
     font-weight: 800;
 }
 
-/* Eşik Durum Renkleri */
-.t-step.is-off { color: #444; }
-.t-step.is-reached { color: #fff; }
+.t-step.is-off {
+    color: #444;
+}
 
-/* Eşik Ayırıcı */
-.t-sep { 
-    color: #444; 
+.t-step.is-reached {
+    color: #fff;
+}
+
+.t-sep {
+    color: #444;
     font-size: 10px;
     margin: 0 1px;
 }
+
 /* ==========================================================================
    ORTA PANEL: TAKIM PLANLAYICI [ÜST]
    ========================================================================== */
-
-/* Takım Paneli */
-.team-panel { 
-    flex: 1!important;
-    min-width: 920px;
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;
-    overflow: hidden !important;
-    position: relative !important;
-}
-
-/* Reset Butonu */
-.btn-reset {
-    margin-left: auto;
-    background: rgba(255, 78, 80, 0.1);
-    border: 1px solid #ff4e50;
-    color: #ff4e50;
-    border-radius: 4px;
-    width: 22px;
-    height: 22px;
-    cursor: pointer;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
 
 #active-team-grid {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px 0px;
+    padding: 30px 0;
     background: radial-gradient(circle, #1a1f28 0%, #0d1117 100%);
-    border-radius: 12px;
-    
-    /* 1. HATALI SATIRI SİL/DÜZELT: */
-    /* margin-left: -45px;  <-- Bu satırı tamamen sil */
-    
-    /* 2. KUTUYU ORTALAMAK İÇİN: */
-    margin: 20px auto; /* Üstten/alttan 20px, sağdan/soldan otomatik (ortalama) */
-    width: 95%;        /* Panel içinde biraz nefes alması için genişliği kısıtla */
-    
-    /* 3. İÇERİĞİ (ALTIGENLERİ) DENGELEMEK İÇİN:
-       Çift satırlar 45px sağa kaydığı için, tüm bloğu 
-       görsel olarak ortalamak adına sağdan 45px boşluk veriyoruz. */
-    padding-right: 45px; 
+    margin: 10px;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    position: relative;
 }
 
-.view-toggle-btn {
-    background: rgba(202, 147, 55, 0.1);
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 4px 12px;
+.btn-reset {
+    background: rgba(255, 78, 80, 0.1);
+    border: 1px solid #ff4e50;
+    color: #ff4e50;
+    width: 22px;
+    height: 22px;
     border-radius: 4px;
-    font-size: 11px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    font-weight: bold;
-    min-width: 140px; /* Metin değişiminde butonun boyutunun değişmesini engeller */
-    text-align: center;
-    white-space: nowrap;
-    /* Başlığın titremesini durduracak kritik ayar: */
-    flex-shrink: 0;
-    margin-left: 10px;
-}
-
-.view-toggle-btn:hover {
-    background: var(--accent);
-    color: #111;
-}
-
-/* Soldaki Yazı */
-.pool-divider span {
     font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    padding-right: 10px;
-    white-space: nowrap;
 }
-
-/* Genel Ayırıcı Yapısı */
-.pool-divider {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    margin: 15px 5px 8px 0;
-}
-
-/* Sağdaki Çizgi (Yazıdan sonra başlar) */
-.pool-divider::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    /* Soldan sağa renkli başlayıp şeffaflaşan çizgi */
-    background: linear-gradient(to right, currentColor 0%, transparent 100%);
-    opacity: 0.4;
-}
-
-/* Maliyet Renk Atamaları (currentColor sayesinde çizgi de renklenir) */
-.cost-divider-1 { color: var(--c1); }
-.cost-divider-2 { color: var(--c2); }
-.cost-divider-3 { color: var(--c3); }
-.cost-divider-4 { color: var(--c4); }
-.cost-divider-5 { color: var(--c5); }
-.cost-divider-7 { color: var(--c7); }
 
 .hex-row {
     display: flex;
     margin-top: -14px;
-    justify-content: center; /* Satırları kendi içinde merkezde tut */
+    margin-left: -41px;
+    justify-content: center;
 }
 
-/* Hex İlk Sıra */
-.hex-row:first-child { 
+.hex-row:first-child {
     margin-top: 0;
 }
 
-/* Hex İkinci Sıra */
 .hex-row:nth-child(even) {
-    /* Sadece kaydırmayı bırakıyoruz, başka hizalama yapmıyoruz */
-    transform: translateX(45px); 
+    transform: translateX(45px);
 }
 
-/* Hex Dış Çerçeve */
+.slot-hover {
+    background: rgba(108, 238, 108, 0.247) !important;
+    transform: scale(1.10);
+}
+
 .comp-champ, .empty-slot {
     width: 80px;
     height: 90px;
@@ -418,166 +323,179 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Boş Slot */
+.empty-slot {
+    background: rgba(145, 114, 62, 0.3);
+}
+
 .empty-slot::before {
     content: "";
     position: absolute;
     width: calc(100% - 4px);
     height: calc(100% - 4px);
     background: #0d1117;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: inherit;
     z-index: 1;
 }
 
-/* Şampiyonun Resmi */
+.slot-hover {
+    background: rgba(108, 238, 108, 0.247) !important;
+    transform: scale(1.10);
+}
+
 .comp-champ img {
     width: calc(100% - 4px);
     height: calc(100% - 4px);
     object-fit: cover;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: inherit;
     z-index: 2;
-    background: #0d1117;
 }
 
-/* Takım Hover */
 .comp-champ:hover {
     transform: scale(1.1) translateY(-5px);
     z-index: 100;
     filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
 }
 
-/* Sürüklenen kartın hali */
 .dragging {
-    
-    cursor: grabbing;
     opacity: 0.5;
     transform: scale(0.8);
 }
 
-/* Üzerine gelinen boş slotun parlaması */
-.slot-hover {
-    background: rgba(202, 147, 55, 0.3) !important;
-    outline: 2px dashed var(--accent);
-    transform: scale(1.05);
-    transition: all 0.2s ease;
-}
-
-/* Cost Renkleri */
-.cost-border-1 { background: #808080 !important; }
-.cost-border-2 { background: #14cc73 !important; }
-.cost-border-3 { background: #207ac7 !important; }
-.cost-border-4 { background: #c419da !important; }
-.cost-border-5 { background: #ffb93b !important; }
-.cost-border-7 { background: #ff4e50 !important;}
-.empty-slot { background: rgba(145, 114, 62, 0.3); }
+.cost-border-1 { background: var(--c1) !important; }
+.cost-border-2 { background: var(--c2) !important; }
+.cost-border-3 { background: var(--c3) !important; }
+.cost-border-4 { background: var(--c4) !important; }
+.cost-border-5 { background: var(--c5) !important; }
+.cost-border-7 { background: var(--c7) !important; }
 
 /* ==========================================================================
    ORTA PANEL: EŞYALAR (ALT)
    ========================================================================== */
 
-.item-category-group {
-    margin-bottom: 20px;
+.items-control-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: rgba(0, 0, 0, 0.1);
 }
 
-/* Eşya menüsü */
 .item-tabs-menu {
     display: flex;
     gap: 5px;
-    padding: 0 10px;
-    margin-bottom: 10px;
     flex-wrap: wrap;
 }
 
-/* Eşya Menü Butonları */
-.item-tab-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(202, 147, 55, 0.3);
-    color: #a0a0a0;
-    padding: 4px 8px;
-    font-size: 11px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-}
-
-/* Eşya Menü Hover */
-.item-tab-btn:hover {
-    background: rgba(202, 147, 55, 0.1);
-    color: #fff;
-}
-
-/* Eşya Menü Aktif butonu */
-.item-tab-btn.active {
-    background: #ca9337;
-    color: #000;
-    font-weight: bold;
-    border-color: #ca9337;
-}
-
-/* eşya Konteyner */
 #items-container {
-    padding: 15px;
+    padding: 0px;
+    flex: 1;
+    overflow-y: hidden;
     display: flex;
     justify-content: center;
 }
 
-/* Eşya Grid */
 .items-grid {
     display: grid;
-    grid-template-columns: repeat(18, 45px); 
-    gap: 5px;
+    grid-template-columns: repeat(18, 42px);
+    grid-template-rows: repeat(2, 42px);
+    gap: 6px;
     justify-content: center;
+    padding: 10px;
 }
 
-/* Eşya Kartları */
 .item-card {
-    width: 45px;
-    height: 45px;
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    width: 42px;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-/* Eşya İkonları Genel Kapsayıcı */
-.item-icon-wrapper {
     width: 42px;
     height: 42px;
-    border-radius: 4px;
-    overflow: hidden;
-    background: #0a0a0c;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-/* Eşya ikon Resimleri */
+.item-icon-wrapper {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    background: #0a0a0c;
+}
+
 .item-icon-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    image-rendering: auto;
 }
 
-/* Eşya Hover */
-.item-card:hover .item-icon-wrapper {
-    border-color: #ca9337;
-    box-shadow: 0 4px 12px rgba(202, 147, 55, 0.3);
-    z-index: 5;
+.item-card:hover {
     transform: translateY(-3px);
+}
+
+.item-card:hover .item-icon-wrapper {
+    border-color: var(--accent);
+}
+
+.item-tab-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(202, 147, 55, 0.3);
+    color: var(--text-muted);
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.item-tab-btn.active {
+    background: var(--accent);
+    color: #000;
+    font-weight: bold;
+}
+
+.item-search-container {
+    position: relative;
+    width: 280px;
+    display: flex;
+    align-items: center;
+}
+
+#item-search {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 35px 8px 12px;
+    color: var(--text-main);
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+#item-search:focus {
+    border-color: var(--accent);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#clear-item-search {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: none;
+    z-index: 2;
+}
+
+#clear-item-search:hover {
+    color: var(--accent);
+    transform: scale(1.2);
 }
 
 /* ==========================================================================
    SAĞ PANEL: ŞAMPİYON SEÇİMİ
    ========================================================================== */
 
-/* Şampiyon Seçim Paneli */
 .selection-panel {
     width: 500px;
     flex-shrink: 0;
@@ -586,91 +504,43 @@ body {
     flex-direction: column;
 }
 
-/* Reset Butonu Hover */
-.btn-reset:hover {
-    background: #ff4e50;
-    color: #fff;
-    box-shadow: 0 0 10px rgba(255, 78, 80, 0.3);
-}
-
-/* Şampiyon Arama Kutusu */
-#champ-search-container {
-    padding: 10px;
-}
-
-/* Şampiyon Arama Girişi */
-#champ-search {
-    width: 100%;
-    background: #0d0e12;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 8px 15px;
-    color: #fff;
-    font-size: 12px;
-    transition: all 0.3s ease;
-}
-
-/* Şampiyon Arama Girişi Odaklanma */
-#champ-search:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 10px rgba(202, 147, 55, 0.2);
-    background: #12141a;
-}
-
-/* Eşleşmeyen Eşya */
-.is-searching-hidden {
-    display: none !important;
-}
-
-/* Eşleşmeyen Şampiyon */
-.champ-item.not-matching {
-    opacity: 0.2;
-    pointer-events: none;
-    filter: grayscale(1);
-}
-
-/* Şampiyonlar Grid */
 #champions-grid {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    grid-auto-rows: min-content; /* Satır yüksekliği içeriğe göre belirlensin, ezilmesin */
-    gap: 10px; /* Boşluğu biraz artırarak nefes aldırıyoruz */
+    grid-auto-rows: min-content;
+    gap: 10px;
     padding: 15px;
     overflow-y: auto;
-    align-content: start; /* Her şeyi yukarıdan başlat */
+    align-content: start;
 }
 
-/* Şampiyon Ögesi */
 .champ-item {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1; 
+    aspect-ratio: 1 / 1;
     border-radius: 4px;
     overflow: hidden;
     cursor: pointer;
-    display: block; /* Flex bazen dikeyde ezebilir, block daha güvenli */
+    display: block;
+    overflow: visible !important;
 }
 
-/* Şampiyon Ögesi Hover */
-.champ-item:hover { 
-    transform: scale(1.1); 
-    z-index: 10; 
+.champ-item:hover {
+    transform: scale(1.1);
+    z-index: 10;
 }
 
-/* Şampiyon Resmi */
 .champ-item img {
     width: 100%;
-    height: 100%; /* Yüksekliği %100'e sabitle */
+    height: 100%;
     object-fit: cover;
     display: block;
 }
 
-/* Seçilmiş Şampiyon */
-.champ-item.selected { 
-    filter: grayscale(1) brightness(0.3); 
+.champ-item.selected {
+    filter: grayscale(1) brightness(0.3);
 }
 
-/* Seçilmiş Şampiyona Onay İşareti */
 .champ-item.selected::after {
     content: "✓";
     position: absolute;
@@ -682,7 +552,25 @@ body {
     font-weight: 900;
 }
 
-/* Şampiyon Cost Çerçevesi */
+.permanent-lock {
+    position: absolute;
+    width: 22px;    /* İkon boyutu */
+    height: 22px;   /* İkon boyutu */
+    bottom: -6px;   /* Alttan dışarı taşma */
+    right: -6px;    /* Sağdan dışarı taşma */
+    
+    background-image: url('img/profiles/kilit.svg'); /* Resim yolun */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    z-index: 5;     /* Şampiyon resminin üstünde */
+    pointer-events: none; /* Tıklamayı engellemez, arkadaki şampiyona geçer */
+    
+    /* İkonun daha iyi görünmesi için hafif gölge */
+    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.8));
+}
+
 .cost-1 { border: 2px solid var(--c1); }
 .cost-2 { border: 2px solid var(--c2); }
 .cost-3 { border: 2px solid var(--c3); }
@@ -690,24 +578,43 @@ body {
 .cost-5 { border: 2px solid var(--c5); }
 .cost-7 { border: 2px solid var(--c7); }
 
-/* Bölüm Başlıkları */
-.panel-section-title {
-    font-size: 12px;
-    color: #ca9337;
+.cost-divider-1 { color: var(--c1); }
+.cost-divider-2 { color: var(--c2); }
+.cost-divider-3 { color: var(--c3); }
+.cost-divider-4 { color: var(--c4); }
+.cost-divider-5 { color: var(--c5); }
+.cost-divider-7 { color: var(--c7); }
+
+.view-toggle-btn {
+    background: rgba(202, 147, 55, 0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
     font-weight: bold;
-    letter-spacing: 2px;
-    margin: 0px 0 10px 10px;
     text-transform: uppercase;
-    opacity: 0.8;
 }
 
-/* Ara Çizgi */
-.panel-divider {
+.pool-divider {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    margin: 15px 0 8px 0;
+}
+
+.pool-divider span {
+    font-size: 10px;
+    font-weight: 900;
+    padding-right: 10px;
+    white-space: nowrap;
+}
+
+.pool-divider::after {
+    content: "";
+    flex: 1;
     height: 1px;
-    background: linear-gradient(to right, transparent, rgba(202, 147, 55, 0.4), transparent);
-    margin: 10px 0;
+    background: currentColor;
+    opacity: 0.4;
 }
-
-/* ==========================================================================
-    RESET BUTONU & ŞAMPİYON ARAMA
-   ========================================================================== */

@@ -12,66 +12,67 @@ import { initPlanner, updateUI } from './planner.js';
 document.addEventListener("DOMContentLoaded", () => {
     // --- ELEMENTLER ---
     const traitListEl = document.getElementById("trait-list");
-    const searchInput = document.getElementById("champ-search");
     const resetBtn = document.getElementById("reset-team");
     const globalTooltip = document.getElementById("global-trait-tooltip");
+    
+    // YENİ: Eşya Arama Elementleri
+    const itemSearchInput = document.getElementById("item-search");
+    const clearItemSearchBtn = document.getElementById("clear-item-search");
 
     let currentTraitsData = new Map();
 
-    // --- TOOLTIP HAZIRLIĞI ---
     const champTooltip = document.createElement("div");
     champTooltip.className = "champ-tooltip";
     document.body.appendChild(champTooltip);
 
-    // --- MERKEZİ ARAMA FONKSİYONU ---
-    function handleSearch() {
-        const term = safeLowercase(searchInput.value || "");
+    initItems();
 
-        document.querySelectorAll(".champ-item").forEach(el => {
-            const name = safeLowercase(el.getAttribute("data-name") || "");
-            const traits = safeLowercase(el.getAttribute("data-traits") || "");
-            const isMatch = name.includes(term) || traits.includes(term);
-            el.classList.toggle("not-matching", term !== "" && !isMatch);
-        });
-
-        document.querySelectorAll(".item-card").forEach(el => {
-            const itemName = safeLowercase(el.getAttribute("data-name") || "");
-            const isMatch = itemName.includes(term);
-            el.style.display = (term === "" || isMatch) ? "block" : "none";
-        });
-
-        document.querySelectorAll(".pool-divider").forEach(divider => {
-            if (term === "") {
-                divider.style.display = "flex";
-                return;
-            }
-            const costClass = Array.from(divider.classList).find(c => c.startsWith('cost-divider-'));
-            const cost = costClass ? costClass.split('-').pop() : null;
-            const hasMatch = Array.from(document.querySelectorAll(`.champ-item.cost-${cost}`))
-                .some(item => !item.classList.contains("not-matching"));
-            divider.style.display = hasMatch ? "flex" : "none";
+    // YENİ: Eşya Arama Dinleyicileri
+    if (itemSearchInput) {
+        itemSearchInput.addEventListener("input", (e) => {
+            // items.js'den gelen fonksiyonu çağırıyoruz
+            import('./items.js').then(module => {
+                module.handleItemSearch(e.target.value);
+            });
         });
     }
 
-    window.refreshSearch = handleSearch;
+    if (clearItemSearchBtn) {
+        clearItemSearchBtn.addEventListener("click", () => {
+            itemSearchInput.value = "";
+            import('./items.js').then(module => {
+                module.handleItemSearch("");
+            });
+            itemSearchInput.focus();
+        });
+    }
 
-    // --- BAŞLATMA ---
-    initItems();
-
-    // main.js içinde DOMContentLoaded içinde:
     initPlanner({
         champions: champions,
-        searchInput: searchInput,
         champTooltip: champTooltip,
-        // Planner bir değişiklik yaptığında renderTraits'i çalıştır:
         onUpdate: (comp) => {
-            renderTraits(comp); 
+            renderTraits(comp);
         },
-        // Arama senkronizasyonu için:
-        onPoolRender_Callback: handleSearch
+        onPoolRender_Callback: null 
     });
 
-    // --- SİNERJİ MANTIĞI ---
+    // Reset butonuna eşya aramasını temizlemeyi de ekleyelim
+    if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+            if (window.resetPlanner) window.resetPlanner();
+            
+            // Eşya aramasını sıfırla
+            if (itemSearchInput) {
+                itemSearchInput.value = "";
+                import('./items.js').then(m => m.handleItemSearch(""));
+            }
+
+            const activeBtn = document.querySelector('.item-tab-btn.active');
+            const currentCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'normal';
+            renderCategory(currentCat);
+        });
+    }
+    
     function findTraitInfo(key) {
         const safeKey = safeLowercase(key);
         if (TRAIT_THRESHOLDS.specialTraits?.[safeKey]) return { data: TRAIT_THRESHOLDS.specialTraits[safeKey], type: 'special' };
@@ -198,17 +199,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- OLAY DİNLEYİCİLERİ ---
-    searchInput.addEventListener("input", handleSearch);
 
     if (resetBtn) {
         resetBtn.addEventListener("click", () => {
-            searchInput.value = "";
             if (window.resetPlanner) window.resetPlanner();
             const activeBtn = document.querySelector('.item-tab-btn.active');
             const currentCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'normal';
             renderCategory(currentCat);
-            setTimeout(() => handleSearch(), 0);
         });
     }
 
