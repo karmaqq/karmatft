@@ -82,18 +82,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         li.innerHTML = `
             <div class="trait-hex-container">
-                <div class="trait-hex">
-                    <img src="img/traits/${safeIcon}.png" class="t-icon" onerror="this.src='img/traits/default.png'">
-                </div>
+                <div class="trait-hex"><img src="img/traits/${safeIcon}.png" class="t-icon" onerror="this.src='img/traits/default.png'"></div>
+                <div class="trait-count-badge">${count}</div>
             </div>
             <div class="trait-info-wrapper">
-                <div class="trait-count-badge">${count}</div> 
                 <div class="t-name">${traitName}</div>
                 <div class="t-steps-row">
                     ${isActive ? steps.map(s => {
-                        const v = s.count || s;
-                        return `<span class="t-step ${activeTier && v === activeTier.count ? 'is-current' : (count >= v ? 'is-reached' : 'is-off')}">${v}</span>`;
-                    }).join('<span class="t-sep">></span>') : `<span class="t-step is-off">${count} / ${steps[0].count || steps[0]}</span>`}
+            const v = s.count || s;
+            return `<span class="t-step ${activeTier && v === activeTier.count ? 'is-current' : (count >= v ? 'is-reached' : 'is-off')}">${v}</span>`;
+        }).join('<span class="t-sep">></span>') : `<span class="t-step is-off">${count} / ${steps[0].count || steps[0]}</span>`}
                 </div>
             </div>`;
         return li;
@@ -164,68 +162,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (resetBtn) {
-        resetBtn.addEventListener("click", () => {
-            if (window.resetPlanner) {
-                window.resetPlanner();
-            }
+    resetBtn.addEventListener("click", () => {
+        if (window.resetPlanner) {
+            window.resetPlanner();
+        }
 
-            if (itemSearchInput) {
-                itemSearchInput.value = "";
-                import('./items.js').then(m => m.handleItemSearch(""));
-            }
+        if (itemSearchInput) {
+            itemSearchInput.value = "";
+            import('./items.js').then(m => m.handleItemSearch(""));
+        }
 
-            const activeBtn = document.querySelector('.item-tab-btn.active');
-            const currentCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'normal';
-            renderCategory(currentCat);
-        });
-    }
-
+        const activeBtn = document.querySelector('.item-tab-btn.active');
+        const currentCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'normal';
+        renderCategory(currentCat);
+    });
+}
     initItems();
     initGlobalTooltips();
-
-    function setupMobileNav() {
-    const tabs = document.querySelectorAll('.m-tab-btn');
-    const champPanel = document.querySelector('.selection-panel');
-    const itemPanel = document.querySelector('.items-section');
-
-    if (!tabs.length || !champPanel || !itemPanel) return;
-
-    const updatePanels = () => {
-        if (window.innerWidth > 1024) {
-            // MasaÃ¼stÃ¼: Her ÅŸeyi gÃ¶ster
-            champPanel.classList.add('active');
-            itemPanel.classList.add('active');
-            champPanel.style.display = ""; 
-            itemPanel.style.display = "";
-        } else {
-            // Mobil: Sadece aktif tabÄ± gÃ¶ster
-            const activeTab = document.querySelector('.m-tab-btn.active') || tabs[0];
-            const target = activeTab.getAttribute('data-target');
-            
-            tabs.forEach(t => t.classList.remove('active'));
-            activeTab.classList.add('active');
-
-            if (target === 'selection-panel') {
-                champPanel.classList.add('active');
-                itemPanel.classList.remove('active');
-            } else {
-                itemPanel.classList.add('active');
-                champPanel.classList.remove('active');
-            }
-        }
-    };
-
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            updatePanels();
-        });
-    });
-
-    window.addEventListener('resize', updatePanels);
-    updatePanels(); // Ä°lk yÃ¼klemede Ã§alÄ±ÅŸtÄ±r
-}
 
     initPlanner({
         champions: champions,
@@ -235,9 +188,5 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         onPoolRender_Callback: null
     });
-
-    // ... initPlanner kodun bittiÄŸi yer
-    setupMobileNav(); 
-
 
 });
