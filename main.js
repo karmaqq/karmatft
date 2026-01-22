@@ -192,13 +192,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const updatePanels = () => {
         if (window.innerWidth > 1024) {
-            // Masaüstü: Her şeyi göster
+            // MasaÃ¼stÃ¼: Her ÅŸeyi gÃ¶ster
             champPanel.classList.add('active');
             itemPanel.classList.add('active');
             champPanel.style.display = ""; 
             itemPanel.style.display = "";
         } else {
-            // Mobil: Sadece aktif tabı göster
+            // Mobil: Sadece aktif tabÄ± gÃ¶ster
             const activeTab = document.querySelector('.m-tab-btn.active') || tabs[0];
             const target = activeTab.getAttribute('data-target');
             
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     window.addEventListener('resize', updatePanels);
-    updatePanels(); // İlk yüklemede çalıştır
+    updatePanels(); // Ä°lk yÃ¼klemede Ã§alÄ±ÅŸtÄ±r
 }
 
     initPlanner({
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
         onPoolRender_Callback: null
     });
 
-    // ... initPlanner kodun bittiği yer
+    // ... initPlanner kodun bittiÄŸi yer
     setupMobileNav(); 
 
 
