@@ -618,3 +618,291 @@ body {
     background: currentColor;
     opacity: 0.4;
 }
+
+
+/* ==========================================================================
+   MOBİL / TABLET DÜZENİ (Max 1024px) - 5x2 GRID VE İNCE TRAITS SİSTEMİ
+   ========================================================================== */
+@media (max-width: 1024px) {
+    /* 1. ANA YAPI */
+    .main-container {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important; /* Üste yasla */
+        align-items: center !important;
+        padding: 5px !important;
+        margin: 0 !important;
+        min-height: 100vh !important;
+        gap: 0px !important;
+    }
+
+    .middle-layout {
+        display: contents; /* Ara katmanı bozup elemanları serbest bırakır */
+    }
+
+    /* 2. TAKIM PANELİ (ORDER: 1) - 5x2 KUTUCUK DÜZENİ */
+    .team-panel {
+        order: 1;
+        width: 100% !important;
+        background: var(--panel-bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px !important;
+    }
+
+    .team-panel .panel-header h2 { font-size: 14px; }
+
+    #active-team-grid {
+        display: grid !important;
+        grid-template-columns: repeat(5, 1fr) !important; /* Yan yana 5 kutu */
+        gap: 50px !important;
+        padding: 30px !important;
+    }
+
+    /* Hex row yapısını grid için etkisizleştiriyoruz */
+    .hex-row { display: contents !important; }
+
+    .hex-row:nth-child(n+3) { display: none !important; } /* 3. ve 4. satırı komple sil */
+
+    .hex-row:nth-child(2) .empty-slot:nth-child(n+4),
+    .hex-row:nth-child(2) .comp-champ:nth-child(n+4) {
+        display: none !important;
+    }
+
+    /* Kare Kutucuklar (Altıgen İptal) */
+    .comp-champ, .empty-slot {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        clip-path: none !important;
+        border-radius: 6px !important;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        margin: 0 !important;
+        transform: none !important;
+    }
+    /* Boş Slot İçindeki Sahte Hex Efektini Kaldır */
+    .empty-slot::before { display: none !important; }
+
+    .comp-champ img {
+        width: 100% !important;
+        height: 100% !important;
+        clip-path: none !important;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    /* 3. ÖZELLİKLER (TRAITS) (ORDER: 2) - ÇOK İNCE ŞERİT */
+    .traits-panel {
+        display: flex !important;
+        flex-direction: row !important;
+        width: 100% !important;
+        height: 50px !important;       
+        min-height: 50px !important;
+        max-height: 50px !important;
+        padding: 0 10px !important;
+        margin: 10px 0 0 0 !important; /* Alt boşluğu sıfırladık */
+        background: var(--panel-bg) !important;
+        border: 1px solid var(--border) !important;
+        overflow: hidden !important;
+        order: 2 !important;
+        align-items: center !important; /* İçindeki listeyi dikeyde ortalar */
+    }
+
+    .traits-panel .panel-header { display: none !important; } /* Başlık yok */
+
+    #trait-list {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important; /* Elemanları dikeyde ortalar */
+        gap: 30px !important; /* Sayı balonu için boşluğu biraz artırdık */
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 5px !important;
+    }
+
+    /* 3. İkonlar: Sadece ikon ve sayı kalsın */
+    #trait-list .trait-item {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-width: 32px !important; /* Panel yüksekliğine uygun küçülttük */
+        height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
+    }
+
+    /* İsim, Tier, Basamaklar vs. Tamamen Kapalı */
+    #trait-list .t-name, 
+    #trait-list .t-steps-row,
+    #trait-list .trait-tier {
+        display: none !important;
+    }
+
+    /* 4. Sayı Balonu: Sağ üst köşeye sabitle */
+    #trait-list .trait-info-wrapper {
+        display: flex !important;
+        position: absolute !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        right: -18px !important; 
+        background: #111 !important;
+        color: #ffb93d !important;
+        font-size: 10px !important;
+        font-weight: 800 !important;
+        width: 14px !important;
+        height: 14px !important;
+        border: 1px solid #ffb93d !important;
+        border-radius: 4px !important; /* Daire yerine hafif yuvarlak kare daha okunaklı olur */
+        justify-content: center !important;
+        align-items: center !important;
+        z-index: 10 !important;
+    }
+
+    #trait-list .trait-hex-container {
+        transform: scale(0.85) !important; /* 45px panel için ideal ölçek */
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* 4. MOBİL MENÜ NAVİGASYON (ORDER: 3) */
+    .mobile-navigation-tabs {
+        order: 3 !important;
+        display: flex !important;
+        width: 100% !important;
+        padding: 0px !important; /* Kenarlardan çok az boşluk */
+        gap: 10px !important; /* Aradaki boşluğu kapat */
+        margin: 10px 0 0 0!important;
+        z-index: 2;
+    }
+
+    .m-tab-btn {
+        flex: 1;
+        padding: 12px 0 !important;
+        background: var(--panel-header);
+        border: 1px solid var(--border);
+        border-bottom: none !important; /* Alt çizgiyi kaldır ki birleşsin */
+        color: var(--text-muted);
+        font-weight: 700;
+        font-size: 13px;
+        border-radius: 10px 10px 0 0;
+        text-transform: uppercase;
+    }
+
+    .m-tab-btn.active {
+        background: rgba(202, 147, 55, 0.2);
+        color: var(--accent);
+        border-color: var(--accent);
+        height: calc(100% + 1px); /* Alt border'ı örtmek için hafif taşma */
+    }
+
+    /* 5. İÇERİK PANELLERİ (ORDER: 4) */
+    .selection-panel, .items-section {
+        order: 4 !important;
+        width: 100% !important;
+        border: 1px solid var(--border) !important;
+        border-top: none !important; /* Butonlarla birleşen üst çizgiyi kaldır */
+        border-radius: 0 0 8px 8px !important; /* Sadece alt köşeleri yuvarla */
+        background: var(--panel-bg) !important;
+        padding: 10px 5px !important; /* Kenarlardan 5px iç boşluk */
+        margin: 0 !important;
+    }
+
+    /* "ŞAMPİYONLAR" yazısının arkasındaki tüm satır */
+    .selection-panel .panel-header, 
+    .items-section .panel-header {
+        background-color: var(--panel-header) !important; /* Buraya istediğin renk kodunu yaz */
+        padding: 10px 15px !important;      /* Yazının kenarlara uzaklığı */
+        border-bottom: 1px solid #333 !important; /* Altındaki ince çizgi (isteğe bağlı) */
+        border-radius: 0 !important;         /* Köşeleri sıfırlamak istersen */
+    }
+    #champions-grid {
+        grid-template-columns: repeat(15, 1fr) !important; /* Havuz 5'li */
+        gap: 8px;
+    }
+
+    /* Panel Gizleme Mantığı */
+    .selection-panel:not(.active),
+    .items-section:not(.active) {
+        display: none !important;
+    }
+
+    /* 2. EŞYALAR PANELİ: Yan yana 12 adet */
+    .items-section {
+        padding: 10px !important;
+    }
+
+    .item-tabs {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .item-tab-btn {
+        padding: 4px 8px !important;
+        font-size: 12px !important;
+    }
+
+    .items-grid {
+        display: grid !important;
+        grid-template-columns: repeat(16, 1fr) !important; /* Tam 12 sütun */
+        gap: 4px !important; /* Eşyalar arası dar boşluk */
+        width: 100% !important;
+    }
+
+    .item-card {
+        width: 100% !important;
+        aspect-ratio: 1 / 1 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .item-card img {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 4px !important;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+}
+
+/* ==========================================================================
+   PC GÖRÜNÜMÜ KESİN AYARLAR (1025px+)
+   ========================================================================== */
+@media (min-width: 1025px) {
+    .mobile-navigation-tabs { display: none !important; }
+
+    /* Traits Paneli PC'de normal dikey haline dönsün */
+    .traits-panel {
+        order: unset;
+        width: 280px !important; /* Orijinal genişlik */
+        height: calc(100vh - 30px) !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    #trait-list {
+        flex-direction: column !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    /* PC'de her şeyi göster */
+    .selection-panel, .items-section {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* Orta alan yerleşimi */
+    .middle-layout {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+}
