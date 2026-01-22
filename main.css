@@ -554,12 +554,12 @@ body {
 
 .permanent-lock {
     position: absolute;
-    width: 22px;    /* İkon boyutu */
-    height: 22px;   /* İkon boyutu */
+    width: 18px;    /* İkon boyutu */
+    height: 18px;   /* İkon boyutu */
     bottom: -6px;   /* Alttan dışarı taşma */
     right: -6px;    /* Sağdan dışarı taşma */
     
-    background-image: url('img/profiles/kilit.svg'); /* Resim yolun */
+    background-image: url('img/stats/kilit.svg'); /* Resim yolun */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

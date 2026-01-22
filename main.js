@@ -1,78 +1,21 @@
 import { champions, traits as TRAIT_THRESHOLDS } from './data.js';
 import { allItemsMap, renderCategory, initItems } from './items.js';
-import {
-    generateTraitTooltipHTML,
-    generateChampionTooltipHTML,
-    generateItemTooltipHTML,
-    safeLowercase,
-    applySmartPosition
-} from './tooltips.js';
-import { initPlanner, updateUI } from './planner.js';
+import { generateTraitTooltipHTML, generateChampionTooltipHTML, generateItemTooltipHTML, safeLowercase, applySmartPosition } from './tooltips.js';
+import { initPlanner } from './planner.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    // --- ELEMENTLER ---
+
     const traitListEl = document.getElementById("trait-list");
     const resetBtn = document.getElementById("reset-team");
-    const globalTooltip = document.getElementById("global-trait-tooltip");
-    
-    // YENİ: Eşya Arama Elementleri
     const itemSearchInput = document.getElementById("item-search");
     const clearItemSearchBtn = document.getElementById("clear-item-search");
-
+    const globalTooltip = document.getElementById("global-trait-tooltip");
+    
     let currentTraitsData = new Map();
-
     const champTooltip = document.createElement("div");
     champTooltip.className = "champ-tooltip";
     document.body.appendChild(champTooltip);
 
-    initItems();
-
-    // YENİ: Eşya Arama Dinleyicileri
-    if (itemSearchInput) {
-        itemSearchInput.addEventListener("input", (e) => {
-            // items.js'den gelen fonksiyonu çağırıyoruz
-            import('./items.js').then(module => {
-                module.handleItemSearch(e.target.value);
-            });
-        });
-    }
-
-    if (clearItemSearchBtn) {
-        clearItemSearchBtn.addEventListener("click", () => {
-            itemSearchInput.value = "";
-            import('./items.js').then(module => {
-                module.handleItemSearch("");
-            });
-            itemSearchInput.focus();
-        });
-    }
-
-    initPlanner({
-        champions: champions,
-        champTooltip: champTooltip,
-        onUpdate: (comp) => {
-            renderTraits(comp);
-        },
-        onPoolRender_Callback: null 
-    });
-
-    // Reset butonuna eşya aramasını temizlemeyi de ekleyelim
-    if (resetBtn) {
-        resetBtn.addEventListener("click", () => {
-            if (window.resetPlanner) window.resetPlanner();
-            
-            // Eşya aramasını sıfırla
-            if (itemSearchInput) {
-                itemSearchInput.value = "";
-                import('./items.js').then(m => m.handleItemSearch(""));
-            }
-
-            const activeBtn = document.querySelector('.item-tab-btn.active');
-            const currentCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'normal';
-            renderCategory(currentCat);
-        });
-    }
-    
     function findTraitInfo(key) {
         const safeKey = safeLowercase(key);
         if (TRAIT_THRESHOLDS.specialTraits?.[safeKey]) return { data: TRAIT_THRESHOLDS.specialTraits[safeKey], type: 'special' };
@@ -199,15 +142,51 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-
-    if (resetBtn) {
-        resetBtn.addEventListener("click", () => {
-            if (window.resetPlanner) window.resetPlanner();
-            const activeBtn = document.querySelector('.item-tab-btn.active');
-            const currentCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'normal';
-            renderCategory(currentCat);
+    if (itemSearchInput) {
+        itemSearchInput.addEventListener("input", (e) => {
+            const term = e.target.value;
+            import('./items.js').then(module => {
+                module.handleItemSearch(term);
+            });
         });
     }
 
+    if (clearItemSearchBtn) {
+        clearItemSearchBtn.addEventListener("click", () => {
+            itemSearchInput.value = "";
+            import('./items.js').then(module => {
+                module.handleItemSearch("");
+            });
+            itemSearchInput.focus();
+        });
+    }
+
+    if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+        if (window.resetPlanner) {
+            window.resetPlanner();
+        }
+
+        if (itemSearchInput) {
+            itemSearchInput.value = "";
+            import('./items.js').then(m => m.handleItemSearch(""));
+        }
+
+        const activeBtn = document.querySelector('.item-tab-btn.active');
+        const currentCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'normal';
+        renderCategory(currentCat);
+    });
+}
+    initItems();
     initGlobalTooltips();
+
+    initPlanner({
+        champions: champions,
+        champTooltip: champTooltip,
+        onUpdate: (comp) => {
+            renderTraits(comp);
+        },
+        onPoolRender_Callback: null
+    });
+
 });

@@ -21,73 +21,79 @@
             <div id="trait-list"></div>
         </aside>
 
-        <section class="panel team-panel">
-            <div class="panel-header">
-                <h2>Takımın (<span id="team-count">0</span>/10)</h2>
-                <button id="reset-team" class="btn-reset">X</button>
-            </div>
-            <div id="active-team-grid">
-                <div class="hex-row">
-                    <div class="empty-slot" id="slot-0"></div>
-                    <div class="empty-slot" id="slot-1"></div>
-                    <div class="empty-slot" id="slot-2"></div>
-                    <div class="empty-slot" id="slot-3"></div>
-                    <div class="empty-slot" id="slot-4"></div>
-                    <div class="empty-slot" id="slot-5"></div>
-                    <div class="empty-slot" id="slot-6"></div>
-                </div>
-                <div class="hex-row">
-                    <div class="empty-slot" id="slot-7"></div>
-                    <div class="empty-slot" id="slot-8"></div>
-                    <div class="empty-slot" id="slot-9"></div>
-                    <div class="empty-slot" id="slot-10"></div>
-                    <div class="empty-slot" id="slot-11"></div>
-                    <div class="empty-slot" id="slot-12"></div>
-                    <div class="empty-slot" id="slot-13"></div>
-                </div>
-                <div class="hex-row">
-                    <div class="empty-slot" id="slot-14"></div>
-                    <div class="empty-slot" id="slot-15"></div>
-                    <div class="empty-slot" id="slot-16"></div>
-                    <div class="empty-slot" id="slot-17"></div>
-                    <div class="empty-slot" id="slot-18"></div>
-                    <div class="empty-slot" id="slot-19"></div>
-                    <div class="empty-slot" id="slot-20"></div>
-                </div>
-                <div class="hex-row">
-                    <div class="empty-slot" id="slot-21"></div>
-                    <div class="empty-slot" id="slot-22"></div>
-                    <div class="empty-slot" id="slot-23"></div>
-                    <div class="empty-slot" id="slot-24"></div>
-                    <div class="empty-slot" id="slot-25"></div>
-                    <div class="empty-slot" id="slot-26"></div>
-                    <div class="empty-slot" id="slot-27"></div>
-                </div>
-            </div>
+        <div class="middle-layout">
 
-            <div class="panel-divider"></div>
+            <section class="panel team-panel">
+                <div class="panel-header">
+                    <h2>Takımın (<span id="team-count">0</span>/10)</h2>
+                    <button id="reset-team" class="btn-reset">X</button>
+                </div>
+                <div id="active-team-grid">
+                    <div class="hex-row">
+                        <div class="empty-slot" id="slot-0"></div>
+                        <div class="empty-slot" id="slot-1"></div>
+                        <div class="empty-slot" id="slot-2"></div>
+                        <div class="empty-slot" id="slot-3"></div>
+                        <div class="empty-slot" id="slot-4"></div>
+                        <div class="empty-slot" id="slot-5"></div>
+                        <div class="empty-slot" id="slot-6"></div>
+                    </div>
+                    <div class="hex-row">
+                        <div class="empty-slot" id="slot-7"></div>
+                        <div class="empty-slot" id="slot-8"></div>
+                        <div class="empty-slot" id="slot-9"></div>
+                        <div class="empty-slot" id="slot-10"></div>
+                        <div class="empty-slot" id="slot-11"></div>
+                        <div class="empty-slot" id="slot-12"></div>
+                        <div class="empty-slot" id="slot-13"></div>
+                    </div>
+                    <div class="hex-row">
+                        <div class="empty-slot" id="slot-14"></div>
+                        <div class="empty-slot" id="slot-15"></div>
+                        <div class="empty-slot" id="slot-16"></div>
+                        <div class="empty-slot" id="slot-17"></div>
+                        <div class="empty-slot" id="slot-18"></div>
+                        <div class="empty-slot" id="slot-19"></div>
+                        <div class="empty-slot" id="slot-20"></div>
+                    </div>
+                    <div class="hex-row">
+                        <div class="empty-slot" id="slot-21"></div>
+                        <div class="empty-slot" id="slot-22"></div>
+                        <div class="empty-slot" id="slot-23"></div>
+                        <div class="empty-slot" id="slot-24"></div>
+                        <div class="empty-slot" id="slot-25"></div>
+                        <div class="empty-slot" id="slot-26"></div>
+                        <div class="empty-slot" id="slot-27"></div>
+                    </div>
+                </div>
+            </section>
 
-            <div class="panel-section-title">EŞYALAR</div>
+            <section class="panel items-section">
+                <div class="items-control-bar">
+                    <div id="item-tabs" class="item-tabs-menu">
+                        <button class="item-tab-btn active" data-cat="normal">Normal</button>
+                        <button class="item-tab-btn" data-cat="artifact">Yadigar</button>
+                        <button class="item-tab-btn" data-cat="radiant">Işıltılı</button>
+                        <button class="item-tab-btn" data-cat="emblem">Amblem</button>
+                        <button class="item-tab-btn" data-cat="special">Özel</button>
+                    </div>
 
-            <div id="item-tabs" class="item-tabs-menu">
-                <button class="item-tab-btn active" data-cat="normal">Normal</button>
-                <button class="item-tab-btn" data-cat="artifact">Yadigar</button>
-                <button class="item-tab-btn" data-cat="radiant">Işıltılı</button>
-                <button class="item-tab-btn" data-cat="emblem">Amblem</button>
-                <button class="item-tab-btn" data-cat="special">Özel</button>
-            </div>
-            <div id="items-container"></div>
-        </section>
+                    <div class="item-search-container">
+                        <input type="text" id="item-search" placeholder="Eşya ara...">
+                        <button id="clear-item-search" style="display: none;">&times;</button>
+                    </div>
+                </div>
+
+                <div class="panel-divider"></div>
+
+                <div id="items-container" class="items-grid"></div>
+            </section>
+        </div>
 
         <section class="panel selection-panel">
-            <div id="champ-search-container">
-                <input type="text" id="champ-search" placeholder="Şampiyon, özellik veya eşya ara..."
-                    autocomplete="off">
-            </div>
-
             <div class="panel-header">
                 <h2>Şampiyonlar</h2>
-                <button id="toggle-pool-view" class="view-toggle-btn">Maliyete Göre Sıralı</button>
+                <button id="toggle-pool-view" class="view-toggle-btn">Maliyete Göre Sırala</button>
             </div>
             <div id="champions-grid"></div>
         </section>
@@ -95,17 +101,14 @@
     </main>
 
     <div id="global-trait-tooltip" class="trait-tooltip-global"></div>
-
     <script type="module" src="main.js"></script>
 
     <script>
-
         window.handleImageError = function (img) {
             img.onerror = null;
-            img.src = 'img/placeholder.png'; // Eksik resimler için varsayılan ikon
+            img.src = 'img/placeholder.png';
         };
     </script>
-
 </body>
 
 </html>

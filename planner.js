@@ -1,19 +1,12 @@
-import { safeLowercase } from './tooltips.js';
-
-// --- GLOBAL STATE ---
 let selectedComp = [];
-let currentViewMode = "all"; // 'all' veya 'cost'
+let currentViewMode = "all";
 let config = {}; 
 
-/**
- * Planner modülünü başlatır
- */
 export function initPlanner(settings) {
     config = settings;
 
     initBoardSlots();
 
-    // Görünüm Değiştirme (Maliyet vs Alfabetik)
     const toggleBtn = document.getElementById("toggle-pool-view");
     if (toggleBtn) {
         toggleBtn.onclick = (e) => {
@@ -28,7 +21,6 @@ export function initPlanner(settings) {
         };
     }
 
-    // Tahta dışına bırakınca şampiyonu silme
     document.addEventListener("drop", (e) => {
         if (e.target.closest('[id^="slot-"]')) return;
 
@@ -51,9 +43,6 @@ export function initPlanner(settings) {
     renderChampionPool();
 }
 
-/**
- * Şampiyon havuzunu ekrana basar
- */
 export function renderChampionPool() {
     const championListEl = document.getElementById("champions-grid");
     if (!championListEl) return;
@@ -61,7 +50,6 @@ export function renderChampionPool() {
     championListEl.innerHTML = "";
     let displayChamps = [...config.champions];
 
-    // Önce maliyete, sonra isme göre sırala
     displayChamps.sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name));
 
     if (currentViewMode === "cost") {
@@ -90,14 +78,10 @@ export function renderChampionPool() {
     if (config.onPoolRender_Callback) config.onPoolRender_Callback();
 }
 
-/**
- * Arayüzü (Tahtayı ve Seçili Şampiyonları) Güncelle
- */
 export function updateUI() {
     const MAX_SLOTS = 28;
     const teamCountEl = document.getElementById("team-count");
 
-    // Tüm slotları temizle
     for (let i = 0; i < MAX_SLOTS; i++) {
         const slotEl = document.getElementById(`slot-${i}`);
         if (slotEl) {
@@ -108,7 +92,6 @@ export function updateUI() {
         }
     }
 
-    // Seçili şampiyonları yerleştir
     selectedComp.forEach((champ) => {
         const slotEl = document.getElementById(`slot-${champ.slotId}`);
         if (slotEl) {
@@ -137,7 +120,6 @@ export function updateUI() {
         config.onUpdate(selectedComp);
     }
 
-    // Havuzdaki seçilme durumunu güncelle
     document.querySelectorAll(".champ-item").forEach(el => {
         const isSelected = selectedComp.some(c => c.name === el.getAttribute("data-name"));
         el.classList.toggle("selected", isSelected);
@@ -220,12 +202,21 @@ function initBoardSlots() {
 
 function createChampElement(champ, isInComp = false) {
     const div = document.createElement("div");
-    div.className = isInComp ? `comp-champ cost-border-${champ.cost}` : `champ-item cost-${champ.cost}`;
+    const costClass = isInComp ? `cost-border-${champ.cost}` : `cost-${champ.cost}`;
+    div.className = `${isInComp ? 'comp-champ' : 'champ-item'} ${costClass}`;
 
     const img = document.createElement("img");
     img.src = champ.img;
     img.onerror = () => img.src = 'img/profiles/default.png';
     div.appendChild(img);
+
+    if (champ.isLocked) {
+        const lockIcon = document.createElement("div");
+        lockIcon.className = "permanent-lock";
+        // Kilit resmini CSS üzerinden background-image olarak vermek daha esnektir
+        div.appendChild(lockIcon);
+    }
+    
 
     div.setAttribute("data-name", champ.name);
 
