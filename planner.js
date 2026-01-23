@@ -146,8 +146,12 @@ function applyChampFilter() {
     const cards = document.querySelectorAll('.champ-item');
     cards.forEach(card => {
         const name = safeLowercase(card.getAttribute('data-name') || "");
+        const traits = card.getAttribute('data-traits') || "";
+        
+        const isNameMatch = name.includes(currentChampSearchTerm);
+        const isTraitMatch = traits.includes(currentChampSearchTerm);
 
-        if (name.includes(currentChampSearchTerm)) {
+        if (isNameMatch || isTraitMatch) {
             card.style.display = 'flex';
         } else {
             card.style.display = 'none';
@@ -242,12 +246,13 @@ function createChampElement(champ, isInComp = false) {
     if (champ.isLocked) {
         const lockIcon = document.createElement("div");
         lockIcon.className = "permanent-lock";
-        // Kilit resmini CSS üzerinden background-image olarak vermek daha esnektir
         div.appendChild(lockIcon);
     }
 
 
     div.setAttribute("data-name", champ.name);
+
+    div.setAttribute("data-traits", champ.traits.map(t => safeLowercase(t)).join(','));
 
     div.onclick = (e) => {
         e.stopPropagation();

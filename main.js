@@ -1,8 +1,8 @@
-import { champions, traits as TRAIT_THRESHOLDS } from './data.js';
-import { allItemsMap, initItems } from './items.js';
-import { generateTraitTooltipHTML, generateChampionTooltipHTML, generateItemTooltipHTML, safeLowercase, applySmartPosition } from './tooltips.js';
-import { initPlanner } from './planner.js';
-import { initPhotoMode } from './photomode.js';
+    import { champions, traits as TRAIT_THRESHOLDS } from './data.js';
+    import { allItemsMap, initItems } from './items.js';
+    import { generateTraitTooltipHTML, generateChampionTooltipHTML, generateItemTooltipHTML, safeLowercase, applySmartPosition } from './tooltips.js';
+    import { initPlanner } from './planner.js';
+    import { initPhotoMode } from './photomode.js';
 
 document.addEventListener("DOMContentLoaded", () => {
 
