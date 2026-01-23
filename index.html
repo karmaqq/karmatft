@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="tooltips.css">
+    <link rel="stylesheet" href="photomode.css">
 </head>
 
 <body>
@@ -26,7 +27,10 @@
             <section class="panel team-panel">
                 <div class="panel-header">
                     <h2>Takımın (<span id="team-count">0</span>/10)</h2>
-                    <button id="reset-team" class="btn-reset">X</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="photo-mode-btn" class="btn-photo-mode">📸 Fotoğraf Modu</button>
+                        <button id="reset-team" class="btn-reset">Takımı Temizle</button>
+                    </div>
                 </div>
                 <div id="active-team-grid">
                     <div class="hex-row">
@@ -92,8 +96,14 @@
 
         <section class="panel selection-panel">
             <div class="panel-header">
-                <h2>Şampiyonlar</h2>
-                <button id="toggle-pool-view" class="view-toggle-btn">Maliyete Göre Sırala</button>
+                <div class="champ-controls-wrapper">
+                    <button id="toggle-pool-view" class="view-toggle-btn">Şampiyonları Sırala</button>
+                    
+                    <div class="item-search-container">
+                        <input type="text" id="champ-search" placeholder="Şampiyon ara...">
+                        <button id="clear-champ-search" style="display: none;">&times;</button>
+                    </div>
+                </div>
             </div>
             <div id="champions-grid"></div>
         </section>

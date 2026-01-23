@@ -1,7 +1,8 @@
 import { champions, traits as TRAIT_THRESHOLDS } from './data.js';
-import { allItemsMap, renderCategory, initItems } from './items.js';
+import { allItemsMap, initItems } from './items.js';
 import { generateTraitTooltipHTML, generateChampionTooltipHTML, generateItemTooltipHTML, safeLowercase, applySmartPosition } from './tooltips.js';
 import { initPlanner } from './planner.js';
+import { initPhotoMode } from './photomode.js';
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -9,12 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const resetBtn = document.getElementById("reset-team");
     const itemSearchInput = document.getElementById("item-search");
     const clearItemSearchBtn = document.getElementById("clear-item-search");
+    const champSearchInput = document.getElementById("champ-search");
+    const clearChampSearchBtn = document.getElementById("clear-champ-search");
     const globalTooltip = document.getElementById("global-trait-tooltip");
-    
+
     let currentTraitsData = new Map();
     const champTooltip = document.createElement("div");
     champTooltip.className = "champ-tooltip";
     document.body.appendChild(champTooltip);
+    
 
     function findTraitInfo(key) {
         const safeKey = safeLowercase(key);
@@ -73,27 +77,39 @@ document.addEventListener("DOMContentLoaded", () => {
     function createTraitSimpleElement(data) {
         const li = document.createElement("li");
         const { traitName, count, activeTier, isActive, steps, reachedTierCount, type } = data;
+        
+        // Aktiflik durumuna göre class belirleme
         const tierClass = isActive ? (activeTier.rank || `tier-${reachedTierCount}`) : "inactive";
 
         li.className = `trait-item ${isActive ? 'active' : ''} ${tierClass} trait-type-${type}`;
         li.setAttribute("data-trait-key", safeLowercase(traitName));
 
-        const safeIcon = safeLowercase(traitName).replace(/[ğüşıöç]/g, m => ({ ğ: 'g', ü: 'u', ş: 's', ı: 'i', ö: 'o', ç: 'c' }[m])).replace(/[^a-z0-9]/g, '');
+        const safeIcon = safeLowercase(traitName)
+            .replace(/[ğüşıöç]/g, m => ({ ğ: 'g', ü: 'u', ş: 's', ı: 'i', ö: 'o', ç: 'c' }[m]))
+            .replace(/[^a-z0-9]/g, '');
 
         li.innerHTML = `
             <div class="trait-hex-container">
-                <div class="trait-hex"><img src="img/traits/${safeIcon}.png" class="t-icon" onerror="this.src='img/traits/default.png'"></div>
-                <div class="trait-count-badge">${count}</div>
+                <div class="trait-hex-outer">
+                    <div class="trait-hex-inner">
+                        <img src="img/traits/${safeIcon}.png" class="t-icon" onerror="this.src='img/traits/default.png'">
+                    </div>
+                </div>
             </div>
+            
+            <div class="trait-count-badge-box">${count}</div>
+            
             <div class="trait-info-wrapper">
                 <div class="t-name">${traitName}</div>
                 <div class="t-steps-row">
                     ${isActive ? steps.map(s => {
-            const v = s.count || s;
-            return `<span class="t-step ${activeTier && v === activeTier.count ? 'is-current' : (count >= v ? 'is-reached' : 'is-off')}">${v}</span>`;
-        }).join('<span class="t-sep">></span>') : `<span class="t-step is-off">${count} / ${steps[0].count || steps[0]}</span>`}
+                        const v = s.count || s;
+                        const isCurrent = activeTier && v === activeTier.count;
+                        return `<span class="t-step ${isCurrent ? 'is-current' : (count >= v ? 'is-reached' : 'is-off')}">${v}</span>`;
+                    }).join('<span class="t-sep">></span>') : `<span class="t-step is-off">${count} / ${steps[0].count || steps[0]}</span>`}
                 </div>
             </div>`;
+
         return li;
     }
 
@@ -161,22 +177,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    if (champSearchInput) {
+        champSearchInput.addEventListener("input", (e) => {
+            const term = e.target.value;
+            import('./planner.js').then(module => {
+                module.handleChampSearch(term);
+            });
+        });
+    }
+
+    if (clearChampSearchBtn) {
+        clearChampSearchBtn.addEventListener("click", () => {
+            champSearchInput.value = "";
+            import('./planner.js').then(module => {
+                module.handleChampSearch("");
+            });
+            champSearchInput.focus();
+        });
+    }
+
     if (resetBtn) {
-    resetBtn.addEventListener("click", () => {
-        if (window.resetPlanner) {
-            window.resetPlanner();
-        }
+        resetBtn.addEventListener("click", () => {
+            // 1. Planlayıcıyı (hex grid ve seçili şampiyonlar) sıfırla
+            if (window.resetPlanner) {
+                window.resetPlanner();
+            }
+        });
+    }
 
-        if (itemSearchInput) {
-            itemSearchInput.value = "";
-            import('./items.js').then(m => m.handleItemSearch(""));
-        }
-
-        const activeBtn = document.querySelector('.item-tab-btn.active');
-        const currentCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'normal';
-        renderCategory(currentCat);
-    });
-}
     initItems();
     initGlobalTooltips();
 
@@ -188,5 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         onPoolRender_Callback: null
     });
+
+    initPhotoMode();
 
 });

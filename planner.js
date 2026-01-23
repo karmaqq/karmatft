@@ -1,6 +1,9 @@
+import { safeLowercase } from './tooltips.js';
+
 let selectedComp = [];
 let currentViewMode = "all";
-let config = {}; 
+let currentChampSearchTerm = "";
+let config = {};
 
 export function initPlanner(settings) {
     config = settings;
@@ -43,6 +46,17 @@ export function initPlanner(settings) {
     renderChampionPool();
 }
 
+export function handleChampSearch(term) {
+    currentChampSearchTerm = safeLowercase(term);
+
+    const clearBtn = document.getElementById('clear-champ-search');
+    if (clearBtn) {
+        clearBtn.style.display = term.length > 0 ? 'block' : 'none';
+    }
+
+    applyChampFilter();
+}
+
 export function renderChampionPool() {
     const championListEl = document.getElementById("champions-grid");
     if (!championListEl) return;
@@ -76,6 +90,8 @@ export function renderChampionPool() {
     }
 
     if (config.onPoolRender_Callback) config.onPoolRender_Callback();
+
+    applyChampFilter();
 }
 
 export function updateUI() {
@@ -123,6 +139,19 @@ export function updateUI() {
     document.querySelectorAll(".champ-item").forEach(el => {
         const isSelected = selectedComp.some(c => c.name === el.getAttribute("data-name"));
         el.classList.toggle("selected", isSelected);
+    });
+}
+
+function applyChampFilter() {
+    const cards = document.querySelectorAll('.champ-item');
+    cards.forEach(card => {
+        const name = safeLowercase(card.getAttribute('data-name') || "");
+
+        if (name.includes(currentChampSearchTerm)) {
+            card.style.display = 'flex';
+        } else {
+            card.style.display = 'none';
+        }
     });
 }
 
@@ -216,7 +245,7 @@ function createChampElement(champ, isInComp = false) {
         // Kilit resmini CSS üzerinden background-image olarak vermek daha esnektir
         div.appendChild(lockIcon);
     }
-    
+
 
     div.setAttribute("data-name", champ.name);
 

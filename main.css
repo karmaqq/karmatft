@@ -1,3 +1,6 @@
+/* ============================================================================*/
+/*  SECTION: GENEL YAPI
+/* ============================================================================*/
 :root {
     --bg-dark: #08090c;
     --panel-bg: #16181d;
@@ -32,11 +35,16 @@ body {
     box-sizing: border-box;
 }
 
-#champions-grid::-webkit-scrollbar,
+#trait-list::-webkit-scrollbar,
 #active-team-grid::-webkit-scrollbar,
-#trait-list::-webkit-scrollbar {
+#items-container::-webkit-scrollbar,
+#champions-grid::-webkit-scrollbar {
     display: none;
 }
+
+/* ==========================================================================
+   Genel Plan
+   ========================================================================== */
 
 .main-container {
     display: flex;
@@ -67,16 +75,6 @@ body {
     flex-shrink: 0;
 }
 
-.panel {
-    background: var(--panel-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
-}
-
 .middle-layout .team-panel {
     height: auto !important;
     flex: 0 0 auto;
@@ -92,6 +90,28 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 0;
+}
+
+.selection-panel {
+    width: 500px;
+    flex-shrink: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   Panel Genel Yönetimi
+   ========================================================================== */
+
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
 }
 
 .panel-header {
@@ -112,16 +132,10 @@ body {
     color: var(--accent-light);
     text-transform: uppercase;
 }
-.panel-divider {
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(202, 147, 55, 0.4), transparent);
-    margin: 0;
-    flex-shrink: 0;
-}
 
-/* ==========================================================================
-    SOL PANEL: ÖZELLİKLER LİSTESİ
-   ========================================================================== */
+/*================================================================================================================*/
+/* SECTION: SOL PANEL - ÖZELLİKLER LİSTESİ (TRAITS)
+/*================================================================================================================*/
 
 #trait-list {
     flex: 1;
@@ -134,16 +148,18 @@ body {
     scrollbar-width: none;
 }
 
+#trait-list::-webkit-scrollbar { display: none; }
+
 .trait-item {
     display: flex;
     align-items: center;
-    background: transparent;
-    border: 1px solid transparent;
-    padding: 6px 8px;
-    gap: 8px;
+    padding: 6px 10px;
     margin-bottom: 4px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+    transition: background 0.2s ease;
+}
+
+.trait-item:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
 }
 
 .trait-item.active {
@@ -151,81 +167,77 @@ body {
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.trait-item:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
-}
-
 .trait-hex-container {
+    width: 44px;
+    height: 48px;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
+    margin-right: 5px;
+    flex-shrink: 0;
 }
 
-.trait-hex {
-    width: 38px;
-    height: 42px;
-    background: #32353d;
+.trait-hex-outer {
+    width: 42px;
+    height: 46px;
+    background: #1a1a1a;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     display: flex;
-    align-items: center;
     justify-content: center;
-    filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 1px #000);
+    align-items: center;
+    transition: all 0.3s ease;
 }
 
-.tier-1 .trait-hex {
-    background: linear-gradient(180deg, #cd7f32 0%, #8e5a3c 100%) !important;
-    box-shadow: 0 0 5px rgba(142, 90, 60, 0.5); }
-.tier-2 .trait-hex {
-    background: linear-gradient(180deg, #d1d1d1 0%, #949494 100%) !important;
-    box-shadow: 0 0 5px rgba(148, 148, 148, 0.5); }
-.tier-3 .trait-hex {
-    background: linear-gradient(180deg, #ffdc81 0%, #c79510 100%) !important;
-    box-shadow: 0 0 8px rgba(199, 149, 16, 0.6); }
-.tier-special .trait-hex {
-    background: linear-gradient(180deg, #2ae792 0%, #14cc73 100%) !important;
-    box-shadow: 0 0 10px rgba(20, 204, 115, 0.5); }
-.tier-prismatic .trait-hex {
-    background: linear-gradient(135deg, #ff8cff 0%, #7e57ff 50%, #00c2ff 100%) !important;
-    box-shadow: 0 0 15px rgba(255, 140, 255, 0.7);
-    animation: prismatic-glow 3s infinite alternate; }
-
-@keyframes prismatic-glow {
-    from { filter: brightness(1) saturate(1); }
-    to { filter: brightness(1.2) saturate(1.3);} }
+.trait-hex-inner {
+    width: 36px;
+    height: 40px;
+    background: #2a2a2a;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease;
+}
 
 .t-icon {
     width: 22px;
     height: 22px;
-    filter: grayscale(1) brightness(0.6);
-    transition: filter 0.3s ease;
+    object-fit: contain;
+    filter: grayscale(1) opacity(0.5);
+    transition: all 0.3s ease;
 }
 
-.active .t-icon {
-    filter: grayscale(0) brightness(1.2);
+.trait-item.active .t-icon {
+    filter: grayscale(0) brightness(1.2) drop-shadow(0 0 2px rgba(0,0,0,0.8));
 }
 
-.trait-count-badge {
-    background: #585858 !important;
+.trait-count-badge-box {
+    width: 24px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: #888;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+    flex-shrink: 0;
+}
+
+.trait-item.active .trait-count-badge-box {
+    border-color: var(--accent);
+    background: rgba(202, 147, 55, 0.2);
     color: #fff;
-    font-size: 11px;
-    font-weight: 900;
-    padding: 4px 5px;
-    border-radius: 3px;
-    min-width: 18px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.active .trait-count-badge {
-    background: #32353d !important;
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .trait-info-wrapper {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 2px;
 }
 
 .t-name {
@@ -234,7 +246,6 @@ body {
     text-transform: capitalize;
     color: #888;
 }
-
 .active .t-name {
     color: #fff;
     font-weight: 700;
@@ -251,23 +262,39 @@ body {
     font-weight: 800;
 }
 
-.t-step.is-off {
-    color: #444;
-}
-
-.t-step.is-reached {
-    color: #fff;
-}
-
-.t-sep {
-    color: #444;
-    font-size: 10px;
-    margin: 0 1px;
-}
+.t-step.is-off { color: #444; }
+.t-step.is-reached { color: #fff; }
+.t-sep { color: #444; font-size: 10px; margin: 0 1px; }
 
 /* ==========================================================================
-   ORTA PANEL: TAKIM PLANLAYICI [ÜST]
+   Aşama Renkleri Hex Boyama
    ========================================================================== */
+
+.trait-item.active .trait-hex-outer {
+    background: rgba(255, 255, 255, 0.15);
+    filter: drop-shadow(0 0 3px rgba(0,0,0,0.5));
+}
+
+.trait-item.inactive .trait-hex-inner       { background: #58585854 !important; }
+.trait-item.tier-1 .trait-hex-inner         { background: linear-gradient(180deg, #c57b32 0%, #4e2b1d 100%) !important; }
+.trait-item.tier-2 .trait-hex-inner         { background: linear-gradient(180deg, #e1e9f0 0%, #6d8293 100%) !important; }
+.trait-item.tier-3 .trait-hex-inner         { background: linear-gradient(180deg, #f9e29a 0%, #9e7123 100%) !important; }
+.trait-item.tier-special .trait-hex-inner   { background: linear-gradient(180deg, #da8e2b 0%, #5e2c10 100%) !important; }
+.trait-item.tier-prismatic .trait-hex-inner { 
+    background: linear-gradient(135deg, #ffecff 0%, #ff8cff 25%, #a677ff 50%, #ae5be6 75%, #ffffff 100%) !important;
+    background-size: 200% 200%;
+    animation: prismatic-glow 3s linear infinite;
+}
+
+@keyframes prismatic-glow {
+    0% { background-position: 0% 50%; filter: hue-rotate(0deg) brightness(1); }
+    50% { background-position: 100% 50%; filter: hue-rotate(15deg) brightness(1.2); }
+    100% { background-position: 0% 50%; filter: hue-rotate(0deg) brightness(1); }
+}
+
+/*================================================================================================================*/
+/*  SECTION: ORTA PANEL ÜST: TAKIM PLANLAYICI 
+/*================================================================================================================*/
 
 #active-team-grid {
     display: flex;
@@ -283,21 +310,10 @@ body {
     position: relative;
 }
 
-.btn-reset {
-    background: rgba(255, 78, 80, 0.1);
-    border: 1px solid #ff4e50;
-    color: #ff4e50;
-    width: 22px;
-    height: 22px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 10px;
-}
-
 .hex-row {
     display: flex;
     margin-top: -14px;
-    margin-left: -41px;
+    margin-left: -44px;
     justify-content: center;
 }
 
@@ -358,10 +374,9 @@ body {
     filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
 }
 
-.dragging {
-    opacity: 0.5;
-    transform: scale(0.8);
-}
+/* ==========================================================================
+   Çerçeve ve İşlevsel Özellikler
+   ========================================================================== */
 
 .cost-border-1 { background: var(--c1) !important; }
 .cost-border-2 { background: var(--c2) !important; }
@@ -370,9 +385,9 @@ body {
 .cost-border-5 { background: var(--c5) !important; }
 .cost-border-7 { background: var(--c7) !important; }
 
-/* ==========================================================================
-   ORTA PANEL: EŞYALAR (ALT)
-   ========================================================================== */
+/*================================================================================================================*/
+/*  SECTION: OPRTA PANEL: EŞYALAR
+/*================================================================================================================*/
 
 .items-control-bar {
     display: flex;
@@ -380,12 +395,6 @@ body {
     justify-content: space-between;
     padding: 10px 15px;
     background: rgba(0, 0, 0, 0.1);
-}
-
-.item-tabs-menu {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
 }
 
 #items-container {
@@ -433,6 +442,16 @@ body {
     border-color: var(--accent);
 }
 
+/* ==========================================================================
+   Eşya Menüsü
+   ========================================================================== */
+
+.item-tabs-menu {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
 .item-tab-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(202, 147, 55, 0.3);
@@ -448,6 +467,229 @@ body {
     color: #000;
     font-weight: bold;
 }
+
+/*================================================================================================================*/
+/*  SECTION: SAĞ PANEL: ŞAMPİYONLAR */
+/*================================================================================================================*/
+
+.champ-controls-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+}
+
+#champions-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-auto-rows: min-content;
+    gap: 10px;
+    padding: 15px;
+    overflow-y: auto;
+    align-content: start;
+}
+
+.champ-item {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    display: block;
+    overflow: visible !important;
+}
+
+.champ-item:hover {
+    background: #62b878;
+    color: #ffffff;
+    transition: all 0.5s ease-in-out;
+    box-shadow: 0 0 10px rgba(123, 211, 127, 0.4);
+    transform: scale(1.05);
+}
+
+.champ-item:active {
+    transform: scale(0.95); 
+    filter: brightness(0.9);
+}
+
+.champ-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.champ-item.selected {
+    filter: grayscale(1) brightness(0.3);
+}
+
+.champ-item.selected::after {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--accent);
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.permanent-lock {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    bottom: -6px;
+    right: -6px;
+    background-image: url('img/stats/kilit.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 5;
+    pointer-events: none;
+    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.8));
+}
+
+.cost-1 { border: 2px solid var(--c1); } .cost-2 { border: 2px solid var(--c2); }
+.cost-3 { border: 2px solid var(--c3); } .cost-4 { border: 2px solid var(--c4); } 
+.cost-5 { border: 2px solid var(--c5); } .cost-7 { border: 2px solid var(--c7); }
+
+/* ==========================================================================
+   Şampiyon Görüntüleme Modu
+   ========================================================================== */
+
+.pool-divider {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    margin: 15px 0 8px 0;
+}
+
+.pool-divider span {
+    font-size: 10px;
+    font-weight: 900;
+    padding-right: 10px;
+    white-space: nowrap;
+}
+
+.pool-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.4;
+}
+
+.cost-divider-1 { color: var(--c1); } .cost-divider-2 { color: var(--c2); }
+.cost-divider-3 { color: var(--c3); } .cost-divider-4 { color: var(--c4); } 
+.cost-divider-5 { color: var(--c5); } .cost-divider-7 { color: var(--c7); }
+
+/*================================================================================================================*/
+/*  SECTION: Butonlar ve Arama Çubukları
+/*================================================================================================================*/
+
+.view-toggle-btn, .btn-reset {
+    height: 28px; 
+    padding: 0 14px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-toggle-btn {
+    background: rgba(202, 147, 55, 0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+.view-toggle-btn:hover {
+    background: var(--accent);
+    color: #111;
+    box-shadow: 0 0 12px rgba(202, 147, 55, 0.3);
+    transform: translateY(-1px);
+}
+
+.view-toggle-btn:active {
+    transform: translateY(0px) scale(0.98);
+}
+
+.btn-reset {
+    background: #ff393c;
+    border: 1px solid #830002;
+    color: #ffffff;
+}
+
+.btn-reset:hover {
+    background: #fc3438c0;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 78, 80, 0.4);
+    transform: scale(1.05);
+    transform: translateY(-1px)
+}
+
+.btn-reset:active {
+    transform: translateY(0px) scale(0.98);
+}
+
+.dragging {
+    opacity: 0.5;
+    transform: scale(0.8);
+}
+
+/* Şampiyon Arama*/
+
+.champ-search-container {
+    position: relative;
+    width: 280px;
+    display: flex;
+    align-items: center;
+}
+
+#champ-search {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 35px 8px 12px;
+    color: var(--text-main);
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+#champ-search:focus {
+    border-color: var(--accent);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#clear-champ-search {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: none;
+    z-index: 2;
+}
+
+#clear-champ-search:hover {
+    color: var(--accent);
+    transform: scale(1.2);
+}
+
+/* Eşya Arama*/
 
 .item-search-container {
     position: relative;
@@ -490,131 +732,4 @@ body {
 #clear-item-search:hover {
     color: var(--accent);
     transform: scale(1.2);
-}
-
-/* ==========================================================================
-   SAĞ PANEL: ŞAMPİYON SEÇİMİ
-   ========================================================================== */
-
-.selection-panel {
-    width: 500px;
-    flex-shrink: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-#champions-grid {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-auto-rows: min-content;
-    gap: 10px;
-    padding: 15px;
-    overflow-y: auto;
-    align-content: start;
-}
-
-.champ-item {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    border-radius: 4px;
-    overflow: hidden;
-    cursor: pointer;
-    display: block;
-    overflow: visible !important;
-}
-
-.champ-item:hover {
-    transform: scale(1.1);
-    z-index: 10;
-}
-
-.champ-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.champ-item.selected {
-    filter: grayscale(1) brightness(0.3);
-}
-
-.champ-item.selected::after {
-    content: "✓";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--accent);
-    font-size: 20px;
-    font-weight: 900;
-}
-
-.permanent-lock {
-    position: absolute;
-    width: 18px;    /* İkon boyutu */
-    height: 18px;   /* İkon boyutu */
-    bottom: -6px;   /* Alttan dışarı taşma */
-    right: -6px;    /* Sağdan dışarı taşma */
-    
-    background-image: url('img/stats/kilit.svg'); /* Resim yolun */
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    
-    z-index: 5;     /* Şampiyon resminin üstünde */
-    pointer-events: none; /* Tıklamayı engellemez, arkadaki şampiyona geçer */
-    
-    /* İkonun daha iyi görünmesi için hafif gölge */
-    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.8));
-}
-
-.cost-1 { border: 2px solid var(--c1); }
-.cost-2 { border: 2px solid var(--c2); }
-.cost-3 { border: 2px solid var(--c3); }
-.cost-4 { border: 2px solid var(--c4); }
-.cost-5 { border: 2px solid var(--c5); }
-.cost-7 { border: 2px solid var(--c7); }
-
-.cost-divider-1 { color: var(--c1); }
-.cost-divider-2 { color: var(--c2); }
-.cost-divider-3 { color: var(--c3); }
-.cost-divider-4 { color: var(--c4); }
-.cost-divider-5 { color: var(--c5); }
-.cost-divider-7 { color: var(--c7); }
-
-.view-toggle-btn {
-    background: rgba(202, 147, 55, 0.1);
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 4px 12px;
-    border-radius: 4px;
-    font-size: 11px;
-    cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.pool-divider {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    margin: 15px 0 8px 0;
-}
-
-.pool-divider span {
-    font-size: 10px;
-    font-weight: 900;
-    padding-right: 10px;
-    white-space: nowrap;
-}
-
-.pool-divider::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.4;
 }

@@ -1,0 +1,247 @@
+/* ============================================================================
+   PHOTO MODE - Fotoğraf Modu Stilleri
+   ============================================================================ */
+
+/* Fotoğraf Modu Butonu */
+.btn-photo-mode {
+    height: 28px; 
+    padding: 0 14px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: 1px solid #764ba2;
+    color: #ffffff;
+}
+
+.btn-photo-mode:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+    transform: translateY(-1px);
+}
+
+.btn-photo-mode:active {
+    transform: translateY(0px) scale(0.98);
+}
+
+/* ============================================================================
+   ZOOM KONTROLLERI
+   ============================================================================ */
+
+/* Zoom için genel ayarlar */
+body {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center center;
+}
+
+/* Zoom aktifken */
+body.zooming {
+    overflow: hidden;
+}
+
+/* Zoom sırasında diğer panelleri gizle */
+body.zooming .traits-panel,
+body.zooming .selection-panel,
+body.zooming .items-section,
+body.zooming .team-panel .panel-header,
+body.zooming .btn-reset,
+body.zooming .btn-photo-mode {
+    display: none !important;
+}
+
+/* Team panel'i full-screen yap */
+body.zooming .main-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.zooming .middle-layout {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.zooming .team-panel {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.zooming #active-team-grid {
+    transform: scale(1.5);
+    margin: 0;
+    padding: 350px 0;
+}
+
+/* ============================================================================
+   FOTOĞRAF MODU ÖZEL ANIMASYONLAR
+   ============================================================================ */
+
+/* Fotoğraf modu cursor */
+body.photo-mode {
+    cursor: zoom-out;
+}
+
+/* Grid giriş animasyonu */
+body.photo-mode #active-team-grid {
+    animation: photoModeEntry 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes photoModeEntry {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+}
+
+/* Çıkış talimatı mesajı */
+body.photo-mode::after {
+    content: "ESC veya F11 ile çık • Mouse tekerleği ile yakınlaştır";
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--accent-light);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 10000;
+    animation: fadeInOut 4s ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 1; }
+}
+
+/* ============================================================================
+   PHOTO MODE TOOLTIP
+   ============================================================================ */
+
+.photo-mode-tooltip {
+    position: fixed;
+    background: linear-gradient(135deg, #1a1f2e 0%, #16181d 100%);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 0;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(202, 147, 55, 0.2);
+    min-width: 320px;
+    max-width: 380px;
+}
+
+.photo-mode-tooltip.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.photo-mode-tooltip .tooltip-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 7px 7px 0 0;
+}
+
+.photo-mode-tooltip .tooltip-icon {
+    font-size: 18px;
+}
+
+.photo-mode-tooltip .tooltip-header strong {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.photo-mode-tooltip .tooltip-content {
+    padding: 16px;
+}
+
+.photo-mode-tooltip .tooltip-content p {
+    margin: 0 0 16px 0;
+    color: var(--text-main);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.photo-mode-tooltip .tooltip-shortcuts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.photo-mode-tooltip .shortcut-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+}
+
+.photo-mode-tooltip .shortcut-item span {
+    color: var(--text-muted);
+    flex: 1;
+}
+
+.photo-mode-tooltip kbd {
+    background: linear-gradient(180deg, #2a2d35 0%, #1a1d25 100%);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: 'Inter', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-light);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    min-width: 32px;
+    text-align: center;
+    display: inline-block;
+}
+
+/* Fotoğraf modunda tooltip gizle */
+body.zooming .photo-mode-tooltip {
+    display: none;
+}
