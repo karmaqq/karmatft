@@ -622,9 +622,9 @@ body {
 }
 
 .btn-reset {
-    background: #ff393c;
-    border: 1px solid #830002;
-    color: #ffffff;
+    background: rgba(220, 53, 69, 0.2);
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d; /* Metin rengi daha canlı bir kırmızı */
 }
 
 .btn-reset:hover {

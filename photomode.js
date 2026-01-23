@@ -137,7 +137,7 @@ function createPhotoModeTooltip(btnElement) {
             <strong>Fotoğraf Modu</strong>
         </div>
         <div class="tooltip-content">
-            <p>Takım ızgaranızı tam ekranda, büyütülmüş olarak görüntüleyin.</p>
+            <p>Takımını Tam Ekranda Görüntüle</p>
             <div class="tooltip-shortcuts">
                 <div class="shortcut-item">
                     <kbd>ESC</kbd>
@@ -147,10 +147,7 @@ function createPhotoModeTooltip(btnElement) {
                     <kbd>Ctrl</kbd> + <kbd>Scroll</kbd>
                     <span>Yakınlaştır/Uzaklaştır</span>
                 </div>
-                <div class="shortcut-item">
-                    <kbd>F11</kbd>
-                    <span>Tam Ekran</span>
-                </div>
+                
             </div>
         </div>
     `;
