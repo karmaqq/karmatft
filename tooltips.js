@@ -1,6 +1,3 @@
-/* ==========================================================================
-   1. YARDIMCI VE GÜVENLİK FONKSİYONLARI
-   ========================================================================== */
 export function safeLowercase(str) {
     if (!str) return "";
     return str
@@ -21,9 +18,6 @@ export function parseStatIcons(text) {
     });
 }
 
-/* ==========================================================================
-   2. AKILLI KONUMLANDIRMA MOTORU (CONTEXT DUYARLI)
-   ========================================================================== */
 export function applySmartPosition(el, anchorRect, context = "trait") {
     if (!anchorRect) return;
     const padding = 15;
@@ -63,7 +57,6 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
         top = anchorRect.top - tHeight - padding + scrollY;
     }
 
-    // --- GLOBAL TAŞMA KONTROLLERİ ---
     if (left < 10) left = 10;
     if (left + tWidth > viewWidth - 10) left = viewWidth - tWidth - 10;
     if (top < scrollY + 10) top = scrollY + 10;
@@ -73,9 +66,6 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
     el.style.top = `${top}px`;
 }
 
-/* ==========================================================================
-   3. TOOLTIP HTML ÜRETİCİLERİ
-   ========================================================================== */
 export function generateTraitTooltipHTML(data) {
     const { traitName, count, steps, traitData } = data;
     const iconName = traitName.toLowerCase()
@@ -173,11 +163,8 @@ export function generateItemTooltipHTML(item) {
         </div>`;
 }
 
-/* ==========================================================================
-   4. GLOBAL BAŞLATICI (DİĞER MODÜLLER İÇİN)
-   ========================================================================== */
 export function initItemTooltips(globalTooltip, champTooltip, allItemsMap) {
-    // Eşyalar için global dinleyici
+
     document.addEventListener("mouseover", (e) => {
         const card = e.target.closest(".item-card");
         if (!card) return;

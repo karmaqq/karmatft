@@ -1,8 +1,3 @@
-/* ============================================================================
-   PHOTO MODE - Fotoğraf Modu Stilleri
-   ============================================================================ */
-
-/* Fotoğraf Modu Butonu */
 .btn-photo-mode {
     height: 28px; 
     padding: 0 14px;
@@ -32,22 +27,15 @@
     transform: translateY(0px) scale(0.98);
 }
 
-/* ============================================================================
-   ZOOM KONTROLLERI
-   ============================================================================ */
-
-/* Zoom için genel ayarlar */
 body {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: center center;
 }
 
-/* Zoom aktifken */
 body.zooming {
     overflow: hidden;
 }
 
-/* Zoom sırasında diğer panelleri gizle */
 body.zooming .traits-panel,
 body.zooming .selection-panel,
 body.zooming .items-section,
@@ -57,7 +45,6 @@ body.zooming .btn-photo-mode {
     display: none !important;
 }
 
-/* Team panel'i full-screen yap */
 body.zooming .main-container {
     position: fixed;
     top: 0;
@@ -99,16 +86,10 @@ body.zooming #active-team-grid {
     padding: 350px 0;
 }
 
-/* ============================================================================
-   FOTOĞRAF MODU ÖZEL ANIMASYONLAR
-   ============================================================================ */
-
-/* Fotoğraf modu cursor */
 body.photo-mode {
-    cursor: zoom-out;
+    cursor:auto;
 }
 
-/* Grid giriş animasyonu */
 body.photo-mode #active-team-grid {
     animation: photoModeEntry 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -124,7 +105,6 @@ body.photo-mode #active-team-grid {
     }
 }
 
-/* Çıkış talimatı mesajı */
 body.photo-mode::after {
     content: "ESC veya F11 ile çık • Mouse tekerleği ile yakınlaştır";
     position: fixed;
@@ -145,103 +125,4 @@ body.photo-mode::after {
 @keyframes fadeInOut {
     0%, 100% { opacity: 0; }
     10%, 90% { opacity: 1; }
-}
-
-/* ============================================================================
-   PHOTO MODE TOOLTIP
-   ============================================================================ */
-
-.photo-mode-tooltip {
-    position: fixed;
-    background: linear-gradient(135deg, #1a1f2e 0%, #16181d 100%);
-    border: 1px solid var(--accent);
-    border-radius: 8px;
-    padding: 0;
-    z-index: 10000;
-    pointer-events: none;
-    opacity: 0;
-    transform: translateX(-50%) translateY(-10px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
-                0 0 20px rgba(202, 147, 55, 0.2);
-    min-width: 320px;
-    max-width: 380px;
-}
-
-.photo-mode-tooltip.visible {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-.photo-mode-tooltip .tooltip-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-radius: 7px 7px 0 0;
-}
-
-.photo-mode-tooltip .tooltip-icon {
-    font-size: 18px;
-}
-
-.photo-mode-tooltip .tooltip-header strong {
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-.photo-mode-tooltip .tooltip-content {
-    padding: 16px;
-}
-
-.photo-mode-tooltip .tooltip-content p {
-    margin: 0 0 16px 0;
-    color: var(--text-main);
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.photo-mode-tooltip .tooltip-shortcuts {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 12px;
-    border-radius: 6px;
-}
-
-.photo-mode-tooltip .shortcut-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-}
-
-.photo-mode-tooltip .shortcut-item span {
-    color: var(--text-muted);
-    flex: 1;
-}
-
-.photo-mode-tooltip kbd {
-    background: linear-gradient(180deg, #2a2d35 0%, #1a1d25 100%);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-family: 'Inter', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--accent-light);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    min-width: 32px;
-    text-align: center;
-    display: inline-block;
-}
-
-/* Fotoğraf modunda tooltip gizle */
-body.zooming .photo-mode-tooltip {
-    display: none;
 }

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GENEL AYARLAR VE STAT RENK PALETİ (Tüm Tooltipler İçin)
+   GENEL AYARLAR VE STAT RENK PALETİ
    ========================================================================== */
 
 .t-highlight {
@@ -28,7 +28,6 @@
     font-weight: 800;
 }
 
-/* Stat İkon Stili (Metin içi ve başlık altı) */
 .stat-icon-img {
     width: 16px;
     height: 16px;
@@ -38,9 +37,9 @@
 }
 
 /* ==========================================================================
-   1.TRAIT TOOLTIP (Sol Menü Detay Paneli)
+   1.TRAIT TOOLTIP
    ========================================================================== */
-/* Genel Konteyner */
+
 #global-trait-tooltip {
     position: fixed;
     left: 285px;
@@ -51,7 +50,6 @@
     min-width: 280px;
     padding: 10px;
     background: #0d0f14 !important;
-    /* Tam Siyah */
     border: 1px solid #3c3c41;
     border-top: 2px solid #ca9337;
     border-radius: 6px;
@@ -59,7 +57,6 @@
     font-family: 'Inter', sans-serif;
 }
 
-/* Tooltip Başlık Alanı (İkon + İsim) */
 .t-header-content {
     display: flex;
     align-items: center;
@@ -67,14 +64,12 @@
     margin-bottom: 5px;
 }
 
-/* Başlık İkonu */
 .t-header-icon {
     width: 32px;
     height: 32px;
     object-fit: contain;
 }
 
-/* Başlık Metni */
 .t-tooltip-title {
     font-size: 22px;
     font-weight: 900;
@@ -83,14 +78,12 @@
     letter-spacing: 1.5px;
 }
 
-/* Ayırıcı Çizgi */
 .t-tooltip-divider {
     height: 1px;
     background: #32353d;
     margin: 15px 0;
 }
 
-/* Açıklama Metinleri */
 .t-tooltip-general,
 .t-tooltip-pre-info,
 .t-tooltip-post-info {
@@ -100,14 +93,11 @@
     margin-bottom: 12px;
 }
 
-/* Son Bilgi Stili */
 .t-tooltip-post-info {
     color: #a0a0a0;
-    /* Alt bilgi biraz daha soluk */
     font-style: italic;
 }
 
-/* Kademeler Listesi */
 .t-tooltip-steps-list {
     display: flex;
     flex-direction: column;
@@ -115,41 +105,36 @@
     margin-top: 15px;
 }
 
-/* Her Bir Kademe Satırı */
 .t-tooltip-step {
     display: flex;
     align-items: flex-start;
     font-size: 15px;
     line-height: 1.4;
     color: #666;
-    /* Pasif kademeler gri */
     transition: color 0.2s ease;
     margin-bottom: 4px;
-    /* Satırlar arası ferahlık için eklenebilir */
 }
 
-/* Kademe Değerleri */
 .t-threshold-val {
     min-width: 20px;
     font-weight: 900;
     color: inherit;
 }
 
-/* Aktif ve Geçilmiş Kademeler */
 .t-tooltip-step.is-passed,
 .t-tooltip-step.is-current-active {
     color: #ffffff !important;
 }
 
-/* Vurgulu Aktif Kademe */
 .t-tooltip-step.is-current-active {
     border-radius: 4px;
     padding: 2px 0;
 }
 
 /* ==========================================================================
-   2. CHAMPION TOOLTIP (Şampiyon Kart Detayı) - GÜNCEL
+   2. CHAMPION TOOLTIP
    ========================================================================== */
+
 .champ-tooltip {
     position: fixed;
     z-index: 1000000;
@@ -163,7 +148,6 @@
     display: none;
 }
 
-/* Şampiyon Başlık Bölümü */
 .ct-header {
     display: flex;
     justify-content: space-between;
@@ -171,17 +155,14 @@
     margin-bottom: 10px;
 }
 
-/* ŞAMPİYON İSMİ - BURASI DÜZELTİLDİ */
 .ct-name {
     font-size: 16px;
     font-weight: 800;
     color: #ffb93b;
-    /* Beyaz (#fff) yerine sarı tonu eklendi */
     letter-spacing: 0.5px;
     text-transform: capitalize;
 }
 
-/* Şampiyon Maliyeti */
 .ct-cost {
     display: flex;
     align-items: center;
@@ -191,14 +172,12 @@
     color: #F5CBA7;
 }
 
-/* Para İkonu */
 .gold-icon {
     width: 14px;
     height: 14px;
     object-fit: contain;
 }
 
-/* Şampiyonun Özellik Listesi */
 .ct-traits-list {
     display: flex;
     flex-direction: column;
@@ -207,14 +186,12 @@
     padding-top: 10px;
 }
 
-/* Her Bir Özellik Öğesi */
 .ct-trait-item {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* Özellik İkonu */
 .ct-trait-icon {
     width: 18px;
     height: 18px;
@@ -222,13 +199,11 @@
     filter: brightness(0.8);
 }
 
-/* Özellik İsmi */
 .ct-trait-name {
     font-size: 13px;
     color: #a0a0a0;
 }
 
-/* Maliyete Göre Dinamik Çerçeve Renkleri */
 .champ-tooltip.cost-1 {
     border-color: #213042;
 }
@@ -254,21 +229,18 @@
 }
 
 /* ==========================================================================
-   ITEM TOOLTIP (Eşya Detay Paneli)
+   ITEM TOOLTIP
    ========================================================================== */
 
-/* Üst Bölüm: İsim, Statlar ve Sağdaki Bileşenler */
 .item-tooltip-top-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* Dikeyde her şeyi ortalar */
     padding: 5px;
     margin-bottom: 10px;
     gap: 12px;
 }
 
-/* Sol Taraf: İsim ve Altında Stat Grid'i */
 .item-header-left {
     display: flex;
     flex-direction: column;
@@ -282,13 +254,10 @@
     text-transform: capitalize;
 }
 
-/* STAT ROW: Tam olarak 3'lü sütun düzeni */
 .item-tooltip-stats-row {
     display: grid;
     grid-template-columns: repeat(3, auto);
-    /* Yan yana 3 sütun */
     gap: 4px 12px;
-    /* Satır arası 4px, sütun arası 12px */
     align-items: center;
 }
 
@@ -308,7 +277,6 @@
     object-fit: contain;
 }
 
-/* Sağ Taraf: Bileşen İkonları veya Üretilemez Yazısı */
 .item-header-right {
     display: flex;
     align-items: center;
@@ -344,11 +312,108 @@
     background: rgba(255, 78, 80, 0.05);
 }
 
-/* Alt Bölüm: Açıklama */
 .item-tooltip-body {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding: 10px 5px;
     font-size: 13px;
     line-height: 1.5;
     color: #cbd5e0;
+}
+
+/* ==========================================================================
+   PHOTOMODE TOOLTIP
+   ========================================================================== */
+
+.photo-mode-tooltip {
+    position: fixed;
+    background: linear-gradient(135deg, #1a1f2e 0%, #16181d 100%);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 0;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(202, 147, 55, 0.2);
+    min-width: 320px;
+    max-width: 380px;
+}
+
+.photo-mode-tooltip.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.photo-mode-tooltip .tooltip-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 7px 7px 0 0;
+}
+
+.photo-mode-tooltip .tooltip-icon {
+    font-size: 18px;
+}
+
+.photo-mode-tooltip .tooltip-header strong {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.photo-mode-tooltip .tooltip-content {
+    padding: 16px;
+}
+
+.photo-mode-tooltip .tooltip-content p {
+    margin: 0 0 16px 0;
+    color: var(--text-main);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.photo-mode-tooltip .tooltip-shortcuts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.photo-mode-tooltip .shortcut-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+}
+
+.photo-mode-tooltip .shortcut-item span {
+    color: var(--text-muted);
+    flex: 1;
+}
+
+.photo-mode-tooltip kbd {
+    background: linear-gradient(180deg, #2a2d35 0%, #1a1d25 100%);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: 'Inter', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-light);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    min-width: 32px;
+    text-align: center;
+    display: inline-block;
+}
+
+body.zooming .photo-mode-tooltip {
+    display: none;
 }

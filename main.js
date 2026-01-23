@@ -7,11 +7,11 @@ import { initPhotoMode } from './photomode.js';
 document.addEventListener("DOMContentLoaded", () => {
 
     const traitListEl = document.getElementById("trait-list");
-    const resetBtn = document.getElementById("reset-team");
-    const itemSearchInput = document.getElementById("item-search");
-    const clearItemSearchBtn = document.getElementById("clear-item-search");
     const champSearchInput = document.getElementById("champ-search");
     const clearChampSearchBtn = document.getElementById("clear-champ-search");
+    const itemSearchInput = document.getElementById("item-search");
+    const clearItemSearchBtn = document.getElementById("clear-item-search");
+    const resetBtn = document.getElementById("reset-team");
     const globalTooltip = document.getElementById("global-trait-tooltip");
 
     let currentTraitsData = new Map();
@@ -78,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const li = document.createElement("li");
         const { traitName, count, activeTier, isActive, steps, reachedTierCount, type } = data;
         
-        // Aktiflik durumuna göre class belirleme
         const tierClass = isActive ? (activeTier.rank || `tier-${reachedTierCount}`) : "inactive";
 
         li.className = `trait-item ${isActive ? 'active' : ''} ${tierClass} trait-type-${type}`;
@@ -198,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (resetBtn) {
         resetBtn.addEventListener("click", () => {
-            // 1. Planlayıcıyı (hex grid ve seçili şampiyonlar) sıfırla
             if (window.resetPlanner) {
                 window.resetPlanner();
             }

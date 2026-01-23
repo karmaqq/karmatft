@@ -1,124 +1,135 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Karma TFT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="tooltips.css">
-    <link rel="stylesheet" href="photomode.css">
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="tooltips.css" />
+    <link rel="stylesheet" href="photomode.css" />
+  </head>
 
-<body>
-
+  <body>
     <main id="app" class="main-container">
-
-        <aside class="panel traits-panel">
-            <div class="panel-header">
-                <h2>Özellikler</h2>
-            </div>
-            <div id="trait-list"></div>
-        </aside>
-
-        <div class="middle-layout">
-
-            <section class="panel team-panel">
-                <div class="panel-header">
-                    <h2>Takımın (<span id="team-count">0</span>/10)</h2>
-                    <div style="display: flex; gap: 10px;">
-                        <button id="photo-mode-btn" class="btn-photo-mode">📸 Fotoğraf Modu</button>
-                        <button id="reset-team" class="btn-reset">Takımı Temizle</button>
-                    </div>
-                </div>
-                <div id="active-team-grid">
-                    <div class="hex-row">
-                        <div class="empty-slot" id="slot-0"></div>
-                        <div class="empty-slot" id="slot-1"></div>
-                        <div class="empty-slot" id="slot-2"></div>
-                        <div class="empty-slot" id="slot-3"></div>
-                        <div class="empty-slot" id="slot-4"></div>
-                        <div class="empty-slot" id="slot-5"></div>
-                        <div class="empty-slot" id="slot-6"></div>
-                    </div>
-                    <div class="hex-row">
-                        <div class="empty-slot" id="slot-7"></div>
-                        <div class="empty-slot" id="slot-8"></div>
-                        <div class="empty-slot" id="slot-9"></div>
-                        <div class="empty-slot" id="slot-10"></div>
-                        <div class="empty-slot" id="slot-11"></div>
-                        <div class="empty-slot" id="slot-12"></div>
-                        <div class="empty-slot" id="slot-13"></div>
-                    </div>
-                    <div class="hex-row">
-                        <div class="empty-slot" id="slot-14"></div>
-                        <div class="empty-slot" id="slot-15"></div>
-                        <div class="empty-slot" id="slot-16"></div>
-                        <div class="empty-slot" id="slot-17"></div>
-                        <div class="empty-slot" id="slot-18"></div>
-                        <div class="empty-slot" id="slot-19"></div>
-                        <div class="empty-slot" id="slot-20"></div>
-                    </div>
-                    <div class="hex-row">
-                        <div class="empty-slot" id="slot-21"></div>
-                        <div class="empty-slot" id="slot-22"></div>
-                        <div class="empty-slot" id="slot-23"></div>
-                        <div class="empty-slot" id="slot-24"></div>
-                        <div class="empty-slot" id="slot-25"></div>
-                        <div class="empty-slot" id="slot-26"></div>
-                        <div class="empty-slot" id="slot-27"></div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="panel items-section">
-                <div class="items-control-bar">
-                    <div id="item-tabs" class="item-tabs-menu">
-                        <button class="item-tab-btn active" data-cat="normal">Normal</button>
-                        <button class="item-tab-btn" data-cat="artifact">Yadigar</button>
-                        <button class="item-tab-btn" data-cat="radiant">Işıltılı</button>
-                        <button class="item-tab-btn" data-cat="emblem">Amblem</button>
-                        <button class="item-tab-btn" data-cat="special">Özel</button>
-                    </div>
-
-                    <div class="item-search-container">
-                        <input type="text" id="item-search" placeholder="Eşya ara...">
-                        <button id="clear-item-search" style="display: none;">&times;</button>
-                    </div>
-                </div>
-
-                <div class="panel-divider"></div>
-
-                <div id="items-container" class="items-grid"></div>
-            </section>
+      <aside class="panel traits-panel">
+        <div class="panel-header">
+          <h2>Özellikler</h2>
         </div>
+        <div id="trait-list"></div>
+      </aside>
 
-        <section class="panel selection-panel">
-            <div class="panel-header">
-                <div class="champ-controls-wrapper">
-                    <button id="toggle-pool-view" class="view-toggle-btn">Şampiyonları Sırala</button>
-                    
-                    <div class="item-search-container">
-                        <input type="text" id="champ-search" placeholder="Şampiyon ara...">
-                        <button id="clear-champ-search" style="display: none;">&times;</button>
-                    </div>
-                </div>
+      <div class="middle-layout">
+        <section class="panel team-panel">
+          <div class="panel-header">
+            <h2>Takımın (<span id="team-count">0</span>/10)</h2>
+            <div style="display: flex; gap: 10px">
+              <button id="photo-mode-btn" class="btn-photo-mode">
+                📸 Fotoğraf Modu
+              </button>
+              <button id="reset-team" class="btn-reset">Takımı Temizle</button>
             </div>
-            <div id="champions-grid"></div>
+          </div>
+          <div id="active-team-grid">
+            <div class="hex-row">
+              <div class="empty-slot" id="slot-0"></div>
+              <div class="empty-slot" id="slot-1"></div>
+              <div class="empty-slot" id="slot-2"></div>
+              <div class="empty-slot" id="slot-3"></div>
+              <div class="empty-slot" id="slot-4"></div>
+              <div class="empty-slot" id="slot-5"></div>
+              <div class="empty-slot" id="slot-6"></div>
+            </div>
+            <div class="hex-row">
+              <div class="empty-slot" id="slot-7"></div>
+              <div class="empty-slot" id="slot-8"></div>
+              <div class="empty-slot" id="slot-9"></div>
+              <div class="empty-slot" id="slot-10"></div>
+              <div class="empty-slot" id="slot-11"></div>
+              <div class="empty-slot" id="slot-12"></div>
+              <div class="empty-slot" id="slot-13"></div>
+            </div>
+            <div class="hex-row">
+              <div class="empty-slot" id="slot-14"></div>
+              <div class="empty-slot" id="slot-15"></div>
+              <div class="empty-slot" id="slot-16"></div>
+              <div class="empty-slot" id="slot-17"></div>
+              <div class="empty-slot" id="slot-18"></div>
+              <div class="empty-slot" id="slot-19"></div>
+              <div class="empty-slot" id="slot-20"></div>
+            </div>
+            <div class="hex-row">
+              <div class="empty-slot" id="slot-21"></div>
+              <div class="empty-slot" id="slot-22"></div>
+              <div class="empty-slot" id="slot-23"></div>
+              <div class="empty-slot" id="slot-24"></div>
+              <div class="empty-slot" id="slot-25"></div>
+              <div class="empty-slot" id="slot-26"></div>
+              <div class="empty-slot" id="slot-27"></div>
+            </div>
+          </div>
         </section>
 
+        <section class="panel items-section">
+          <div class="items-control-bar">
+            <div id="item-tabs" class="item-tabs-menu">
+              <button class="item-tab-btn active" data-cat="normal">
+                Normal
+              </button>
+              <button class="item-tab-btn" data-cat="artifact">Yadigar</button>
+              <button class="item-tab-btn" data-cat="radiant">Işıltılı</button>
+              <button class="item-tab-btn" data-cat="emblem">Amblem</button>
+              <button class="item-tab-btn" data-cat="special">Özel</button>
+            </div>
+
+            <div class="item-search-container">
+              <input type="text" id="item-search" placeholder="Eşya ara..." />
+              <button id="clear-item-search" style="display: none">
+                &times;
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-divider"></div>
+
+          <div id="items-container" class="items-grid"></div>
+        </section>
+      </div>
+
+      <section class="panel selection-panel">
+        <div class="panel-header">
+          <div class="champ-controls-wrapper">
+            <button id="toggle-pool-view" class="view-toggle-btn">
+              Şampiyonları Sırala
+            </button>
+
+            <div class="item-search-container">
+              <input
+                type="text"
+                id="champ-search"
+                placeholder="Şampiyon ara..."
+              />
+              <button id="clear-champ-search" style="display: none">
+                &times;
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="champions-grid"></div>
+      </section>
     </main>
 
     <div id="global-trait-tooltip" class="trait-tooltip-global"></div>
     <script type="module" src="main.js"></script>
 
     <script>
-        window.handleImageError = function (img) {
-            img.onerror = null;
-            img.src = 'img/placeholder.png';
-        };
+      window.handleImageError = function (img) {
+        img.onerror = null;
+        img.src = "img/placeholder.png";
+      };
     </script>
-</body>
-
+  </body>
 </html>

@@ -1,5 +1,3 @@
-// photo-mode.js - Fotoğraf Modu ve Tooltip Yönetimi
-
 let currentZoom = 1;
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 1.8;
@@ -7,7 +5,6 @@ const ZOOM_STEP = 0.1;
 const PHOTO_MODE_ZOOM = 1.5;
 let isPhotoMode = false;
 
-// Tooltip elementi
 let photoModeTooltip = null;
 
 export function initPhotoMode() {
@@ -16,7 +13,6 @@ export function initPhotoMode() {
     
     if (!photoModeBtn) return;
     
-    // Tooltip oluştur
     createPhotoModeTooltip(photoModeBtn);
     
     function applyZoom() {
@@ -31,7 +27,6 @@ export function initPhotoMode() {
         }
     }
     
-    // Fotoğraf Modu Butonu
     photoModeBtn.addEventListener("click", async () => {
         try {
             if (!document.fullscreenElement) {
@@ -51,8 +46,7 @@ export function initPhotoMode() {
             applyZoom();
         }
     });
-    
-    // Fullscreen değişikliği
+
     document.addEventListener("fullscreenchange", () => {
         if (!document.fullscreenElement && isPhotoMode) {
             currentZoom = 1;
@@ -60,7 +54,6 @@ export function initPhotoMode() {
         }
     });
     
-    // ESC tuşu
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && isPhotoMode) {
             currentZoom = 1;
@@ -71,7 +64,6 @@ export function initPhotoMode() {
         }
     });
     
-    // Ctrl + Scroll
     window.addEventListener("wheel", (e) => {
         if (e.ctrlKey) {
             e.preventDefault();
@@ -90,7 +82,6 @@ export function initPhotoMode() {
         }
     }, { passive: false });
     
-    // Ctrl + (+, -, 0)
     window.addEventListener("keydown", (e) => {
         if (e.ctrlKey) {
             if (e.key === "+" || e.key === "=") {
@@ -126,9 +117,8 @@ export function initPhotoMode() {
     });
 }
 
-// Tooltip oluştur ve yönet
 function createPhotoModeTooltip(btnElement) {
-    // Tooltip elementi oluştur
+
     photoModeTooltip = document.createElement("div");
     photoModeTooltip.className = "photo-mode-tooltip";
     photoModeTooltip.innerHTML = `
@@ -153,7 +143,6 @@ function createPhotoModeTooltip(btnElement) {
     `;
     document.body.appendChild(photoModeTooltip);
     
-    // Tooltip göster/gizle
     btnElement.addEventListener("mouseenter", (e) => {
         showPhotoModeTooltip(e.target);
     });
@@ -172,12 +161,10 @@ function showPhotoModeTooltip(btnElement) {
     
     const btnRect = btnElement.getBoundingClientRect();
     
-    // Tooltip pozisyonunu ayarla (butonun altında)
     photoModeTooltip.style.top = `${btnRect.bottom + 10}px`;
     photoModeTooltip.style.left = `${btnRect.left + btnRect.width / 2}px`;
     photoModeTooltip.style.transform = "translateX(-50%)";
     
-    // Göster
     photoModeTooltip.classList.add("visible");
 }
 

@@ -1,1 +1,1 @@
-# karmatft
+# Karma TFT Takım Oluşturucu
