@@ -104,7 +104,7 @@ export const champions = [
 export const traits = {
 
     specialTraits: {
-        "ejder muhafizlari": {
+        "ejdermuhafizlari": {
             name: "Ejder Muhafızları",
             generalDesc: "Jarvan IV yeteneğini kullandığında Shyvana, Jarvan IV'ün kalkanının %100 kadarını kazanır. Shyvana yeteneğini kullandığında Jarvan IV atılarak 2 hücrelik bir alana zırh ve büyü direncinin %185 kadarına eşdeğer miktarda büyü hasarı verir.",
             thresholds: [{ count: 2, rank: "tier-special" }]
@@ -132,7 +132,7 @@ export const traits = {
             thresholds: [{ count: 1, rank: "tier-special" }],
             postDesc: "Mevcut ilerleme 0/4"
         },
-        "dünyalarin sonu": {
+        "dunyalarinsonu": {
             name: "Dünyaların Sonu",
             generalDesc: "Aatrox mutlak sömürüsüne eşdeğer miktarda saldırı gücü kazanır.",
             preDesc: "İlk kez katledileceği zaman kısa süreliğine hedef alınamaz hale gelir ve 2 saniye içinde canını tamamen doldurur. Ardından azami manasını 20 azaltır ve %20 Dayanıklılık kazanır.",
@@ -148,13 +148,13 @@ export const traits = {
             generalDesc: "Shyvana yeteneğini kullandığında yeteneğini Alevli Nefes'le değiştirir. Biçim değiştirdiği zaman tüm dost birimler rakiplerin yeteneklerinden %10 daha az hasar alır.",
             thresholds: [{ count: 1, rank: "tier-special" }]
         },
-        "hasatçi": {
+        "hasatci": {
             name: "Hasatçı",
             generalDesc: "Katledilen her rakip şampiyon başına 10 Mana kazanır. Yetenek kullanmak mana harcamaz.",
             preDesc: "Tüm rakipler 10 Zırh ve Büyü Direnci kaybeder.",
             thresholds: [{ count: 1, rank: "tier-special" }]
         },
-        "hex-meka": {
+        "hexmeka": {
             name: "Hex-Meka",
             generalDesc: "Bir pilot hücresi kazanırsın. Çatışma Başlangıcında: Pilot hücresindeki birim T-Hex'e binerek ona canının %80 kadarını ve rolü ile yıldız seviyesine bağlı olarak ilave nitelikler kazandırır.",
             preDesc: "<span class='t-highlight'>Tank:</span> +%15/25/40 Mutlak Sömürü<br><span class='t-highlight'>Dövüşçü:</span> +%15/25/40 Saldırı Gücü<br><span class='t-highlight'>Nişancı:</span> +%10/18/30 Hasar Artışı<br><span class='t-highlight'>Sahir:</span> +3/6/12 Mana Yenilenmesi<br><span class='t-highlight'>Suikastçı:</span> +%30/60/100 Kritik Vuruş İhtimali",
@@ -174,12 +174,12 @@ export const traits = {
             thresholds: [{ count: 1, rank: "tier-special" }],
             postDesc: "Mevcut Nitelikler: 0 [hp], %0 [as], %0 [ap]"
         },
-        "özümseyici": {
+        "ozumseyici": {
             name: "Özümseyici",
             generalDesc: "Kai'Sa, yetenek gücü ve saldırı gücü değerlerinden hangisi yüksekse ona göre farklı bir yetenek kazanır.",
             thresholds: [{ count: 1, rank: "tier-special" }]
         },
-        "ölümsüz": {
+        "olumsuz": {
             name: "Ölümsüz",
             generalDesc: "Zaahen, Xin Zhao tahtanda değilken Ionia, Demacia ve Gardiyan özelliklerini kazanır.",
             preDesc: "Zaahen bir rakibi katlettiğinde çatışmanın geri kalanı boyunca bir Kararlılık yükü kazanır. Katledildiğinde 3 veya daha fazla Kararlılık yüküne sahipse onları harcar ve azami canının %60 kadarını yenileyerek dirilir.",
@@ -191,41 +191,41 @@ export const traits = {
             preDesc: "Canı tamamen dolduğunda kasları şişmiş bir halde çatışmaya döner. Bu haldeyken saldırı ve yetenekleri gerçek hasar verir. Tüm takım arkadaşları katledilirse çatışmaya anında geri döner.",
             thresholds: [{ count: 1, rank: "tier-special" }]
         },
-        "ruhdaş": {
+        "ruhdas": {
             name: "Ruhdaş",
             generalDesc: "Lucian ve Senna birlikte savaşır. Biri yetenek kullandığında yer değiştirirler. Her şampiyonun kendine has bir yeteneği vardır.",
             preDesc: "En güçlü Ruhdaş ikilin takımına ilaveler sağlar. Senna çatışmada değilken tüm dost birimler %7 Hasar Azaltma kazanır. Lucian çatışmada değilken tüm dost birimler %7 Hasar Artışı kazanır.",
             thresholds: [{ count: 1, rank: "tier-special" }]
         },
-        "rün büyücüsü": {
+        "runbuyucusu": {
             name: "Rün Büyücüsü",
             generalDesc: "Rün Büyücüsü etkin olan bütün bölge özelliklerinden faydalanır ama hiçbirine katkıda bulunamaz.",
             preDesc: "Etkin bölge özelliklerinden rün gücü alarak yeteneğini farklı şekillerde değiştirir ve geliştirir.",
             thresholds: [{ count: 1, rank: "tier-special" }]
         },
-        "şeytan çekici": {
+        "seytancekici": {
             name: "Şeytan Çekici",
             generalDesc: "Annie, yedek kulübende bir Tibbers ortaya çıkarır. Tibbers ileri sürüldüğünde takımında bir birimlik yer kaplar ve ayrı eşyalara sahip olabilir. Yıldız seviyesi Annie'ninkiyle aynı olur.",
             thresholds: [{ count: 1, rank: "tier-special" }]
         },
-        "vadi belasi": {
+        "vadibelasi": {
             name: "Vadi Belası",
             generalDesc: "Baron Nashor takımında 2 birimlik yer kaplar ve Hiçlik özelliğine +2 katkı sağlar.",
             preDesc: "8 saniyenin ardından tahta Hiçlik'e Açılan Yarık'a girer. Yarık, Hiçlik birimlerine %30 Hasar Artışı kazandırır ve rakiplerinize sürekli plazma atışları göndererek onlara azami canlarının %5 kadarına eşdeğer miktarda büyü hasarı verir.",
             thresholds: [{ count: 1, rank: "tier-special" }]
         },
-        "yildizlarin hakimi": {
+        "yildizlarinhakimi": {
             name: "Yıldızların Hakimi",
             generalDesc: "Aurelion Sol çatışmada ileri sürülen her farklı Targon'lu başına %20/60/100 daha fazla yıldız tozu kazanır.",
             thresholds: [{ count: 1, rank: "tier-special" }],
             postDesc: "Mevcut İlave: %X"
         },
-        "yükselmiş": {
+        "yukselmis": {
             name: "Yükselmiş",
             generalDesc: "Her çatışmadan sonra dükkânında bir Yükselmiş tılsım belirir. Yükselmiş tılsımlar güçlü etkiler kazandırır ve altın karşılığında alınabilir.",
             thresholds: [{ count: 1, rank: "tier-special" }]
         },
-        "zaman bekçisi": {
+        "zamanbekcisi": {
             name: "Zaman Bekçisi",
             generalDesc: "Zaman Bekçisi her 2 yetenek kullanımında bir 1 XP biriktirir. Seviye atlamana yetecek kadar XP biriktirdiğinde sana gereken XP'yi kazandırır.",
             preDesc: "10. seviyedeysen %15 Hasar Artışı kazanır.",
@@ -296,7 +296,7 @@ export const traits = {
             ]
         },
 
-        "gölge adalar": {
+        "golgeadalar": {
             name: "Gölge Adalar",
             generalDesc: "Oyunculara karşı çatışmalarda HERHANGİ bir şampiyon katledildiğinde ruh [soul] kazanırsın. Gölge Adalar şampiyonlarının yetenekleri sahip olduğun ruh sayısına göre farklı şekillerde güçlendirilir.",
             preDesc: "Gölge Adalar şampiyonları saldırı gücü ve yetenek gücü kazanır.",
@@ -309,7 +309,7 @@ export const traits = {
             postDesc: "Toplanan Ruh: 0 [soul]",
         },
 
-        "hiçlik": {
+        "hiclik": {
             name: "Hiçlik",
             generalDesc: "Yalnızca Hiçlik şampiyonlarının kullanabileceği mutasyonlar kazanırsın. Hiçlik şampiyonları saldırı hızı kazanır.",
             preDesc: "Şampiyonlar tek bir mutasyona sahip olabilir. Bir şampiyonu yedek kulübesine yerleştirmek onun sahip olduğu mutasyonu söker.",
@@ -408,7 +408,7 @@ export const traits = {
             ]
         },
 
-        "biçici": {
+        "bicici": {
             name: "Biçici",
             generalDesc: "Biçiciler mutlak sömürü ve saldırı gücü kazanır. Kazandıkları ilave saldırı gücü, eksik canlarına bağlı olarak en fazla %50 olacak şekilde artar.",
             thresholds: [
@@ -427,7 +427,7 @@ export const traits = {
             ]
         },
 
-        "ezergeçer": {
+        "ezergecer": {
             name: "Ezergeçer",
             generalDesc: "Ezergeçerler dayanıklılık kazanır. Canları %50 değerinin üstündeyken bu ilave artar. Bir Ezergeçer katledildiğinde diğer Ezergeçerler azami canlarının %5 kadarını yeniler.",
             thresholds: [
@@ -448,7 +448,7 @@ export const traits = {
             ]
         },
 
-        "hişimli": {
+        "hisimli": {
             name: "Hışımlı",
             generalDesc: "Hışımlılar yetenekleriyle kritik vuruş yapabilir. Ayrıca kritik vuruş ihtimali ve kritik vuruş hasarı kazanırlar.",
             thresholds: [
@@ -499,7 +499,7 @@ export const traits = {
             ]
         },
 
-        "sihir üstadi": {
+        "sihirustadi": {
             name: "Sihir Üstadı",
             generalDesc: "Takımın yetenek gücü kazanır. Sihir Üstatları daha fazlasını kazanır.",
             thresholds: [
@@ -509,7 +509,7 @@ export const traits = {
             ]
         },
 
-        "silahşör": {
+        "silahsor": {
             name: "Silahşör",
             generalDesc: "Silahşorlar saldırı gücü kazanır. Silahşorların her 4. saldırısı ilave fiziksel hasar verir.",
             thresholds: [
