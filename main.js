@@ -1,10 +1,12 @@
-    import { champions, traits as TRAIT_THRESHOLDS } from './data.js';
-    import { allItemsMap, initItems } from './items.js';
-    import { generateTraitTooltipHTML, generateChampionTooltipHTML, generateItemTooltipHTML, safeLowercase, applySmartPosition } from './tooltips.js';
-    import { initPlanner } from './planner.js';
-    import { initPhotoMode } from './photomode.js';
+import { allItemsMap, initItems } from './items.js';
+import { generateTraitTooltipHTML, generateChampionTooltipHTML, generateItemTooltipHTML, safeLowercase, applySmartPosition } from './tooltips.js';
+import { initPlanner } from './planner.js';
+import { initPhotoMode } from './photomode.js';
 
-document.addEventListener("DOMContentLoaded", () => {
+let champions = [];
+let TRAIT_THRESHOLDS = {};
+
+document.addEventListener("DOMContentLoaded", async () => {
 
     const traitListEl = document.getElementById("trait-list");
     const champSearchInput = document.getElementById("champ-search");
@@ -18,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const champTooltip = document.createElement("div");
     champTooltip.className = "champ-tooltip";
     document.body.appendChild(champTooltip);
-    
 
     function findTraitInfo(key) {
         const safeKey = safeLowercase(key);
@@ -29,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderTraits(selectedComp) {
+        if (!traitListEl) return;
         traitListEl.innerHTML = "";
         currentTraitsData.clear();
 
@@ -95,9 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </div>
             </div>
-            
             <div class="trait-count-badge-box">${count}</div>
-            
             <div class="trait-info-wrapper">
                 <div class="t-name">${traitName}</div>
                 <div class="t-steps-row">
@@ -123,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     champTooltip.className = `champ-tooltip cost-${champ.cost}`;
                     const context = champEl.classList.contains("comp-champ") ? "team" : "champion";
                     applySmartPosition(champTooltip, champEl.getBoundingClientRect(), context);
+                    champTooltip.style.display = "block";
                 }
                 return;
             }
@@ -157,64 +158,69 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    async function loadDataAndInit() {
+        try {
+            const response = await fetch('./data.json');
+            if (!response.ok) throw new Error("data.json dosyası yüklenemedi!");
+            const data = await response.json();
+            
+            champions = data.champions;
+            TRAIT_THRESHOLDS = data.traits;
+
+            // 2. itemdata.json Yükle (initItems asenkron olmalı)
+            await initItems();
+
+            // 3. Modülleri Başlat
+            initGlobalTooltips();
+            initPlanner({
+                champions: champions,
+                champTooltip: champTooltip,
+                onUpdate: (comp) => {
+                    renderTraits(comp);
+                },
+                onPoolRender_Callback: null
+            });
+            initPhotoMode();
+
+            console.log("Sistem başarıyla JSON üzerinden başlatıldı.");
+        } catch (error) {
+            console.error("Uygulama başlatılamadı:", error);
+        }
+    }
+
     if (itemSearchInput) {
         itemSearchInput.addEventListener("input", (e) => {
-            const term = e.target.value;
-            import('./items.js').then(module => {
-                module.handleItemSearch(term);
-            });
+            import('./items.js').then(module => module.handleItemSearch(e.target.value));
         });
     }
 
     if (clearItemSearchBtn) {
         clearItemSearchBtn.addEventListener("click", () => {
             itemSearchInput.value = "";
-            import('./items.js').then(module => {
-                module.handleItemSearch("");
-            });
+            import('./items.js').then(module => module.handleItemSearch(""));
             itemSearchInput.focus();
         });
     }
 
     if (champSearchInput) {
         champSearchInput.addEventListener("input", (e) => {
-            const term = e.target.value;
-            import('./planner.js').then(module => {
-                module.handleChampSearch(term);
-            });
+            import('./planner.js').then(module => module.handleChampSearch(e.target.value));
         });
     }
 
     if (clearChampSearchBtn) {
         clearChampSearchBtn.addEventListener("click", () => {
             champSearchInput.value = "";
-            import('./planner.js').then(module => {
-                module.handleChampSearch("");
-            });
+            import('./planner.js').then(module => module.handleChampSearch(""));
             champSearchInput.focus();
         });
     }
 
     if (resetBtn) {
         resetBtn.addEventListener("click", () => {
-            if (window.resetPlanner) {
-                window.resetPlanner();
-            }
+            if (window.resetPlanner) window.resetPlanner();
         });
     }
 
-    initItems();
-    initGlobalTooltips();
-
-    initPlanner({
-        champions: champions,
-        champTooltip: champTooltip,
-        onUpdate: (comp) => {
-            renderTraits(comp);
-        },
-        onPoolRender_Callback: null
-    });
-
-    initPhotoMode();
-
+    loadDataAndInit();
 });
