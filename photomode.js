@@ -7,6 +7,9 @@ let isPhotoMode = false;
 
 let photoModeTooltip = null;
 
+/*================================================================================================================*/
+/*  SECTION: FOTOĞRAF MODU TUŞ FONKSİYONLARI
+/*================================================================================================================*/
 export function initPhotoMode() {
     const body = document.body;
     const photoModeBtn = document.getElementById("photo-mode-btn");
@@ -117,6 +120,9 @@ export function initPhotoMode() {
     });
 }
 
+/*================================================================================================================*/
+/*  SECTION: FOTOĞRAF MODU TOOLTIP OLUŞTURMA
+/*================================================================================================================*/
 function createPhotoModeTooltip(btnElement) {
 
     photoModeTooltip = document.createElement("div");
@@ -156,6 +162,9 @@ function createPhotoModeTooltip(btnElement) {
     });
 }
 
+/*================================================================================================================*/
+/*  SECTION: FOTOĞRAF MODU TOOLTIP HİZALAMA
+/*================================================================================================================*/
 function showPhotoModeTooltip(btnElement) {
     if (!photoModeTooltip) return;
     

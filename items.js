@@ -4,6 +4,9 @@ export let allItemsMap = new Map();
 export let itemCategories = {};
 let currentItemSearchTerm = "";
 
+/*================================================================================================================*/
+/*  SECTION: EŞYA VERİSİ YÜKLEME VE İŞLEME
+/*================================================================================================================*/
 export async function initItems() {
     try {
         const response = await fetch('./itemdata.json');
@@ -31,6 +34,9 @@ export async function initItems() {
     }
 }
 
+/*================================================================================================================*/
+/*  SECTION: EŞYA RENDER VE ARAMA İŞLEMLERİ
+/*================================================================================================================*/
 function buildItemMap() {
     allItemsMap.clear();
     for (const cat in itemCategories) {
@@ -40,6 +46,9 @@ function buildItemMap() {
     }
 }
 
+/*================================================================================================================*/
+/*  SECTION: EŞYA RENDER İŞLEMLERİ
+/*================================================================================================================*/
 export function renderCategory(catKey) {
     const container = document.getElementById('items-container');
     if (!container) return;
@@ -66,6 +75,9 @@ export function renderCategory(catKey) {
     applyItemFilter();
 }
 
+/*================================================================================================================*/
+/*  SECTION: EŞYA ARAMA İŞLEMLERİ
+/*================================================================================================================*/
 export function handleItemSearch(term) {
     currentItemSearchTerm = safeLowercase(term);
     
@@ -77,12 +89,15 @@ export function handleItemSearch(term) {
     if (currentItemSearchTerm.length > 0) {
         renderSearchResults();
     } else {
-        // Arama temizlendiyse aktif sekmeye geri dön
+        
         const activeTab = document.querySelector('.item-tab-btn.active');
         renderCategory(activeTab ? activeTab.getAttribute('data-cat') : 'normal');
     }
 }
 
+/*================================================================================================================*/
+/*  SECTION: EŞYA FİLTRELEME İŞLEMLERİ
+/*================================================================================================================*/
 function renderSearchResults() {
     const container = document.getElementById('items-container');
     if (!container) return;
@@ -110,6 +125,9 @@ function renderSearchResults() {
         : `<div class="no-results">Eşya bulunamadı.</div>`;
 }
 
+/*================================================================================================================*/
+/*  SECTION: EŞYA FİLTRELEME BLOK İŞLEMİ
+/*================================================================================================================*/
 function applyItemFilter() {
     const cards = document.querySelectorAll('.item-card');
     cards.forEach(card => {

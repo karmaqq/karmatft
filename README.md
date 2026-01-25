@@ -1,1 +1,0 @@
-# Karma TFT Takım Oluşturucu

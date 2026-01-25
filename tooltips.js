@@ -1,3 +1,6 @@
+/*================================================================================================================*/
+/*  SECTION: GÜVENLİ KÜÇÜK HARF DÖNÜŞTÜRME
+/*================================================================================================================*/
 export function safeLowercase(text) {
     if (!text) return "";
     return text.toString()
@@ -9,6 +12,9 @@ export function safeLowercase(text) {
         .replace(/[^a-z0-9]/g, ""); 
 }
 
+/*================================================================================================================*/
+/*  SECTION: STAT İKONLARI PARSE ETME
+/*================================================================================================================*/
 export function parseStatIcons(text) {
     if (!text) return "";
     return text.replace(/\[([^\]]+)\]/g, (match, iconName) => {
@@ -20,6 +26,9 @@ export function parseStatIcons(text) {
     });
 }
 
+/*================================================================================================================*/
+/*  SECTION: AKILLI KONUMLANDIRMA SİSTEMİ
+/*================================================================================================================*/
 export function applySmartPosition(el, anchorRect, context = "trait") {
     if (!anchorRect) return;
     const padding = 15;
@@ -68,6 +77,9 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
     el.style.top = `${top}px`;
 }
 
+/*================================================================================================================*/
+/*  SECTION: TRAIT TOOLTIP OLUŞTURMA
+/*================================================================================================================*/
 export function generateTraitTooltipHTML(data) {
     const { traitName, count, steps, traitData } = data;
     const iconName = traitName.toLowerCase()
@@ -113,6 +125,9 @@ export function generateTraitTooltipHTML(data) {
         </div>`;
 }
 
+/*================================================================================================================*/
+/*  SECTION: ŞAMPİYON TOOLTIP OLUŞTURMA
+/*================================================================================================================*/
 export function generateChampionTooltipHTML(champ) {
     const traitsHTML = champ.traits.map(t => {
         const safeIcon = safeLowercase(t)
@@ -137,6 +152,9 @@ export function generateChampionTooltipHTML(champ) {
         <div class="ct-traits-list">${traitsHTML}</div>`;
 }
 
+/*================================================================================================================*/
+/*  SECTION: EŞYA TOOLTIP OLUŞTURMA
+/*================================================================================================================*/
 export function generateItemTooltipHTML(item) {
     const componentsHTML = (item.components && item.components.length > 0) ? `
         <div class="item-recipe-group">
@@ -165,6 +183,9 @@ export function generateItemTooltipHTML(item) {
         </div>`;
 }
 
+/*================================================================================================================*/
+/*  SECTION: EŞYA TOOLTIP MOUSE İŞLEMLERİ
+/*================================================================================================================*/
 export function initItemTooltips(globalTooltip, champTooltip, allItemsMap) {
 
     document.addEventListener("mouseover", (e) => {

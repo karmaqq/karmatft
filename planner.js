@@ -5,6 +5,9 @@ let currentViewMode = "all";
 let currentChampSearchTerm = "";
 let config = {};
 
+/*================================================================================================================*/
+/*  SECTION: PLANLAYICI VE HAVUZ GÖRÜNTÜLEME MODU
+/*================================================================================================================*/
 export function initPlanner(settings) {
     config = settings;
 
@@ -46,6 +49,9 @@ export function initPlanner(settings) {
     renderChampionPool();
 }
 
+/*================================================================================================================*/
+/*  SECTION: ŞAMPİYON ARAMA GİZLEME FİLTRESİ
+/*================================================================================================================*/
 export function handleChampSearch(term) {
     currentChampSearchTerm = safeLowercase(term);
 
@@ -57,6 +63,9 @@ export function handleChampSearch(term) {
     applyChampFilter();
 }
 
+/*================================================================================================================*/
+/*  SECTION: ŞAMPİYON HAVUZU RENDER İŞLEMLERİ
+/*================================================================================================================*/
 export function renderChampionPool() {
     const championListEl = document.getElementById("champions-grid");
     if (!championListEl) return;
@@ -72,7 +81,7 @@ export function renderChampionPool() {
             if (lastCost !== c.cost) {
                 const divider = document.createElement("div");
                 divider.className = `pool-divider cost-divider-${c.cost}`;
-                divider.innerHTML = `<span>${c.cost} ALTIN</span>`;
+                divider.innerHTML = `<span>${c.cost} Altın</span>`;
                 championListEl.appendChild(divider);
             }
             lastCost = c.cost;
@@ -94,6 +103,9 @@ export function renderChampionPool() {
     applyChampFilter();
 }
 
+/*================================================================================================================*/
+/*  SECTION: PLANLAYICI UI GÜNCELLEME İŞLEMLERİ
+/*================================================================================================================*/
 export function updateUI() {
     const MAX_SLOTS = 28;
     const teamCountEl = document.getElementById("team-count");
@@ -142,6 +154,9 @@ export function updateUI() {
     });
 }
 
+/*================================================================================================================*/
+/*  SECTION: ŞAMPİYON FİLTRELEME İŞLEMLERİ
+/*================================================================================================================*/
 function applyChampFilter() {
     const cards = document.querySelectorAll('.champ-item');
     cards.forEach(card => {
@@ -159,6 +174,9 @@ function applyChampFilter() {
     });
 }
 
+/*================================================================================================================*/
+/*  SECTION: ŞAMPİYON EKLEME/ÇIKARMA İŞLEMLERİ
+/*================================================================================================================*/
 function toggleChampion(champ, targetSlot = null) {
     const sourceChamp = selectedComp.find(c => c.name === champ.name);
     const occupantChamp = targetSlot !== null ? selectedComp.find(c => c.slotId === targetSlot) : null;
@@ -187,6 +205,9 @@ function toggleChampion(champ, targetSlot = null) {
     updateUI();
 }
 
+/*================================================================================================================*/
+/*  SECTION: ŞAMPİYON TAŞIMA İŞLEMLERİ
+/*================================================================================================================*/
 function moveChampion(fromSlotId, toSlotId) {
     const startId = parseInt(fromSlotId);
     const endId = parseInt(toSlotId);
@@ -205,6 +226,9 @@ function moveChampion(fromSlotId, toSlotId) {
     }
 }
 
+/*================================================================================================================*/
+/*  SECTION: HEX SLOT İŞLEMLERİ
+/*================================================================================================================*/
 function initBoardSlots() {
     for (let i = 0; i < 28; i++) {
         const slotEl = document.getElementById(`slot-${i}`);
@@ -233,6 +257,9 @@ function initBoardSlots() {
     }
 }
 
+/*================================================================================================================*/
+/*  SECTION: ŞAMPİYON ELEMENT OLUŞTURMA
+/*================================================================================================================*/
 function createChampElement(champ, isInComp = false) {
     const div = document.createElement("div");
     const costClass = isInComp ? `cost-border-${champ.cost}` : `cost-${champ.cost}`;

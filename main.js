@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     champTooltip.className = "champ-tooltip";
     document.body.appendChild(champTooltip);
 
+/*================================================================================================================*/
+/*  SECTION: TRAIT AYRIŞTIRMA
+/*================================================================================================================*/
     function findTraitInfo(key) {
         const safeKey = safeLowercase(key);
         if (TRAIT_THRESHOLDS.specialTraits?.[safeKey]) return { data: TRAIT_THRESHOLDS.specialTraits[safeKey], type: 'special' };
@@ -29,6 +32,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         return null;
     }
 
+/*================================================================================================================*/
+/*  SECTION: TRAIT RENDER VE PUANLAMA SİSTEMİ
+/*================================================================================================================*/
     function renderTraits(selectedComp) {
         if (!traitListEl) return;
         traitListEl.innerHTML = "";
@@ -76,6 +82,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             .forEach(data => traitListEl.appendChild(createTraitSimpleElement(data)));
     }
 
+/*================================================================================================================*/
+/*  SECTION: TRAIT HTML ELEMENT OLUŞTURMA
+/*================================================================================================================*/
     function createTraitSimpleElement(data) {
         const li = document.createElement("li");
         const { traitName, count, activeTier, isActive, steps, reachedTierCount, type } = data;
@@ -112,6 +121,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         return li;
     }
 
+/*================================================================================================================*/
+/*  SECTION: EVRENSEL TOOLTİP
+/*================================================================================================================*/
     function initGlobalTooltips() {
         document.addEventListener("mouseover", (e) => {
             const champEl = e.target.closest(".champ-item, .comp-champ");
@@ -158,6 +170,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+/*================================================================================================================*/
+/*  SECTION: DATA VERİSİ ÇEKME VE UYGULAMA BAŞLATMA
+/*================================================================================================================*/
     async function loadDataAndInit() {
         try {
             const response = await fetch('./data.json');
@@ -167,10 +182,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             champions = data.champions;
             TRAIT_THRESHOLDS = data.traits;
 
-            // 2. itemdata.json Yükle (initItems asenkron olmalı)
             await initItems();
 
-            // 3. Modülleri Başlat
             initGlobalTooltips();
             initPlanner({
                 champions: champions,
@@ -188,12 +201,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+/*================================================================================================================*/
+/*  SECTION: EŞYA ARAMA VE SIFIRLAMA İŞLEMLERİ
+/*================================================================================================================*/
     if (itemSearchInput) {
         itemSearchInput.addEventListener("input", (e) => {
             import('./items.js').then(module => module.handleItemSearch(e.target.value));
         });
     }
-
     if (clearItemSearchBtn) {
         clearItemSearchBtn.addEventListener("click", () => {
             itemSearchInput.value = "";
@@ -202,12 +217,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+/*================================================================================================================*/
+/*  SECTION: ŞAMPİYON ARAMA VE SIFIRLAMA İŞLEMLERİ
+/*================================================================================================================*/
     if (champSearchInput) {
         champSearchInput.addEventListener("input", (e) => {
             import('./planner.js').then(module => module.handleChampSearch(e.target.value));
         });
     }
-
     if (clearChampSearchBtn) {
         clearChampSearchBtn.addEventListener("click", () => {
             champSearchInput.value = "";
@@ -216,6 +233,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+/*================================================================================================================*/
+/*  SECTION: RESET BUTONU İŞLEMLERİ
+/*================================================================================================================*/
     if (resetBtn) {
         resetBtn.addEventListener("click", () => {
             if (window.resetPlanner) window.resetPlanner();
