@@ -1291,9 +1291,8 @@
         "id": "sanslipara",
         "name": "Şanslı Para",
         "stats": [
-          { "icon": "[]", "value": "+" },
-          { "icon": "[]", "value": "+" },
-          { "icon": "[]", "value": "+15" }
+          { "icon": "[as]", "value": "+20" },
+          { "icon": "[critchance]", "value": "+20" }
         ],
         "desc": "Kullanıcı bir rakibi alt ettiğinde fazladan 1 [serpents] kazandırır. (Kazanılan Miktar: 0)<br><br>Önerilen Kullanıcı: Gangplank"
       }
