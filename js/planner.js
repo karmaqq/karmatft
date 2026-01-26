@@ -141,7 +141,6 @@ function addChampionToSlot(champ, targetSlot) {
     const occupant = selectedComp.find(c => c.slotId === targetSlot);
     
     if (existing) {
-        // Zaten takımda, yer değiştir
         const oldSlot = existing.slotId;
         selectedComp = selectedComp.map(c => {
             if (c.name === existing.name) return { ...c, slotId: targetSlot };
@@ -151,7 +150,6 @@ function addChampionToSlot(champ, targetSlot) {
     } else {
         if (selectedComp.length >= MAX_TEAM_SIZE) return;
         
-        // Yeni ekle
         if (occupant) {
             selectedComp = selectedComp.filter(c => c.slotId !== targetSlot);
         }
@@ -193,7 +191,6 @@ function moveChampion(fromSlotId, toSlotId) {
 function updateUI() {
     const teamCountEl = document.getElementById("team-count");
 
-    // Tüm slotları temizle
     for (let i = 0; i < MAX_SLOTS; i++) {
         const slotEl = document.getElementById(`slot-${i}`);
         if (slotEl) {
@@ -204,7 +201,6 @@ function updateUI() {
         }
     }
 
-    // Şampiyonları yerleştir
     selectedComp.forEach((champ) => {
         const slotEl = document.getElementById(`slot-${champ.slotId}`);
         if (slotEl) {
@@ -227,13 +223,10 @@ function updateUI() {
         }
     });
 
-    // Sayaç güncelle
     if (teamCountEl) teamCountEl.textContent = selectedComp.length;
 
-    // Havuz güncelle
     updateSelectedChampions(selectedComp);
 
-    // Callback
     if (onTeamUpdateCallback) {
         onTeamUpdateCallback(selectedComp);
     }

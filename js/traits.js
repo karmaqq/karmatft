@@ -72,7 +72,6 @@ export function renderTraits(selectedComp) {
         const reachedTierCount = stepsArray.filter(s => count >= s.count).length;
         const isActive = !!activeTier;
 
-        // Ağırlık hesaplama
         let weight = isActive ? 50 : 0;
         if (isActive) {
             if (activeTier?.rank === "tier-prismatic") weight = 95;
@@ -100,7 +99,6 @@ export function renderTraits(selectedComp) {
         return finalData;
     }).filter(Boolean);
 
-    // Sıralama ve render
     processedTraits
         .sort((a, b) => b.weight - a.weight || a.traitName.localeCompare(b.traitName))
         .forEach(data => traitListEl.appendChild(createTraitElement(data)));

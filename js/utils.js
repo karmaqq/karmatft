@@ -2,9 +2,6 @@
    YARDIMCI FONKSİYONLAR
    ============================================================================ */
 
-/**
- * Güvenli küçük harf dönüştürme (Türkçe karakterler dahil)
- */
 export function safeLowercase(text) {
     if (!text) return "";
     return text.toString()
@@ -19,10 +16,6 @@ export function safeLowercase(text) {
         .replace(/[^a-z0-9]/g, "");
 }
 
-/**
- * Stat ikonlarını parse etme
- * @example "[attack]" -> <img src="img/stats/attack.svg">
- */
 export function parseStatIcons(text) {
     if (!text) return "";
     return text.replace(/\[([^\]]+)\]/g, (match, iconName) => {
@@ -34,9 +27,6 @@ export function parseStatIcons(text) {
     });
 }
 
-/**
- * Akıllı pozisyonlandırma sistemi (tooltip için)
- */
 export function applySmartPosition(el, anchorRect, context = "trait") {
     if (!anchorRect) return;
     
@@ -77,7 +67,6 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
         top = anchorRect.top - tHeight - padding + scrollY;
     }
 
-    // Ekran dışına taşma kontrolü
     if (left < 10) left = 10;
     if (left + tWidth > viewWidth - 10) left = viewWidth - tWidth - 10;
     if (top < scrollY + 10) top = scrollY + 10;
@@ -87,15 +76,12 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
     el.style.top = `${top}px`;
 }
 
-/**
- * JSON dosyasını yükleme (cache ile optimize edilmiş)
- */
+
 const jsonCache = new Map();
-const CACHE_DURATION = 5 * 60 * 1000; // 5 dakika
+const CACHE_DURATION = 5 * 60 * 1000;
 
 export async function loadJSON(path) {
     try {
-        // Cache kontrolü
         const cached = jsonCache.get(path);
         if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
             return cached.data;
@@ -104,7 +90,7 @@ export async function loadJSON(path) {
         const response = await fetch(path, {
             cache: 'default',
             headers: {
-                'Cache-Control': 'max-age=300' // 5 dakika browser cache
+                'Cache-Control': 'max-age=300'
             }
         });
 
@@ -114,7 +100,6 @@ export async function loadJSON(path) {
 
         const data = await response.json();
 
-        // Cache'e kaydet
         jsonCache.set(path, {
             data: data,
             timestamp: Date.now()

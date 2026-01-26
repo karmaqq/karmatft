@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("🎮 Karma TFT Başlatılıyor...");
 
     try {
-        // 1. DATA YÜKLEME
         console.log("📦 Veri yükleniyor...");
         const loadStart = performance.now();
 
@@ -32,7 +31,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const loadTime = performance.now() - loadStart;
         console.log(`📦 Veri yükleme tamamlandı: ${loadTime.toFixed(2)}ms`);
 
-        // Veri validasyonu
         if (!championsData?.champions || !traitsData?.traits || !itemData) {
             throw new Error("Veri yapısı bozuk veya eksik!");
         }
@@ -40,18 +38,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const champions = championsData.champions;
         const traits = traitsData.traits;
 
-        // Veri boyut kontrolü
         console.log(`📊 Yüklenen veriler: ${champions.length} şampiyon, ${Object.keys(traits).length} özellik kategorisi`);
 
-        // 2. MODÜLLERI BAŞLAT
         console.log("⚙️ Modüller başlatılıyor...");
         const initStart = performance.now();
 
-        // Kritik modüller önce (bağımlılık sırası)
         initTraits(traits);
         initChampions(champions);
 
-        // Paralel başlatılabilir modüller
         const [itemsResult] = await Promise.all([
             initItems().catch(err => {
                 console.warn("Items modülü başlatılırken hata:", err);
@@ -68,12 +62,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             })
         ]);
 
-        // Planner (champions'a bağımlı)
         initPlanner(champions, (selectedComp) => {
             renderTraits(selectedComp);
         });
 
-        // Tooltips (diğer modüllere bağımlı)
         initTooltips(getTraitsData(), allItemsMap, champions);
 
         const initTime = performance.now() - initStart;
@@ -82,7 +74,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log(`⚙️ Modül başlatma tamamlandı: ${initTime.toFixed(2)}ms`);
         console.log(`✅ Sistem başarıyla yüklendi! Toplam süre: ${totalTime.toFixed(2)}ms`);
 
-        // Performans özeti
         logPerformanceSummary(totalTime, loadTime, initTime, champions.length, Object.keys(traits).length);
         
     } catch (error) {
@@ -96,7 +87,6 @@ document.addEventListener("DOMContentLoaded", async () => {
    ============================================================================ */
 
 function showErrorMessage(error) {
-    // Önceki hata mesajını temizle
     const existingError = document.querySelector('.error-message');
     if (existingError) existingError.remove();
 
@@ -162,7 +152,6 @@ function logPerformanceSummary(totalTime, loadTime, initTime, championCount, tra
         traits: traitCategories
     };
 
-    // Performans değerlendirmesi
     let rating = '🟢 MÜKEMMEL';
     if (totalTime > 2000) rating = '🟡 YAVAŞ';
     if (totalTime > 5000) rating = '🔴 ÇOK YAVAŞ';
@@ -170,7 +159,6 @@ function logPerformanceSummary(totalTime, loadTime, initTime, championCount, tra
     console.log(`📈 Performans Özeti: ${rating}`);
     console.table(performanceData);
 
-    // LocalStorage'a kaydet (debug için)
     try {
         const history = JSON.parse(localStorage.getItem('karma-tft-performance') || '[]');
         history.push({
@@ -178,10 +166,8 @@ function logPerformanceSummary(totalTime, loadTime, initTime, championCount, tra
             ...performanceData
         });
 
-        // Son 10 ölçümü tut
         if (history.length > 10) history.shift();
         localStorage.setItem('karma-tft-performance', JSON.stringify(history));
     } catch (e) {
-        // LocalStorage hatası - görmezden gel
     }
 }

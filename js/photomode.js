@@ -77,7 +77,6 @@ function applyZoom(body) {
    ============================================================================ */
 
 function setupKeyboardControls(body) {
-    // ESC ile çıkış
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && isPhotoMode) {
             currentZoom = 1;
@@ -88,7 +87,6 @@ function setupKeyboardControls(body) {
         }
     });
     
-    // CTRL + (+/-/0) ile zoom
     window.addEventListener("keydown", (e) => {
         if (e.ctrlKey) {
             if (e.key === "+" || e.key === "=") {

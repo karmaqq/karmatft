@@ -6,7 +6,7 @@ import { safeLowercase } from './utils.js';
 
 let championsData = [];
 let championsGridEl = null;
-let currentViewMode = "all"; // "all" veya "cost"
+let currentViewMode = "all";
 let currentSearchTerm = "";
 
 /* ============================================================================
@@ -189,7 +189,6 @@ export function updateSelectedChampions(selectedChamps) {
         const champName = el.getAttribute("data-name");
         const isSelected = selectedChamps.some(c => c.name === champName);
         
-        // KURAL: Takımdaysa 'selected' sınıfı ekle (CSS'de burayı gri yapacağız)
         el.classList.toggle("selected", isSelected);
     });
 }

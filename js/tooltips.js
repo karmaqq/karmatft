@@ -40,21 +40,19 @@ function setupTooltipEvents() {
 }
 
 function handleMouseOver(e) {
-    // Şampiyon tooltip
+    
     const champEl = e.target.closest(".champ-item, .comp-champ");
     if (champEl) {
         showChampionTooltip(champEl);
         return;
     }
 
-    // Trait tooltip
     const traitEl = e.target.closest(".trait-item");
     if (traitEl) {
         showTraitTooltip(traitEl);
         return;
     }
 
-    // Item tooltip
     const itemCard = e.target.closest(".item-card");
     if (itemCard) {
         showItemTooltip(itemCard);
