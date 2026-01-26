@@ -1,6 +1,6 @@
-/*================================================================================================================*/
-/*  SECTION: BİLGİ METİNLERİ RENK AYARLARI
-/*================================================================================================================*/
+/* ============================================================================
+   TOOLTIP GENEL STİLLER
+   ============================================================================ */
 
 .t-highlight {
     color: #ffb93b !important;
@@ -36,9 +36,9 @@
     display: inline-block;
 }
 
-/*================================================================================================================*/
-/*  SECTION: TRAIT TOOLTIP
-/*================================================================================================================*/
+/* ============================================================================
+   TRAIT TOOLTIP
+   ============================================================================ */
 
 #global-trait-tooltip {
     position: fixed;
@@ -131,9 +131,9 @@
     padding: 2px 0;
 }
 
-/*================================================================================================================*/
-/*  SECTION: ŞAMPİYON TOOLTIP
-/*================================================================================================================*/
+/* ============================================================================
+   ŞAMPİYON TOOLTIP
+   ============================================================================ */
 
 .champ-tooltip {
     position: fixed;
@@ -204,33 +204,17 @@
     color: #a0a0a0;
 }
 
-.champ-tooltip.cost-1 {
-    border-color: #213042;
-}
+/* Maliyet bazlı border renkleri */
+.champ-tooltip.cost-1 { border-color: #213042; }
+.champ-tooltip.cost-2 { border-color: #156831; }
+.champ-tooltip.cost-3 { border-color: #12407c; }
+.champ-tooltip.cost-4 { border-color: #893088; }
+.champ-tooltip.cost-5 { border-color: #ca9337; }
+.champ-tooltip.cost-7 { border-color: #ff4e50; }
 
-.champ-tooltip.cost-2 {
-    border-color: #156831;
-}
-
-.champ-tooltip.cost-3 {
-    border-color: #12407c;
-}
-
-.champ-tooltip.cost-4 {
-    border-color: #893088;
-}
-
-.champ-tooltip.cost-5 {
-    border-color: #ca9337;
-}
-
-.champ-tooltip.cost-7 {
-    border-color: #ff4e50;
-}
-
-/*================================================================================================================*/
-/*  SECTION: EŞYA TOOLTIP
-/*================================================================================================================*/
+/* ============================================================================
+   EŞYA TOOLTIP
+   ============================================================================ */
 
 .item-tooltip-top-section {
     display: flex;
@@ -318,102 +302,4 @@
     font-size: 13px;
     line-height: 1.5;
     color: #cbd5e0;
-}
-
-/*================================================================================================================*/
-/*  SECTION: FOTOĞRAF MODU TOOLTIP
-/*================================================================================================================*/
-
-.photo-mode-tooltip {
-    position: fixed;
-    background: linear-gradient(135deg, #1a1f2e 0%, #16181d 100%);
-    border: 1px solid var(--accent);
-    border-radius: 8px;
-    padding: 0;
-    z-index: 10000;
-    pointer-events: none;
-    opacity: 0;
-    transform: translateX(-50%) translateY(-10px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
-                0 0 20px rgba(202, 147, 55, 0.2);
-    min-width: 320px;
-    max-width: 380px;
-}
-
-.photo-mode-tooltip.visible {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-.photo-mode-tooltip .tooltip-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-radius: 7px 7px 0 0;
-}
-
-.photo-mode-tooltip .tooltip-icon {
-    font-size: 18px;
-}
-
-.photo-mode-tooltip .tooltip-header strong {
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-.photo-mode-tooltip .tooltip-content {
-    padding: 16px;
-}
-
-.photo-mode-tooltip .tooltip-content p {
-    margin: 0 0 16px 0;
-    color: var(--text-main);
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.photo-mode-tooltip .tooltip-shortcuts {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 12px;
-    border-radius: 6px;
-}
-
-.photo-mode-tooltip .shortcut-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-}
-
-.photo-mode-tooltip .shortcut-item span {
-    color: var(--text-muted);
-    flex: 1;
-}
-
-.photo-mode-tooltip kbd {
-    background: linear-gradient(180deg, #2a2d35 0%, #1a1d25 100%);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-family: 'Inter', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--accent-light);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    min-width: 32px;
-    text-align: center;
-    display: inline-block;
-}
-
-body.zooming .photo-mode-tooltip {
-    display: none;
 }

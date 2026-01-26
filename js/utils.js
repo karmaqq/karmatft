@@ -1,0 +1,102 @@
+/* ============================================================================
+   YARDIMCI FONKSİYONLAR
+   ============================================================================ */
+
+/**
+ * Güvenli küçük harf dönüştürme (Türkçe karakterler dahil)
+ */
+export function safeLowercase(text) {
+    if (!text) return "";
+    return text.toString()
+        .toLowerCase()
+        .trim()
+        .replace(/ğ/g, 'g')
+        .replace(/ü/g, 'u')
+        .replace(/ş/g, 's')
+        .replace(/ı/g, 'i')
+        .replace(/ö/g, 'o')
+        .replace(/ç/g, 'c')
+        .replace(/[^a-z0-9]/g, "");
+}
+
+/**
+ * Stat ikonlarını parse etme
+ * @example "[attack]" -> <img src="img/stats/attack.svg">
+ */
+export function parseStatIcons(text) {
+    if (!text) return "";
+    return text.replace(/\[([^\]]+)\]/g, (match, iconName) => {
+        const name = iconName.toLowerCase().trim();
+        return `<img src="img/stats/${name}.svg" 
+                     class="stat-icon-img" 
+                     alt="${name}"
+                     onerror="this.onerror=null; this.src='img/stats/${name}.png'; this.onerror=function(){this.style.display='none'};">`;
+    });
+}
+
+/**
+ * Akıllı pozisyonlandırma sistemi (tooltip için)
+ */
+export function applySmartPosition(el, anchorRect, context = "trait") {
+    if (!anchorRect) return;
+    
+    const padding = 15;
+    const viewWidth = window.innerWidth;
+    const viewHeight = window.innerHeight;
+    const scrollY = window.scrollY;
+    
+    el.style.display = "block";
+    const tWidth = el.offsetWidth;
+    const tHeight = el.offsetHeight;
+
+    let left, top;
+
+    if (context === "champion") {
+        left = anchorRect.left - tWidth - padding;
+        if (left < 10) left = anchorRect.right + padding;
+        top = (anchorRect.top > viewHeight / 2) 
+            ? anchorRect.bottom - tHeight + scrollY 
+            : anchorRect.top + scrollY;
+    } 
+    else if (context === "team") {
+        left = anchorRect.left + (anchorRect.width / 2) - (tWidth / 2);
+        top = anchorRect.bottom + padding + scrollY;
+    } 
+    else if (context === "trait") {
+        left = anchorRect.right + padding;
+        if (anchorRect.top < 200) {
+            top = anchorRect.top + scrollY;
+        } else if (anchorRect.bottom > viewHeight - 200) {
+            top = anchorRect.bottom - tHeight + scrollY;
+        } else {
+            top = anchorRect.top + (anchorRect.height / 2) - (tHeight / 2) + scrollY;
+        }
+    } 
+    else if (context === "item") {
+        left = anchorRect.left + (anchorRect.width / 2) - (tWidth / 2);
+        top = anchorRect.top - tHeight - padding + scrollY;
+    }
+
+    // Ekran dışına taşma kontrolü
+    if (left < 10) left = 10;
+    if (left + tWidth > viewWidth - 10) left = viewWidth - tWidth - 10;
+    if (top < scrollY + 10) top = scrollY + 10;
+    if (top + tHeight > viewHeight + scrollY - 10) top = viewHeight + scrollY - tHeight - 10;
+
+    el.style.left = `${left}px`;
+    el.style.top = `${top}px`;
+}
+
+/**
+ * JSON dosyasını yükleme
+ */
+export async function loadJSON(path) {
+    try {
+        const response = await fetch(path);
+        if (!response.ok) throw new Error(`${path} yüklenemedi!`);
+        return await response.json();
+    } catch (error) {
+        console.error(`JSON yükleme hatası (${path}):`, error);
+        return null;
+    }
+}

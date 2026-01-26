@@ -8,13 +8,18 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="main.css" />
-    <link rel="stylesheet" href="tooltips.css" />
-    <link rel="stylesheet" href="photomode.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/traits.css" />
+    <link rel="stylesheet" href="css/champions.css" />
+    <link rel="stylesheet" href="css/items.css" />
+    <link rel="stylesheet" href="css/planner.css" />
+    <link rel="stylesheet" href="css/tooltips.css" />
+    <link rel="stylesheet" href="css/photomode.css" />
   </head>
 
   <body>
     <main id="app" class="main-container">
+      <!-- SOL PANEL: ÖZELLİKLER -->
       <aside class="panel traits-panel">
         <div class="panel-header">
           <h2>Özellikler</h2>
@@ -22,7 +27,9 @@
         <div id="trait-list"></div>
       </aside>
 
+      <!-- ORTA PANEL: TAKIM VE EŞYALAR -->
       <div class="middle-layout">
+        <!-- TAKIM PLANLAYICI -->
         <section class="panel team-panel">
           <div class="panel-header">
             <h2>Takımın (<span id="team-count">0</span>/10)</h2>
@@ -73,6 +80,7 @@
           </div>
         </section>
 
+        <!-- EŞYALAR -->
         <section class="panel items-section">
           <div class="items-control-bar">
             <div id="item-tabs" class="item-tabs-menu">
@@ -99,6 +107,7 @@
         </section>
       </div>
 
+      <!-- SAĞ PANEL: ŞAMPİYONLAR -->
       <section class="panel selection-panel">
         <div class="panel-header">
           <div class="champ-controls-wrapper">
@@ -122,14 +131,10 @@
       </section>
     </main>
 
+    <!-- TOOLTIP ELEMANLARI -->
     <div id="global-trait-tooltip" class="trait-tooltip-global"></div>
-    <script type="module" src="main.js"></script>
+    <div id="global-champ-tooltip" class="champ-tooltip"></div>
 
-    <script>
-      window.handleImageError = function (img) {
-        img.onerror = null;
-        img.src = "img/placeholder.png";
-      };
-    </script>
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>

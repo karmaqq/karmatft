@@ -1,36 +1,41 @@
+/* ============================================================================
+   FOTOĞRAF MODU
+   ============================================================================ */
+
 let currentZoom = 1;
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 1.8;
 const ZOOM_STEP = 0.1;
 const PHOTO_MODE_ZOOM = 1.5;
 let isPhotoMode = false;
-
 let photoModeTooltip = null;
 
-/*================================================================================================================*/
-/*  SECTION: FOTOĞRAF MODU TUŞ FONKSİYONLARI
-/*================================================================================================================*/
+/* ============================================================================
+   BAŞLATMA
+   ============================================================================ */
+
 export function initPhotoMode() {
     const body = document.body;
     const photoModeBtn = document.getElementById("photo-mode-btn");
     
-    if (!photoModeBtn) return;
-    
-    createPhotoModeTooltip(photoModeBtn);
-    
-    function applyZoom() {
-        if (currentZoom === 1) {
-            body.classList.remove("zooming");
-            body.classList.remove("photo-mode");
-            body.style.transform = "scale(1)";
-            isPhotoMode = false;
-        } else {
-            body.classList.add("zooming");
-            body.style.transform = `scale(${currentZoom})`;
-        }
+    if (!photoModeBtn) {
+        console.error("Photo mode butonu bulunamadı!");
+        return;
     }
     
-    photoModeBtn.addEventListener("click", async () => {
+    createPhotoModeTooltip(photoModeBtn);
+    setupPhotoModeButton(photoModeBtn, body);
+    setupKeyboardControls(body);
+    setupMouseWheel(body);
+    setupFullscreenListener(body);
+}
+
+/* ============================================================================
+   FOTOĞRAF MODU BUTONU
+   ============================================================================ */
+
+function setupPhotoModeButton(btn, body) {
+    btn.addEventListener("click", async () => {
         try {
             if (!document.fullscreenElement) {
                 await document.documentElement.requestFullscreen();
@@ -39,34 +44,91 @@ export function initPhotoMode() {
             currentZoom = PHOTO_MODE_ZOOM;
             isPhotoMode = true;
             body.classList.add("photo-mode");
-            applyZoom();
+            applyZoom(body);
             
         } catch (err) {
             console.log("Fullscreen hatası:", err);
             currentZoom = PHOTO_MODE_ZOOM;
             isPhotoMode = true;
             body.classList.add("photo-mode");
-            applyZoom();
+            applyZoom(body);
         }
     });
+}
 
-    document.addEventListener("fullscreenchange", () => {
-        if (!document.fullscreenElement && isPhotoMode) {
-            currentZoom = 1;
-            applyZoom();
-        }
-    });
-    
+/* ============================================================================
+   ZOOM UYGULAMA
+   ============================================================================ */
+
+function applyZoom(body) {
+    if (currentZoom === 1) {
+        body.classList.remove("zooming");
+        body.classList.remove("photo-mode");
+        body.style.transform = "scale(1)";
+        isPhotoMode = false;
+    } else {
+        body.classList.add("zooming");
+        body.style.transform = `scale(${currentZoom})`;
+    }
+}
+
+/* ============================================================================
+   KLAVYE KONTROLLERI
+   ============================================================================ */
+
+function setupKeyboardControls(body) {
+    // ESC ile çıkış
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && isPhotoMode) {
             currentZoom = 1;
-            applyZoom();
+            applyZoom(body);
             if (document.fullscreenElement) {
                 document.exitFullscreen();
             }
         }
     });
     
+    // CTRL + (+/-/0) ile zoom
+    window.addEventListener("keydown", (e) => {
+        if (e.ctrlKey) {
+            if (e.key === "+" || e.key === "=") {
+                e.preventDefault();
+                currentZoom = Math.min(MAX_ZOOM, currentZoom + ZOOM_STEP);
+                applyZoom(body);
+            } else if (e.key === "-" || e.key === "_") {
+                e.preventDefault();
+                currentZoom = Math.max(MIN_ZOOM, currentZoom - ZOOM_STEP);
+                
+                if (currentZoom === 1 && isPhotoMode) {
+                    isPhotoMode = false;
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                }
+                
+                applyZoom(body);
+            } else if (e.key === "0") {
+                e.preventDefault();
+                currentZoom = 1;
+                
+                if (isPhotoMode) {
+                    isPhotoMode = false;
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                }
+                
+                applyZoom(body);
+            }
+        }
+    });
+}
+
+/* ============================================================================
+   MOUSE TEKERLEK ZOOM
+   ============================================================================ */
+
+function setupMouseWheel(body) {
     window.addEventListener("wheel", (e) => {
         if (e.ctrlKey) {
             e.preventDefault();
@@ -81,50 +143,29 @@ export function initPhotoMode() {
                 }
             }
             
-            applyZoom();
+            applyZoom(body);
         }
     }, { passive: false });
-    
-    window.addEventListener("keydown", (e) => {
-        if (e.ctrlKey) {
-            if (e.key === "+" || e.key === "=") {
-                e.preventDefault();
-                currentZoom = Math.min(MAX_ZOOM, currentZoom + ZOOM_STEP);
-                applyZoom();
-            } else if (e.key === "-" || e.key === "_") {
-                e.preventDefault();
-                currentZoom = Math.max(MIN_ZOOM, currentZoom - ZOOM_STEP);
-                
-                if (currentZoom === 1 && isPhotoMode) {
-                    isPhotoMode = false;
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen();
-                    }
-                }
-                
-                applyZoom();
-            } else if (e.key === "0") {
-                e.preventDefault();
-                currentZoom = 1;
-                
-                if (isPhotoMode) {
-                    isPhotoMode = false;
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen();
-                    }
-                }
-                
-                applyZoom();
-            }
+}
+
+/* ============================================================================
+   FULLSCREEN DEĞİŞİMİ
+   ============================================================================ */
+
+function setupFullscreenListener(body) {
+    document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement && isPhotoMode) {
+            currentZoom = 1;
+            applyZoom(body);
         }
     });
 }
 
-/*================================================================================================================*/
-/*  SECTION: FOTOĞRAF MODU TOOLTIP OLUŞTURMA
-/*================================================================================================================*/
-function createPhotoModeTooltip(btnElement) {
+/* ============================================================================
+   TOOLTIP OLUŞTURMA
+   ============================================================================ */
 
+function createPhotoModeTooltip(btnElement) {
     photoModeTooltip = document.createElement("div");
     photoModeTooltip.className = "photo-mode-tooltip";
     photoModeTooltip.innerHTML = `
@@ -143,7 +184,6 @@ function createPhotoModeTooltip(btnElement) {
                     <kbd>Ctrl</kbd> + <kbd>Scroll</kbd>
                     <span>Yakınlaştır/Uzaklaştır</span>
                 </div>
-                
             </div>
         </div>
     `;
@@ -162,9 +202,10 @@ function createPhotoModeTooltip(btnElement) {
     });
 }
 
-/*================================================================================================================*/
-/*  SECTION: FOTOĞRAF MODU TOOLTIP HİZALAMA
-/*================================================================================================================*/
+/* ============================================================================
+   TOOLTIP GÖSTER/GİZLE
+   ============================================================================ */
+
 function showPhotoModeTooltip(btnElement) {
     if (!photoModeTooltip) return;
     
@@ -177,9 +218,6 @@ function showPhotoModeTooltip(btnElement) {
     photoModeTooltip.classList.add("visible");
 }
 
-/*================================================================================================================*/
-/*  SECTION: FOTOĞRAF MODU TOOLTIP GİZLEME
-/*================================================================================================================*/
 function hidePhotoModeTooltip() {
     if (!photoModeTooltip) return;
     photoModeTooltip.classList.remove("visible");
