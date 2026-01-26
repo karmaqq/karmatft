@@ -1,0 +1,644 @@
+{
+  "champions": [
+    {
+      "name": "Anivia",
+      "cost": 1,
+      "traits": ["Freljord", "Manabaz"],
+      "img": "img/profiles/anivia.webp"
+    },
+    {
+      "name": "Blitzcrank",
+      "cost": 1,
+      "traits": ["Zaun", "Ezergeçer"],
+      "img": "img/profiles/blitzcrank.webp"
+    },
+    {
+      "name": "Briar",
+      "cost": 1,
+      "traits": ["Noxus", "Biçici", "Ezergeçer"],
+      "img": "img/profiles/briar.png"
+    },
+    {
+      "name": "Caitlyn",
+      "cost": 1,
+      "traits": ["Piltover", "Mesafeci"],
+      "img": "img/profiles/caitlyn.webp"
+    },
+    {
+      "name": "Illaoi",
+      "cost": 1,
+      "traits": ["Bilgewater", "Kavgacı"],
+      "img": "img/profiles/illaoi.webp"
+    },
+    {
+      "name": "Jarvan IV",
+      "cost": 1,
+      "traits": ["Demacia", "Savunucu"],
+      "img": "img/profiles/jarvaniv.webp"
+    },
+    {
+      "name": "Jhin",
+      "cost": 1,
+      "traits": ["Ionia", "Silahşör"],
+      "img": "img/profiles/jhin.webp"
+    },
+    {
+      "name": "Kog'Maw",
+      "cost": 1,
+      "traits": ["Hiçlik", "Mesafeci", "Sihir Üstadı"],
+      "img": "img/profiles/kogmaw.webp"
+    },
+    {
+      "name": "Lulu",
+      "cost": 1,
+      "traits": ["Yordle", "Sihir Üstadı"],
+      "img": "img/profiles/lulu.webp"
+    },
+    {
+      "name": "Qiyana",
+      "cost": 1,
+      "traits": ["Ixtal", "Biçici"],
+      "img": "img/profiles/qiyana.webp"
+    },
+    {
+      "name": "Rumble",
+      "cost": 1,
+      "traits": ["Yordle", "Savunucu"],
+      "img": "img/profiles/rumble.webp"
+    },
+    {
+      "name": "Shen",
+      "cost": 1,
+      "traits": ["Ionia", "Kavgacı"],
+      "img": "img/profiles/shen.webp"
+    },
+    {
+      "name": "Sona",
+      "cost": 1,
+      "traits": ["Demacia", "Manabaz"],
+      "img": "img/profiles/sona.webp"
+    },
+    {
+      "name": "Viego",
+      "cost": 1,
+      "traits": ["Gölge Adalar", "Atik"],
+      "img": "img/profiles/viego.webp"
+    },
+    {
+      "name": "Aphelios",
+      "cost": 2,
+      "traits": ["Targon"],
+      "img": "img/profiles/aphelios.png"
+    },
+    {
+      "name": "Ashe",
+      "cost": 2,
+      "traits": ["Freljord", "Atik"],
+      "img": "img/profiles/ashe.webp"
+    },
+    {
+      "name": "Bard",
+      "cost": 2,
+      "traits": ["Bakıcı"],
+      "img": "img/profiles/bard.png",
+      "isLocked": true
+    },
+    {
+      "name": "Cho'Gath",
+      "cost": 2,
+      "traits": ["Hiçlik", "Ezergeçer"],
+      "img": "img/profiles/chogath.webp"
+    },
+    {
+      "name": "Ekko",
+      "cost": 2,
+      "traits": ["Zaun", "Bozguncu"],
+      "img": "img/profiles/ekko.webp"
+    },
+    {
+      "name": "Graves",
+      "cost": 2,
+      "traits": ["Bilgewater", "Silahşör"],
+      "img": "img/profiles/graves.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Neeko",
+      "cost": 2,
+      "traits": ["Ixtal", "Sihir Üstadı", "Savunucu"],
+      "img": "img/profiles/neeko.png"
+    },
+    {
+      "name": "Orianna",
+      "cost": 2,
+      "traits": ["Piltover", "Manabaz"],
+      "img": "img/profiles/orianna.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Poppy",
+      "cost": 2,
+      "traits": ["Demacia", "Yordle", "Ezergeçer"],
+      "img": "img/profiles/poppy.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Rek'Sai",
+      "cost": 2,
+      "traits": ["Hiçlik", "Hışımlı"],
+      "img": "img/profiles/reksai.webp"
+    },
+    {
+      "name": "Sion",
+      "cost": 2,
+      "traits": ["Noxus", "Kavgacı"],
+      "img": "img/profiles/sion.png"
+    },
+    {
+      "name": "Teemo",
+      "cost": 2,
+      "traits": ["Yordle", "Mesafeci"],
+      "img": "img/profiles/teemo.webp"
+    },
+    {
+      "name": "Tristana",
+      "cost": 2,
+      "traits": ["Yordle", "Silahşör"],
+      "img": "img/profiles/tristana.webp"
+    },
+    {
+      "name": "Tryndamere",
+      "cost": 2,
+      "traits": ["Freljord", "Biçici"],
+      "img": "img/profiles/tryndamere.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Twisted Fate",
+      "cost": 2,
+      "traits": ["Bilgewater", "Atik"],
+      "img": "img/profiles/twistedfate.webp"
+    },
+    {
+      "name": "Vi",
+      "cost": 2,
+      "traits": ["Piltover", "Zaun", "Savunucu"],
+      "img": "img/profiles/vi.png"
+    },
+    {
+      "name": "Xin Zhao",
+      "cost": 2,
+      "traits": ["Ionia", "Demacia", "Gardiyan"],
+      "img": "img/profiles/xinzhao.webp"
+    },
+    {
+      "name": "Yasuo",
+      "cost": 2,
+      "traits": ["Ionia", "Biçici"],
+      "img": "img/profiles/yasuo.png"
+    },
+    {
+      "name": "Yorick",
+      "cost": 2,
+      "traits": ["Gölge Adalar", "Gardiyan"],
+      "img": "img/profiles/yorick.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Ahri",
+      "cost": 3,
+      "traits": ["Ionia", "Sihir Üstadı"],
+      "img": "img/profiles/ahri.png"
+    },
+    {
+      "name": "Darius",
+      "cost": 3,
+      "traits": ["Noxus", "Savunucu"],
+      "img": "img/profiles/darius.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Dr. Mundo",
+      "cost": 3,
+      "traits": ["Zaun", "Kavgacı"],
+      "img": "img/profiles/drmundo.webp"
+    },
+    {
+      "name": "Draven",
+      "cost": 3,
+      "traits": ["Noxus", "Atik"],
+      "img": "img/profiles/draven.webp"
+    },
+    {
+      "name": "Gangplank",
+      "cost": 3,
+      "traits": ["Bilgewater", "Biçici", "Hışımlı"],
+      "img": "img/profiles/gankplank.png"
+    },
+    {
+      "name": "Gwen",
+      "cost": 3,
+      "traits": ["Gölge Adalar", "Bozguncu"],
+      "img": "img/profiles/gwen.png",
+      "isLocked": true
+    },
+    {
+      "name": "Jinx",
+      "cost": 3,
+      "traits": ["Zaun", "Silahşör"],
+      "img": "img/profiles/jinx.webp"
+    },
+    {
+      "name": "Kennen",
+      "cost": 3,
+      "traits": ["Ionia", "Yordle", "Savunucu"],
+      "img": "img/profiles/kennen.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Kobuko & Yuumi",
+      "cost": 3,
+      "traits": ["Yordle", "Kavgacı", "Manabaz"],
+      "img": "img/profiles/kobukoyuumi.png",
+      "isLocked": true
+    },
+    {
+      "name": "LeBlanc",
+      "cost": 3,
+      "traits": ["Noxus", "Manabaz"],
+      "img": "img/profiles/leblanc.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Leona",
+      "cost": 3,
+      "traits": ["Targon"],
+      "img": "img/profiles/leona.webp"
+    },
+    {
+      "name": "Loris",
+      "cost": 3,
+      "traits": ["Piltover", "Gardiyan"],
+      "img": "img/profiles/loris.png"
+    },
+    {
+      "name": "Malzahar",
+      "cost": 3,
+      "traits": ["Hiçlik", "Bozguncu"],
+      "img": "img/profiles/malzahar.webp"
+    },
+    {
+      "name": "Milio",
+      "cost": 3,
+      "traits": ["Ixtal", "Manabaz"],
+      "img": "img/profiles/milio.webp"
+    },
+    {
+      "name": "Nautilus",
+      "cost": 3,
+      "traits": ["Bilgewater", "Ezergeçer", "Gardiyan"],
+      "img": "img/profiles/nautilus.webp"
+    },
+    {
+      "name": "Sejuani",
+      "cost": 3,
+      "traits": ["Freljord", "Savunucu"],
+      "img": "img/profiles/sejuani.webp"
+    },
+    {
+      "name": "Vayne",
+      "cost": 3,
+      "traits": ["Demacia", "Mesafeci"],
+      "img": "img/profiles/vayne.webp"
+    },
+    {
+      "name": "Zoe",
+      "cost": 3,
+      "traits": ["Targon"],
+      "img": "img/profiles/zoe.webp"
+    },
+    {
+      "name": "Ambessa",
+      "cost": 4,
+      "traits": ["Noxus", "Hışımlı"],
+      "img": "img/profiles/ambessa.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Bel'Veth",
+      "cost": 4,
+      "traits": ["Hiçlik", "Biçici"],
+      "img": "img/profiles/belveth.webp"
+    },
+    {
+      "name": "Braum",
+      "cost": 4,
+      "traits": ["Freljord", "Gardiyan"],
+      "img": "img/profiles/braum.webp"
+    },
+    {
+      "name": "Diana",
+      "cost": 4,
+      "traits": ["Targon"],
+      "img": "img/profiles/diana.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Fizz",
+      "cost": 4,
+      "traits": ["Bilgewater", "Yordle"],
+      "img": "img/profiles/fizz.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Garen",
+      "cost": 4,
+      "traits": ["Demacia", "Savunucu"],
+      "img": "img/profiles/garen.png"
+    },
+    {
+      "name": "Kai'Sa",
+      "cost": 4,
+      "traits": ["Özümseyici", "Hiçlik", "Mesafeci"],
+      "img": "img/profiles/kaisa.png",
+      "isLocked": true
+    },
+    {
+      "name": "Kalista",
+      "cost": 4,
+      "traits": ["Gölge Adalar", "Hışımlı"],
+      "img": "img/profiles/kalista.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Lissandra",
+      "cost": 4,
+      "traits": ["Freljord", "Manabaz"],
+      "img": "img/profiles/lissandra.webp"
+    },
+    {
+      "name": "Lux",
+      "cost": 4,
+      "traits": ["Demacia", "Sihir Üstadı"],
+      "img": "img/profiles/lux.webp"
+    },
+    {
+      "name": "Miss Fortune",
+      "cost": 4,
+      "traits": ["Bilgewater", "Silahşör"],
+      "img": "img/profiles/missfortune.png"
+    },
+    {
+      "name": "Nasus",
+      "cost": 4,
+      "traits": ["Shurima"],
+      "img": "img/profiles/nasus.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Nidalee",
+      "cost": 4,
+      "traits": ["Avcı", "Ixtal"],
+      "img": "img/profiles/nidalee.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Renekton",
+      "cost": 4,
+      "traits": ["Shurima"],
+      "img": "img/profiles/renekton.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Vadi'nin Alameti",
+      "cost": 4,
+      "traits": ["Hiçlik", "Kavgacı"],
+      "img": "img/profiles/vadininalameti.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Seraphine",
+      "cost": 4,
+      "traits": ["Piltover", "Bozguncu"],
+      "img": "img/profiles/seraphine.webp"
+    },
+    {
+      "name": "Singed",
+      "cost": 4,
+      "traits": ["Zaun", "Ezergeçer"],
+      "img": "img/profiles/singed.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Skarner",
+      "cost": 4,
+      "traits": ["Ixtal"],
+      "img": "img/profiles/skarner.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Swain",
+      "cost": 4,
+      "traits": ["Noxus", "Ezergeçer", "Sihir Üstadı"],
+      "img": "img/profiles/swain.png"
+    },
+    {
+      "name": "Taric",
+      "cost": 4,
+      "traits": ["Targon"],
+      "img": "img/profiles/taric.webp"
+    },
+    {
+      "name": "Veigar",
+      "cost": 4,
+      "traits": ["Yordle", "Sihir Üstadı"],
+      "img": "img/profiles/veigar.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Warwick",
+      "cost": 4,
+      "traits": ["Zaun", "Atik"],
+      "img": "img/profiles/warwick.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Wukong",
+      "cost": 4,
+      "traits": ["Ionia", "Kavgacı"],
+      "img": "img/profiles/wukong.png"
+    },
+    {
+      "name": "Yone",
+      "cost": 4,
+      "traits": ["Ionia", "Biçici"],
+      "img": "img/profiles/yone.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Yunara",
+      "cost": 4,
+      "traits": ["Ionia", "Atik"],
+      "img": "img/profiles/yunara.png"
+    },
+    {
+      "name": "Aatrox",
+      "cost": 5,
+      "traits": ["Dünyaların Sonu", "Darkin", "Biçici"],
+      "img": "img/profiles/aatrox.png",
+      "isLocked": true
+    },
+    {
+      "name": "Annie",
+      "cost": 5,
+      "traits": ["Şeytan Çekici", "Sihir Üstadı"],
+      "img": "img/profiles/annie.webp"
+    },
+    {
+      "name": "Aurelion Sol",
+      "cost": 7,
+      "traits": ["Yıldızların Hakimi", "Targon"],
+      "img": "img/profiles/aurelionsol.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Azir",
+      "cost": 5,
+      "traits": ["İmparator", "Shurima", "Bozguncu"],
+      "img": "img/profiles/azir.webp"
+    },
+    {
+      "name": "Baron Nashor",
+      "cost": 7,
+      "traits": ["Vadi Belası", "Hiçlik"],
+      "img": "img/profiles/baronnashor.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Brock",
+      "cost": 7,
+      "traits": ["Ixtal"],
+      "img": "img/profiles/brock.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Fiddlesticks",
+      "cost": 5,
+      "traits": ["Hasatçı", "Hışımlı"],
+      "img": "img/profiles/fiddlesticks.webp"
+    },
+    {
+      "name": "Galio",
+      "cost": 7,
+      "traits": ["Kahraman", "Demacia"],
+      "img": "img/profiles/galio.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Kindred",
+      "cost": 5,
+      "traits": ["Ebedi", "Atik"],
+      "img": "img/profiles/kindred.webp"
+    },
+    {
+      "name": "Lucian & Senna",
+      "cost": 5,
+      "traits": ["Ruhdaş", "Silahşör"],
+      "img": "img/profiles/luciansenna.png"
+    },
+    {
+      "name": "Mel",
+      "cost": 5,
+      "traits": ["Noxus", "Bozguncu"],
+      "img": "img/profiles/mel.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Ornn",
+      "cost": 5,
+      "traits": ["Demirci", "Gardiyan"],
+      "img": "img/profiles/ornn.png"
+    },
+    {
+      "name": "Ryze",
+      "cost": 7,
+      "traits": ["Rün Büyücüsü"],
+      "img": "img/profiles/ryze.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Sett",
+      "cost": 5,
+      "traits": ["Patron", "Ionia"],
+      "img": "img/profiles/sett.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Shyvana",
+      "cost": 5,
+      "traits": ["Ejderkanı", "Ezergeçer"],
+      "img": "img/profiles/shyvana.png"
+    },
+    {
+      "name": "Sylas",
+      "cost": 7,
+      "traits": ["Zincirkıran", "Savunucu", "Sihir Üstadı"],
+      "img": "img/profiles/sylas.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Tahm Kench",
+      "cost": 5,
+      "traits": ["Obur", "Bilgewater", "Kavgacı"],
+      "img": "img/profiles/tahmkench.webp"
+    },
+    {
+      "name": "T-Hex",
+      "cost": 5,
+      "traits": ["Hex-Meka", "Piltover", "Silahşör"],
+      "img": "img/profiles/thex.png",
+      "isLocked": true
+    },
+    {
+      "name": "Thresh",
+      "cost": 5,
+      "traits": ["Gölge Adalar", "Gardiyan"],
+      "img": "img/profiles/thresh.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Volibear",
+      "cost": 5,
+      "traits": ["Freljord", "Kavgacı"],
+      "img": "img/profiles/volibear.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Xerath",
+      "cost": 5,
+      "traits": ["Yükselmiş", "Shurima"],
+      "img": "img/profiles/xerath.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Zaahen",
+      "cost": 7,
+      "traits": ["Ölümsüz", "Darkin"],
+      "img": "img/profiles/zaahen.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Ziggs",
+      "cost": 5,
+      "traits": ["Zaun", "Yordle", "Mesafeci"],
+      "img": "img/profiles/ziggs.webp",
+      "isLocked": true
+    },
+    {
+      "name": "Zilean",
+      "cost": 5,
+      "traits": ["Zaman Bekçisi", "Manabaz"],
+      "img": "img/profiles/zilean.webp"
+    }
+  ]
+}

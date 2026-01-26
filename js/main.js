@@ -15,46 +15,75 @@ import { initPhotoMode } from './photomode.js';
    ============================================================================ */
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const startTime = performance.now();
     console.log("🎮 Karma TFT Başlatılıyor...");
-    
+
     try {
         // 1. DATA YÜKLEME
         console.log("📦 Veri yükleniyor...");
-        const [gameData, itemData] = await Promise.all([
-            loadJSON('./data.json'),
-            loadJSON('./itemdata.json')
+        const loadStart = performance.now();
+
+        const [championsData, traitsData, itemData] = await Promise.all([
+            loadJSON('data/championsdata.json'),
+            loadJSON('data/traitsdata.json'),
+            loadJSON('data/itemdata.json')
         ]);
-        
-        if (!gameData || !itemData) {
-            throw new Error("Kritik veriler yüklenemedi!");
+
+        const loadTime = performance.now() - loadStart;
+        console.log(`📦 Veri yükleme tamamlandı: ${loadTime.toFixed(2)}ms`);
+
+        // Veri validasyonu
+        if (!championsData?.champions || !traitsData?.traits || !itemData) {
+            throw new Error("Veri yapısı bozuk veya eksik!");
         }
-        
-        const { champions, traits } = gameData;
-        
+
+        const champions = championsData.champions;
+        const traits = traitsData.traits;
+
+        // Veri boyut kontrolü
+        console.log(`📊 Yüklenen veriler: ${champions.length} şampiyon, ${Object.keys(traits).length} özellik kategorisi`);
+
         // 2. MODÜLLERI BAŞLAT
         console.log("⚙️ Modüller başlatılıyor...");
-        
-        // Traits
+        const initStart = performance.now();
+
+        // Kritik modüller önce (bağımlılık sırası)
         initTraits(traits);
-        
-        // Champions
         initChampions(champions);
-        
-        // Items
-        await initItems();
-        
-        // Planner
+
+        // Paralel başlatılabilir modüller
+        const [itemsResult] = await Promise.all([
+            initItems().catch(err => {
+                console.warn("Items modülü başlatılırken hata:", err);
+                return null;
+            }),
+            Promise.resolve().then(() => {
+                try {
+                    initPhotoMode();
+                    return true;
+                } catch (err) {
+                    console.warn("Photo mode modülü başlatılırken hata:", err);
+                    return false;
+                }
+            })
+        ]);
+
+        // Planner (champions'a bağımlı)
         initPlanner(champions, (selectedComp) => {
             renderTraits(selectedComp);
         });
-        
-        // Tooltips
+
+        // Tooltips (diğer modüllere bağımlı)
         initTooltips(getTraitsData(), allItemsMap, champions);
-        
-        // Photo Mode
-        initPhotoMode();
-        
-        console.log("✅ Sistem başarıyla yüklendi!");
+
+        const initTime = performance.now() - initStart;
+        const totalTime = performance.now() - startTime;
+
+        console.log(`⚙️ Modül başlatma tamamlandı: ${initTime.toFixed(2)}ms`);
+        console.log(`✅ Sistem başarıyla yüklendi! Toplam süre: ${totalTime.toFixed(2)}ms`);
+
+        // Performans özeti
+        logPerformanceSummary(totalTime, loadTime, initTime, champions.length, Object.keys(traits).length);
         
     } catch (error) {
         console.error("❌ Uygulama başlatılamadı:", error);
@@ -67,27 +96,92 @@ document.addEventListener("DOMContentLoaded", async () => {
    ============================================================================ */
 
 function showErrorMessage(error) {
+    // Önceki hata mesajını temizle
+    const existingError = document.querySelector('.error-message');
+    if (existingError) existingError.remove();
+
     const errorDiv = document.createElement("div");
+    errorDiv.className = 'error-message';
     errorDiv.style.cssText = `
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: #ff4e50;
+        background: linear-gradient(135deg, #ff4e50, #ff6b6b);
         color: white;
         padding: 30px;
-        border-radius: 8px;
+        border-radius: 12px;
         font-family: 'Inter', sans-serif;
         font-size: 16px;
         z-index: 999999;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        max-width: 400px;
+        text-align: center;
+        border: 2px solid rgba(255,255,255,0.2);
     `;
+
+    const retryButton = document.createElement('button');
+    retryButton.textContent = 'Tekrar Dene';
+    retryButton.style.cssText = `
+        background: rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 15px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    `;
+    retryButton.onmouseover = () => retryButton.style.background = 'rgba(255,255,255,0.3)';
+    retryButton.onmouseout = () => retryButton.style.background = 'rgba(255,255,255,0.2)';
+    retryButton.onclick = () => window.location.reload();
+
     errorDiv.innerHTML = `
-        <h2 style="margin: 0 0 10px 0;">⚠️ Yükleme Hatası</h2>
-        <p style="margin: 0;">${error.message}</p>
-        <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.8;">
-            Lütfen sayfayı yenileyin veya veri dosyalarını kontrol edin.
+        <h2 style="margin: 0 0 10px 0; font-size: 24px;">⚠️ Yükleme Hatası</h2>
+        <p style="margin: 0 0 15px 0; line-height: 1.4;">${error.message}</p>
+        <p style="margin: 0; font-size: 14px; opacity: 0.9;">
+            Lütfen internet bağlantınızı kontrol edin veya sayfayı yenileyin.
         </p>
     `;
+    errorDiv.appendChild(retryButton);
+
     document.body.appendChild(errorDiv);
+}
+
+/* ============================================================================
+   PERFORMANS ÖZETİ
+   ============================================================================ */
+
+function logPerformanceSummary(totalTime, loadTime, initTime, championCount, traitCategories) {
+    const performanceData = {
+        total: totalTime.toFixed(2),
+        load: loadTime.toFixed(2),
+        init: initTime.toFixed(2),
+        champions: championCount,
+        traits: traitCategories
+    };
+
+    // Performans değerlendirmesi
+    let rating = '🟢 MÜKEMMEL';
+    if (totalTime > 2000) rating = '🟡 YAVAŞ';
+    if (totalTime > 5000) rating = '🔴 ÇOK YAVAŞ';
+
+    console.log(`📈 Performans Özeti: ${rating}`);
+    console.table(performanceData);
+
+    // LocalStorage'a kaydet (debug için)
+    try {
+        const history = JSON.parse(localStorage.getItem('karma-tft-performance') || '[]');
+        history.push({
+            timestamp: Date.now(),
+            ...performanceData
+        });
+
+        // Son 10 ölçümü tut
+        if (history.length > 10) history.shift();
+        localStorage.setItem('karma-tft-performance', JSON.stringify(history));
+    } catch (e) {
+        // LocalStorage hatası - görmezden gel
+    }
 }

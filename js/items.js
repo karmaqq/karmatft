@@ -15,8 +15,8 @@ let itemsContainerEl = null;
 
 export async function initItems() {
     try {
-        const response = await fetch('./itemdata.json');
-        if (!response.ok) throw new Error("itemdata.json yüklenemedi!");
+        const response = await fetch('data/itemdata.json');
+        if (!response.ok) throw new Error("data/itemdata.json yüklenemedi!");
         
         itemCategories = await response.json();
         buildItemMap();

@@ -88,13 +88,39 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
 }
 
 /**
- * JSON dosyasını yükleme
+ * JSON dosyasını yükleme (cache ile optimize edilmiş)
  */
+const jsonCache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 dakika
+
 export async function loadJSON(path) {
     try {
-        const response = await fetch(path);
-        if (!response.ok) throw new Error(`${path} yüklenemedi!`);
-        return await response.json();
+        // Cache kontrolü
+        const cached = jsonCache.get(path);
+        if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+            return cached.data;
+        }
+
+        const response = await fetch(path, {
+            cache: 'default',
+            headers: {
+                'Cache-Control': 'max-age=300' // 5 dakika browser cache
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`${path} yüklenemedi! (${response.status})`);
+        }
+
+        const data = await response.json();
+
+        // Cache'e kaydet
+        jsonCache.set(path, {
+            data: data,
+            timestamp: Date.now()
+        });
+
+        return data;
     } catch (error) {
         console.error(`JSON yükleme hatası (${path}):`, error);
         return null;

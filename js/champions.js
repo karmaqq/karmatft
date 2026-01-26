@@ -186,7 +186,10 @@ function createChampElement(champ, onChampClick = null) {
 
 export function updateSelectedChampions(selectedChamps) {
     document.querySelectorAll(".champ-item").forEach(el => {
-        const isSelected = selectedChamps.some(c => c.name === el.getAttribute("data-name"));
+        const champName = el.getAttribute("data-name");
+        const isSelected = selectedChamps.some(c => c.name === champName);
+        
+        // KURAL: Takımdaysa 'selected' sınıfı ekle (CSS'de burayı gri yapacağız)
         el.classList.toggle("selected", isSelected);
     });
 }
