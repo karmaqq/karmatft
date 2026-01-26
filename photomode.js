@@ -177,6 +177,9 @@ function showPhotoModeTooltip(btnElement) {
     photoModeTooltip.classList.add("visible");
 }
 
+/*================================================================================================================*/
+/*  SECTION: FOTOĞRAF MODU TOOLTIP GİZLEME
+/*================================================================================================================*/
 function hidePhotoModeTooltip() {
     if (!photoModeTooltip) return;
     photoModeTooltip.classList.remove("visible");
