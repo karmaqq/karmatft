@@ -40,4 +40,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     initTooltips(getTraitsData(), allItemsMap, champions);
   }
+
+  
 });

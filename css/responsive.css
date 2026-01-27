@@ -1,0 +1,238 @@
+@media (max-width: 360px) {
+    /* Tüm scrollbarları gizle */
+    * {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    html, body {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        background: #08090c;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .main-header {
+        height: 60px !important;
+        flex-shrink: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        background: #11141d;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        z-index: 100;
+    }
+
+    .brand, .set-info {
+        display: none !important;
+    }
+
+    .header-nav-center {
+        width: 100%;
+        justify-content: space-evenly;
+    }
+
+    .main-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start !important;
+        padding: 15px !important;
+        gap: 15px;
+        overflow-y: auto;
+        overflow-x: hidden !important;
+        width: 100vw;
+        box-sizing: border-box;
+    }
+
+    #planner-view {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        flex-grow: 0 !important;
+        box-sizing: border-box;
+    }
+
+    .middle-layout {
+        order: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: max-content !important;
+        height: auto !important;
+        min-height: unset !important;
+        flex-grow: 0 !important;
+        gap: 0 !important;
+        margin: 0 !important;
+    }
+
+    .team-panel {
+        display: block !important;
+        width: max-content !important;
+        max-width: unset !important;
+        height: auto !important;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    .team-panel .panel-header {
+        display: none !important;
+    }
+
+    #active-team-grid {
+        display: grid !important;
+        grid-template-columns: repeat(5, 50px) !important;
+        grid-template-rows: repeat(2, 50px) !important;
+        gap: 5px !important;
+        width: max-content !important;
+        justify-content: center !important;
+        padding: 20px !important;
+        margin: 10px !important;
+        box-sizing: border-box !important;
+    }
+
+    .hex-row {
+        display: contents !important;
+    }
+
+    .comp-champ, .empty-slot {
+        width: 50px !important;
+        height: 50px !important;
+        flex-shrink: 0 !important;
+        aspect-ratio: 1 / 1 !important;
+        clip-path: none !important;
+        border-radius: 6px !important;
+        background: rgba(255,255,255,0.05) !important;
+        border: 1px solid rgba(255,255,255,0.15) !important;
+        margin: 0 !important;
+        max-width: unset !important;
+    }
+
+    .hex-row:nth-child(n+3) {
+        display: none !important;
+    }
+
+    .hex-row:nth-child(1) > *:nth-child(n+6),
+    .hex-row:nth-child(2) > *:nth-child(n+6) {
+        display: none !important;
+    }
+
+    .traits-panel {
+        order: 2 !important;
+        display: flex !important;
+        width: 100% !important;
+        height: 60px !important;
+        min-height: 60px !important;
+        flex-grow: 0 !important;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 0 !important;
+        overflow-x: auto !important;
+        justify-content: flex-start !important;
+    }
+
+    .traits-panel .panel-header {
+        display: none !important;
+    }
+
+    #trait-list {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center;
+        min-width: 100%;
+        width: max-content !important;
+        justify-content: center !important;
+        padding: 0 15px !important;
+        gap: 12px !important;
+        height: 100%;
+        margin: 0 !important;
+    }
+
+    .trait-item {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        min-width: 36px;
+        position: relative;
+        flex-shrink: 0 !important;
+    }
+
+    .trait-info-wrapper, .t-name, .t-steps-row, .t-sep {
+        display: none !important;
+    }
+
+    .trait-hex-container {
+        margin: 0 !important;
+        transform: scale(0.75);
+        transform-origin: center;
+    }
+
+    .trait-count-badge-box {
+        display: flex !important;
+        position: absolute;
+        right: -14px;
+        width: 16px !important;
+        height: 16px !important;
+        min-width: unset !important;
+        font-size: 11px !important;
+        background: #474747 !important;
+        color: #fff !important;
+        border: 1px solid #444 !important;
+        border-radius: 4px;
+        z-index: 10;
+        margin: 0 !important;
+    }
+
+    .items-section, .selection-panel {
+        display: none !important;
+    }
+
+    .site-footer {
+        display: flex !important;
+        flex-shrink: 0;
+        width: 100%;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding: 15px;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        margin-top: auto;
+    }
+
+    .footer-container {
+        width: 100%;
+    }
+
+    .footer-content-stacked {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .footer-top p, .footer-bottom p {
+        margin: 0;
+        font-size: 10px;
+        color: #666;
+    }
+}

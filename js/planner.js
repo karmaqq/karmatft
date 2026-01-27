@@ -67,7 +67,7 @@ function applySpecialRules() {
   }
 
   const kuleData = championsData.find((c) => c.name === "Donmuş Kule");
-  selectedComp = selectedComp.filter((c) => c.name !== "Donmuş Kule"); // Önce temizle
+  selectedComp = selectedComp.filter((c) => c.name !== "Donmuş Kule");
 
   if (freljordCount >= 3) {
     selectedComp.push({

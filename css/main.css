@@ -74,14 +74,25 @@ html, body {
 .main-container {
     flex: 1;
     display: flex;
-    justify-content: center;
+    /* justify-content: center yerine flex-start kullanarak başlangıcı sola sabitliyoruz */
+    justify-content: flex-start; 
     gap: 15px;
-    max-width: 1800px;
-    margin: 0 auto;
+    max-width: 100%; 
+    margin: 0; /* Margin auto yerine 0 yaparak soldan başlamasını garanti ediyoruz */
     padding: 20px;
     width: 100%;
     box-sizing: border-box;
-    overflow: hidden;
+    
+    /* Yatay kaydırma ayarları */
+    overflow-x: auto; 
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; 
+}
+
+@media (min-width: 1850px) {
+    .main-container {
+        justify-content: center; /* Sadece ekran çok büyükse tekrar ortala */
+    }
 }
 
 .main-container::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -159,8 +170,8 @@ html, body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: fit-content;
-    min-width: 860px;
+    /* Ekran daraldığında panelin çok fazla küçülüp bozulmasını engeller */
+    min-width: 800px; 
     gap: 15px;
     flex-shrink: 0;
 }
