@@ -2,7 +2,7 @@
    EŞYA YÖNETİMİ
    ============================================================================ */
 
-import { safeLowercase } from './utils.js';
+import { safeLowercase } from "./utils.js";
 
 export let allItemsMap = new Map();
 let itemCategories = {};
@@ -14,24 +14,18 @@ let itemsContainerEl = null;
    ============================================================================ */
 
 export async function initItems() {
-    try {
-        const response = await fetch('data/itemdata.json');
-        if (!response.ok) throw new Error("data/itemdata.json yüklenemedi!");
-        
-        itemCategories = await response.json();
-        buildItemMap();
-        
-        itemsContainerEl = document.getElementById('items-container');
-        
-        setupTabs();
-        setupSearch();
-        
-        renderCategory('normal');
-        
-        console.log("Eşya sistemi başarıyla yüklendi.");
-    } catch (error) {
-        console.error("Eşya yükleme hatası:", error);
-    }
+  const response = await fetch("data/itemdata.json");
+
+  if (response.ok) {
+    itemCategories = await response.json();
+    buildItemMap();
+
+    itemsContainerEl = document.getElementById("items-container");
+
+    setupTabs();
+    setupSearch();
+    renderCategory("normal");
+  }
 }
 
 /* ============================================================================
@@ -39,12 +33,12 @@ export async function initItems() {
    ============================================================================ */
 
 function buildItemMap() {
-    allItemsMap.clear();
-    for (const cat in itemCategories) {
-        itemCategories[cat].items.forEach(item => {
-            allItemsMap.set(item.id, { ...item, categoryKey: cat });
-        });
-    }
+  allItemsMap.clear();
+  for (const cat in itemCategories) {
+    itemCategories[cat].items.forEach((item) => {
+      allItemsMap.set(item.id, { ...item, categoryKey: cat });
+    });
+  }
 }
 
 /* ============================================================================
@@ -52,15 +46,15 @@ function buildItemMap() {
    ============================================================================ */
 
 function setupTabs() {
-    const tabs = document.querySelectorAll('.item-tab-btn');
-    tabs.forEach(btn => {
-        btn.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            const categoryKey = btn.getAttribute('data-cat');
-            renderCategory(categoryKey);
-        });
+  const tabs = document.querySelectorAll(".item-tab-btn");
+  tabs.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      tabs.forEach((t) => t.classList.remove("active"));
+      btn.classList.add("active");
+      const categoryKey = btn.getAttribute("data-cat");
+      renderCategory(categoryKey);
     });
+  });
 }
 
 /* ============================================================================
@@ -68,38 +62,38 @@ function setupTabs() {
    ============================================================================ */
 
 function setupSearch() {
-    const searchInput = document.getElementById("item-search");
-    const clearBtn = document.getElementById("clear-item-search");
-    
-    if (searchInput) {
-        searchInput.addEventListener("input", (e) => {
-            handleItemSearch(e.target.value);
-        });
-    }
-    
-    if (clearBtn) {
-        clearBtn.addEventListener("click", () => {
-            if (searchInput) searchInput.value = "";
-            handleItemSearch("");
-            if (searchInput) searchInput.focus();
-        });
-    }
+  const searchInput = document.getElementById("item-search");
+  const clearBtn = document.getElementById("clear-item-search");
+
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      handleItemSearch(e.target.value);
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      handleItemSearch("");
+      if (searchInput) searchInput.focus();
+    });
+  }
 }
 
 export function handleItemSearch(term) {
-    currentItemSearchTerm = safeLowercase(term);
-    
-    const clearBtn = document.getElementById('clear-item-search');
-    if (clearBtn) {
-        clearBtn.style.display = term.length > 0 ? 'block' : 'none';
-    }
+  currentItemSearchTerm = safeLowercase(term);
 
-    if (currentItemSearchTerm.length > 0) {
-        renderSearchResults();
-    } else {
-        const activeTab = document.querySelector('.item-tab-btn.active');
-        renderCategory(activeTab ? activeTab.getAttribute('data-cat') : 'normal');
-    }
+  const clearBtn = document.getElementById("clear-item-search");
+  if (clearBtn) {
+    clearBtn.style.display = term.length > 0 ? "block" : "none";
+  }
+
+  if (currentItemSearchTerm.length > 0) {
+    renderSearchResults();
+  } else {
+    const activeTab = document.querySelector(".item-tab-btn.active");
+    renderCategory(activeTab ? activeTab.getAttribute("data-cat") : "normal");
+  }
 }
 
 /* ============================================================================
@@ -107,15 +101,17 @@ export function handleItemSearch(term) {
    ============================================================================ */
 
 export function renderCategory(catKey) {
-    if (!itemsContainerEl) return;
+  if (!itemsContainerEl) return;
 
-    const category = itemCategories[catKey];
-    if (!category) return;
+  const category = itemCategories[catKey];
+  if (!category) return;
 
-    const itemsHTML = category.items.map(item => {
-        const extension = (catKey === 'base' || catKey === 'component') ? 'png' : 'avif';
-        
-        return `
+  const itemsHTML = category.items
+    .map((item) => {
+      const extension =
+        catKey === "base" || catKey === "component" ? "png" : "avif";
+
+      return `
             <div class="item-card" data-id="${item.id}" data-name="${safeLowercase(item.name)}">
                 <div class="item-icon-wrapper">
                     <img src="img/items/${item.id}.${extension}" 
@@ -124,10 +120,11 @@ export function renderCategory(catKey) {
                 </div>
             </div>
         `;
-    }).join('');
+    })
+    .join("");
 
-    itemsContainerEl.innerHTML = `<div class="items-grid">${itemsHTML}</div>`;
-    applyItemFilter();
+  itemsContainerEl.innerHTML = `<div class="items-grid">${itemsHTML}</div>`;
+  applyItemFilter();
 }
 
 /* ============================================================================
@@ -135,29 +132,35 @@ export function renderCategory(catKey) {
    ============================================================================ */
 
 function renderSearchResults() {
-    if (!itemsContainerEl) return;
+  if (!itemsContainerEl) return;
 
-    const results = [];
-    allItemsMap.forEach(item => {
-        if (safeLowercase(item.name).includes(currentItemSearchTerm)) {
-            results.push(item);
-        }
-    });
+  const results = [];
+  allItemsMap.forEach((item) => {
+    if (safeLowercase(item.name).includes(currentItemSearchTerm)) {
+      results.push(item);
+    }
+  });
 
-    const itemsHTML = results.map(item => {
-        const extension = (item.categoryKey === 'base' || item.categoryKey === 'component') ? 'png' : 'avif';
-        return `
+  const itemsHTML = results
+    .map((item) => {
+      const extension =
+        item.categoryKey === "base" || item.categoryKey === "component"
+          ? "png"
+          : "avif";
+      return `
             <div class="item-card" data-id="${item.id}" data-name="${safeLowercase(item.name)}">
                 <div class="item-icon-wrapper">
                     <img src="img/items/${item.id}.${extension}" alt="${item.name}" onerror="this.src='img/items/default.png'">
                 </div>
             </div>
         `;
-    }).join('');
+    })
+    .join("");
 
-    itemsContainerEl.innerHTML = results.length > 0 
-        ? `<div class="items-grid">${itemsHTML}</div>` 
-        : `<div class="no-results">Eşya bulunamadı.</div>`;
+  itemsContainerEl.innerHTML =
+    results.length > 0
+      ? `<div class="items-grid">${itemsHTML}</div>`
+      : `<div class="no-results">Eşya bulunamadı.</div>`;
 }
 
 /* ============================================================================
@@ -165,9 +168,11 @@ function renderSearchResults() {
    ============================================================================ */
 
 function applyItemFilter() {
-    const cards = document.querySelectorAll('.item-card');
-    cards.forEach(card => {
-        const itemName = card.getAttribute('data-name') || "";
-        card.style.display = itemName.includes(currentItemSearchTerm) ? 'block' : 'none';
-    });
+  const cards = document.querySelectorAll(".item-card");
+  cards.forEach((card) => {
+    const itemName = card.getAttribute("data-name") || "";
+    card.style.display = itemName.includes(currentItemSearchTerm)
+      ? "block"
+      : "none";
+  });
 }

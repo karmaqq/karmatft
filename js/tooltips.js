@@ -13,7 +13,7 @@ let championsData = [];
 /* ============================================================================
    BAŞLATMA
    ============================================================================ */
-
+   
 export function initTooltips(traitsDataMap, itemsMap, champions) {
     currentTraitsData = traitsDataMap;
     allItemsMap = itemsMap;
@@ -22,12 +22,9 @@ export function initTooltips(traitsDataMap, itemsMap, champions) {
     globalTooltip = document.getElementById("global-trait-tooltip");
     champTooltip = document.getElementById("global-champ-tooltip");
     
-    if (!globalTooltip || !champTooltip) {
-        console.error("Tooltip elementleri bulunamadı!");
-        return;
+    if (globalTooltip && champTooltip) {
+        setupTooltipEvents();
     }
-    
-    setupTooltipEvents();
 }
 
 /* ============================================================================

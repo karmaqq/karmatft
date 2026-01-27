@@ -30,6 +30,11 @@
     padding: 15px;
     overflow-y: auto;
     align-content: start;
+    scrollbar-width: none;
+}
+
+#champions-grid::-webkit-scrollbar {
+    display: none;
 }
 
 /* ============================================================================
@@ -41,18 +46,16 @@
     width: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 4px;
-    overflow: hidden;
     cursor: pointer;
     display: block;
     overflow: visible !important;
+    transition: all 0.2s ease-in-out;
 }
 
 .champ-item:hover {
-    background: #62b878;
-    color: #ffffff;
-    transition: all 0.5s ease-in-out;
-    box-shadow: 0 0 10px rgba(123, 211, 127, 0.4);
+    box-shadow: 0 0 10px rgba(202, 147, 55, 0.4);
     transform: scale(1.05);
+    z-index: 10;
 }
 
 .champ-item:active {
@@ -65,6 +68,7 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    border-radius: 4px;
 }
 
 .champ-item.selected {
@@ -80,6 +84,19 @@
     color: var(--accent);
     font-size: 20px;
     font-weight: 900;
+}
+
+/* ============================================================================
+   ÖZEL BİRİM (TIBBERS VB.) STİLİ
+   ============================================================================ */
+
+.champ-item.cost-0 {
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    filter: saturate(0.8);
+}
+
+.champ-item.cost-0:hover {
+    border-color: var(--text-muted);
 }
 
 /* ============================================================================
@@ -117,6 +134,7 @@
     font-weight: 900;
     padding-right: 10px;
     white-space: nowrap;
+    text-transform: uppercase;
 }
 
 .pool-divider::after {
@@ -124,7 +142,7 @@
     flex: 1;
     height: 1px;
     background: currentColor;
-    opacity: 0.4;
+    opacity: 0.3;
 }
 
 .cost-divider-1 { color: var(--c1); }
@@ -133,6 +151,7 @@
 .cost-divider-4 { color: var(--c4); }
 .cost-divider-5 { color: var(--c5); }
 .cost-divider-7 { color: var(--c7); }
+.cost-divider-special { color: var(--text-muted); }
 
 /* ============================================================================
    GÖRÜNTÜLEMEYİ DEĞİŞTİR BUTONU

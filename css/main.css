@@ -26,39 +26,75 @@
     outline: none;
 }
 
-body {
+html, body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Dış ekran asla kaymaz */
     background: radial-gradient(circle at center, #11141d 0%, #08090c 100%);
     font-family: 'Inter', sans-serif;
     color: var(--text-main);
-    margin: 0;
-    padding: 15px;
-    min-height: 100vh;
-    width: 100%;
     display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-sizing: border-box;
+    flex-direction: column; /* Header, Main, Footer dizilimi */
 }
 
 /* ============================================================================
-   ANA DÜZEN YAPISI
+   SAYFA BÖLÜMLERİ YÖNETİMİ (SPA)
+   ============================================================================ */
+
+.view-section {
+    display: none; /* Varsayılan gizli */
+    width: 100%;
+    height: 100%;
+    gap: 15px;
+}
+
+.view-section.active {
+    display: flex; /* Sadece aktif olanı göster */
+    justify-content: center;
+}
+
+.empty-state-panel {
+    width: 100%;
+    max-width: 800px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+/* ============================================================================
+   ANA İÇERİK ALANI
    ============================================================================ */
 
 .main-container {
+    flex: 1;
     display: flex;
     justify-content: center;
     gap: 15px;
     max-width: 1800px;
     margin: 0 auto;
-    height: calc(100vh - 30px);
-    padding: 5px 20px 0 20px;
+    padding: 20px;
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
+.main-container::-webkit-scrollbar { width: 10px; height: 10px; }
+.main-container::-webkit-scrollbar-track { background: transparent; }
+.main-container::-webkit-scrollbar-thumb { 
+    background: var(--border); 
+    border-radius: 20px; 
+    border: 2px solid var(--bg-dark); 
+}
+.main-container::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
 /* ============================================================================
-   PANEL DÜZENLEME
+   PANEL YAPISI
    ============================================================================ */
 
 .panel {
@@ -67,12 +103,13 @@ body {
     border-radius: 12px;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0; 
     overflow: hidden;
-    position: relative;
+    height: 100%;
 }
 
 .panel-header {
-    height: 50px;
+    height: 55px;
     background: var(--panel-header);
     padding: 0 16px;
     display: flex;
@@ -96,9 +133,27 @@ body {
     margin: 0;
 }
 
+#trait-list,
+#items-container,
+#champions-grid {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
 /* ============================================================================
-   ORTA DÜZEN (TAKIM VE EŞYALAR)
+   PANEL İÇERİĞİ
    ============================================================================ */
+
+.traits-panel {
+    width: 320px; /* Sabit genişlik panelin küçülmesini engeller */
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    /* Ana konteyner flex olduğu için max-height yerine yüksekliği doldur diyoruz */
+    height: 100%; 
+    background: var(--panel-bg);
+}
 
 .middle-layout {
     display: flex;
@@ -110,6 +165,85 @@ body {
     flex-shrink: 0;
 }
 
+.team-panel {
+    height: auto !important;
+    flex: 0 0 auto;
+    background: var(--panel-bg);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.items-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: var(--panel-bg);
+}
+
+.selection-panel {
+    width: 500px;
+    flex-shrink: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================================================
+   FOOTER 
+   ============================================================================ */
+
+.site-footer {
+    flex-shrink: 0;
+    min-height: 80px;
+    background: var(--panel-bg);
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.footer-container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-content-stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-top p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: 0.5px;
+}
+
+.footer-bottom {
+    max-width: 900px;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    text-align: center;
+    opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+    .footer-top p { font-size: 13px; }
+    .footer-bottom p { font-size: 10px; }
+}   
+
 /* ============================================================================
    SCROLLBAR GİZLEME
    ============================================================================ */
@@ -119,13 +253,6 @@ body {
 #items-container::-webkit-scrollbar,
 #champions-grid::-webkit-scrollbar {
     display: none;
-}
-
-#trait-list,
-#active-team-grid,
-#items-container,
-#champions-grid {
-    scrollbar-width: none;
 }
 
 /* ============================================================================

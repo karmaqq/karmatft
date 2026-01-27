@@ -639,6 +639,27 @@
       "cost": 5,
       "traits": ["Zaman Bekçisi", "Manabaz"],
       "img": "img/profiles/zilean.webp"
+    },
+    {
+      "name": "Atakhan",
+      "cost": 0,
+      "traits": [],
+      "img": "img/profiles/atakhan.webp",
+      "isSummon": true
+    },
+    {
+      "name": "Tibbers",
+      "cost": 0,
+      "traits": ["Sihir Üstadı"],
+      "img": "img/profiles/tibbers.png",
+      "isSummon": true
+    },
+    {
+      "name": "Donmuş Kule",
+      "cost": 0,
+      "traits": [],
+      "img": "img/profiles/donmuskule.webp",
+      "isSummon": true
     }
   ]
 }

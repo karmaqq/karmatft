@@ -2,13 +2,6 @@
    ÖZELLİKLER PANELİ (TRAITS)
    ============================================================================ */
 
-.traits-panel {
-    flex: 0 0 320px;
-    display: flex;
-    flex-direction: column;
-    max-height: 100%;
-}
-
 #trait-list {
     flex: 1;
     display: flex;
@@ -18,8 +11,12 @@
     overflow-y: auto;
     padding-bottom: 40px;
     scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
+#trait-list::-webkit-scrollbar {
+    display: none;
+}
 /* ============================================================================
    TRAIT ITEM YAPISI
    ============================================================================ */
