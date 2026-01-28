@@ -158,6 +158,45 @@ function createTraitElement(data) {
   return li;
 }
 
+export function initTraitSidebar() {
+  const panel = document.querySelector(".traits-panel");
+  if (!panel) return;
+
+  let startX = 0;
+
+  // 1. Dokunmatik Sürükleme (Swipe)
+  panel.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  panel.addEventListener("touchmove", (e) => {
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - startX;
+
+    if (diff > 40) { 
+      panel.classList.add("expanded");
+    } else if (diff < -40) {
+      panel.classList.remove("expanded");
+    }
+  }, { passive: true });
+
+  // 2. Tıklama Kontrolü
+  panel.addEventListener("click", (e) => {
+    // Eğer panel kapalıysa, tıklandığında aç
+    if (!panel.classList.contains("expanded")) {
+      panel.classList.add("expanded");
+      e.stopPropagation(); // Dışarı tıklama olayını tetiklemesini engelle
+    }
+  });
+
+  // 3. Dışarı tıklandığında veya Sola kaydırıldığında kapat
+  document.addEventListener("click", (e) => {
+    if (panel.classList.contains("expanded") && !panel.contains(e.target)) {
+      panel.classList.remove("expanded");
+    }
+  });
+}
+
 /* ============================================================================
    EXPORT
    ============================================================================ */

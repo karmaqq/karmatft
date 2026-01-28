@@ -434,7 +434,6 @@
         align-items: center;
         z-index: 100;
         margin-top: auto;
-        background: #11141d;
     }
 
     .footer-container { width: 100%; }
@@ -450,7 +449,367 @@
     .footer-top p, .footer-bottom p {
         margin: 0;
         font-size: 9px;
-        color: #666;
         line-height: 1.3;
     }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+
+    .main-container {
+        display: grid !important;
+        grid-template-columns: 55px 340px 1fr !important; 
+        grid-template-rows: auto 1fr !important;
+        gap: 15px !important; 
+        padding: 10px !important;
+        overflow: hidden !important;
+        height: calc(100vh - 60px) !important;
+        align-items: stretch !important;
+        position: relative;
+    }
+
+    /* --- VIEW SECTION (TAM SAYFA DÜZENİ) --- */
+    .view-section {
+        display: none !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    /* Planner (Takım) Görünümü: Mevcut 3 sütunlu yapısını korur */
+    #planner-view.active {
+        display: contents !important;
+    }
+
+    /* Meta, Şampiyon, Eklenti, Profil Görünümleri: Tam Genişlik */
+    .view-section.active:not(#planner-view) {
+        display: flex !important;
+        /* Planner'daki sütun ayrımını yok sayarak en baştan en sona yayılır */
+        grid-column: 1 / -1 !important; 
+        grid-row: 1 / -1 !important;
+        
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        height: 100% !important;
+        padding: 0 !important; /* Dış boşluğu container gap ve padding sağlar */
+        z-index: 2000;
+    }
+
+    /* --- MERKEZİ PANEL TASARIMI --- */
+    .empty-state-panel {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        
+        background: var(--panel-bg) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 12px !important;
+        
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        
+        padding: 40px !important;
+        box-sizing: border-box !important;
+        color: var(--text-muted) !important;
+        position: relative;
+    }
+
+    /* Planner dışındaki sayfalarda sol traits-panel'i gizle */
+    .main-container:has(.view-section.active:not(#planner-view)) .traits-panel {
+        display: none !important;
+    }
+
+    .mobile-toggle-container { display: none !important; }
+
+    .traits-panel {
+        grid-column: 1 / 2;
+        grid-row: 1 / -1; 
+        width: 55px !important;
+        min-width: 55px !important;
+        height: 100% !important; 
+        background: #16181d !important;
+        border-right: 1px solid rgba(255,255,255,0.1);
+        z-index: 999;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden !important;
+        position: relative;
+        display: flex !important;
+        flex-direction: column !important;
+        margin: 0 !important;
+        border-radius: 12px; 
+    }
+
+    .traits-panel.expanded {
+        width: 240px !important;
+        position: absolute;
+        height: 100% !important; 
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(202, 147, 55, 0.3);
+        background: #16181d !important;
+        top: 0; 
+        left: 0;
+        z-index: 1000;
+        border-radius: 12px;
+    }
+
+    #trait-list {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        gap: 20px !important;
+        padding: 10px 0 !important;
+    }
+
+    .trait-item { 
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100%;
+        position: relative;
+    }
+
+    .traits-panel:not(.expanded) .trait-item {
+        flex-direction: column !important;
+    }
+
+    .traits-panel:not(.expanded) .trait-info-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        margin: 0 !important;
+    }
+
+    .traits-panel:not(.expanded) .t-name,
+    .traits-panel:not(.expanded) .t-steps-row,
+    .traits-panel:not(.expanded) .panel-header {
+        display: none !important;
+    }
+
+    .traits-panel.expanded .trait-item {
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+    }
+
+    .traits-panel.expanded .trait-info-wrapper { 
+        display: flex !important; 
+        margin-left: 5px !important; 
+    }
+
+    .middle-layout { display: contents !important; }
+
+    .team-panel {
+        grid-column: 2 / -1; 
+        grid-row: 1 / 2;
+        width: 100% !important;
+        background: var(--panel-bg) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        padding: 20px !important;
+        position: relative !important;
+        overflow: hidden;
+    }
+
+    #active-team-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        background: radial-gradient(circle, #1a1f28 0%, #0d1117 100%) !important;
+        padding: 30px 40px !important;
+        margin: 0 !important;
+        width: fit-content !important;
+        border-radius: 12px;
+    }
+
+    .hex-row {
+        display: flex !important;
+        justify-content: center !important;
+        margin-top: -10px !important; 
+        gap: 8px !important;
+    }
+
+    .hex-row:first-child { margin-top: 0 !important; }
+
+    .hex-row:nth-child(even) {
+        margin-left: 25px !important; 
+        transform: none !important;
+    }
+
+    .comp-champ, .empty-slot {
+        width: 60px !important;
+        height: 70px !important;
+        margin: 0 !important;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%) !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .team-panel .panel-header {
+        display: flex !important;
+        flex-direction: column !important; 
+        position: absolute !important;
+        top: 10px;
+        right: 10px;
+        background: transparent !important;
+        border: none !important;
+        gap: 8px !important;
+        width: auto !important;
+        z-index: 10;
+    }
+
+    .team-panel .panel-header h2, 
+    .team-panel .panel-header .team-count { display: none !important; }
+
+    #btn-clear-team { order: 1 !important; }
+    #btn-photo-mode { order: 2 !important; }
+
+
+    .items-section {
+        grid-column: 2 / 3;
+        grid-row: 2 / -1;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        padding: 0 !important; 
+        box-sizing: border-box;
+    }
+
+    .items-section .panel-header { display: none !important; }
+
+    .items-control-bar {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        margin: 0 !important; 
+        padding: 15px !important; 
+        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        flex-shrink: 0 !important;
+    }
+
+    .item-search-container { width: 100% !important; }   
+
+    .item-search-container input {
+        width: 100% !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding: 10px !important;
+        border-radius: 8px !important;
+        color: white !important;
+        box-sizing: border-box;
+    }
+
+    .item-tabs-menu {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        gap: 10px !important;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+    }
+
+    .item-tabs-menu::-webkit-scrollbar { display: none; }
+
+    #items-container {
+        display: block !important;
+        overflow-y: auto !important;
+        flex: 1 !important;
+        width: 100% !important;
+        padding: 10px !important; 
+        box-sizing: border-box;
+    }
+
+    #items-container .items-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)) !important;
+        gap: 8px !important;
+        justify-items: center !important;
+        align-content: start !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .item-card, .item-icon {
+        width: 40px !important;
+        height: 40px !important;
+        margin: 0 !important;
+        border-radius: 6px;
+        overflow: hidden;
+        flex-shrink: 0 !important;
+    }
+
+    .selection-panel {
+        grid-column: 3 / -1;
+        grid-row: 2 / -1;
+        height: 100% !important;
+        width: 100% !important;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        display: flex !important;
+        flex-direction: column !important;
+        margin: 0 !important;
+        overflow: hidden;
+        padding: 0 !important;
+        box-sizing: border-box;
+    }
+
+    .selection-panel .panel-header {
+        display: flex !important;
+        align-items: center !important;
+        padding: 15px !important; 
+        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        flex-shrink: 0 !important;
+        min-height: 50px;
+    }
+
+    #champions-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)) !important;
+        gap: 8px !important; 
+        padding: 12px !important;
+        overflow-y: auto !important;
+        flex: 1 !important;
+        align-content: start !important;
+        justify-items: center !important;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    .champion-card {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        border-radius: 6px !important;
+        overflow: hidden !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+        position: relative;
+    }
+
+    .champion-card img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+    }
+
+    .site-footer { padding: 5px; font-size: 10px; }
 }
