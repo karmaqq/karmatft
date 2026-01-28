@@ -1,9 +1,12 @@
 @media (max-width: 360px) {
-    /* Tüm scrollbarları gizle */
+    /* ============================================================
+       1. GENEL AYARLAR
+       ============================================================ */
     * {
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
     }
+
     *::-webkit-scrollbar {
         display: none !important;
     }
@@ -19,6 +22,9 @@
         flex-direction: column;
     }
 
+    /* ============================================================
+       2. HEADER
+       ============================================================ */
     .main-header {
         height: 60px !important;
         flex-shrink: 0;
@@ -28,89 +34,142 @@
         background: #11141d;
         border-bottom: 1px solid rgba(255,255,255,0.1);
         z-index: 100;
+        overflow: hidden;
     }
 
-    .brand, .set-info {
+    .brand, .set-info, .header-right {
         display: none !important;
     }
 
     .header-nav-center {
         width: 100%;
-        justify-content: space-evenly;
+        display: flex !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        overflow-x: auto !important;
+        gap: 20px !important;
+        padding: 0 20px !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
     }
 
+    .header-nav-center .nav-btn {
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+    }
+
+    /* ============================================================
+       3. ANA YAPI VE SAYFA GEÇİŞLERİ
+       ============================================================ */
     .main-container {
         flex: 1;
         display: flex;
         flex-direction: column;
         justify-content: flex-start !important;
-        padding: 15px !important;
-        gap: 15px;
+        align-items: stretch !important;
+        padding: 0 !important;
+        gap: 0;
         overflow-y: auto;
         overflow-x: hidden !important;
         width: 100vw;
         box-sizing: border-box;
     }
 
-    #planner-view {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 15px !important;
+    .view-section {
+        display: none !important;
         width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-        flex-grow: 0 !important;
+        height: 100% !important;
         box-sizing: border-box;
     }
 
-    .middle-layout {
-        order: 1 !important;
+    .view-section.active {
         display: flex !important;
-        flex-direction: column !important;
-        width: max-content !important;
-        height: auto !important;
-        min-height: unset !important;
-        flex-grow: 0 !important;
-        gap: 0 !important;
-        margin: 0 !important;
+        flex-direction: column;
+        flex: 1 !important;
+        min-height: 0 !important;
     }
 
+    #planner-view.active {
+        padding: 0 !important;
+    }
+
+    #meta-view.active,
+    #champs-view.active,
+    #augments-view.active,
+    #profile-view.active {
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        padding: 20px !important;
+        text-align: left;
+    }
+
+    .empty-state-panel {
+        display: flex !important;
+        flex: 1 !important;
+        width: 100% !important;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    /* ============================================================
+       4. TAKIM SAYFASI
+       ============================================================ */
+
+    #planner-view.active {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+        justify-content: flex-start !important;
+    }
+
+    .middle-layout {
+        display: contents !important;
+    }
+
+    /* ------------------------------------------------------------
+       SIRA 1: TAKIM PANELİ
+       ------------------------------------------------------------ */
     .team-panel {
-        display: block !important;
-        width: max-content !important;
-        max-width: unset !important;
+        order: 1 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: calc(100% - 24px) !important;
+        max-width: calc(100% - 24px) !important;
         height: auto !important;
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 12px;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
+        overflow: hidden !important;
         box-sizing: border-box !important;
+        padding: 10px !important;
+        margin: 12px 12px 6px 12px !important;
     }
 
-    .team-panel .panel-header {
-        display: none !important;
-    }
+    .team-panel .panel-header { display: none !important; }
 
     #active-team-grid {
         display: grid !important;
-        grid-template-columns: repeat(5, 50px) !important;
-        grid-template-rows: repeat(2, 50px) !important;
-        gap: 5px !important;
-        width: max-content !important;
+        grid-template-columns: repeat(5, 46px) !important;
+        grid-template-rows: repeat(2, 46px) !important;
+        gap: 10px !important;
+        width: fit-content !important;
         justify-content: center !important;
-        padding: 20px !important;
-        margin: 10px !important;
+        padding: 10px !important;
+        margin: 0 !important;
         box-sizing: border-box !important;
     }
 
-    .hex-row {
-        display: contents !important;
-    }
+    .hex-row { display: contents !important; }
 
     .comp-champ, .empty-slot {
-        width: 50px !important;
-        height: 50px !important;
+        width: 46px !important;
+        height: 46px !important;
         flex-shrink: 0 !important;
         aspect-ratio: 1 / 1 !important;
         clip-path: none !important;
@@ -121,33 +180,32 @@
         max-width: unset !important;
     }
 
-    .hex-row:nth-child(n+3) {
-        display: none !important;
-    }
-
+    .hex-row:nth-child(n+3) { display: none !important; }
     .hex-row:nth-child(1) > *:nth-child(n+6),
-    .hex-row:nth-child(2) > *:nth-child(n+6) {
-        display: none !important;
-    }
+    .hex-row:nth-child(2) > *:nth-child(n+6) { display: none !important; }
 
+    /* ------------------------------------------------------------
+       SIRA 2: ÖZELLİKLER
+       ------------------------------------------------------------ */
     .traits-panel {
         order: 2 !important;
         display: flex !important;
-        width: 100% !important;
-        height: 60px !important;
-        min-height: 60px !important;
+        flex-direction: column !important;
+        width: calc(100% - 24px) !important;
+        max-width: calc(100% - 24px) !important;
+        height: 56px !important;
+        min-height: 56px !important;
         flex-grow: 0 !important;
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 10px;
         padding: 0 !important;
-        overflow-x: auto !important;
-        justify-content: flex-start !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        margin: 6px 12px 12px 12px !important;
     }
 
-    .traits-panel .panel-header {
-        display: none !important;
-    }
+    .traits-panel .panel-header { display: none !important; }
 
     #trait-list {
         display: flex !important;
@@ -170,15 +228,13 @@
         padding: 0 !important;
         margin: 0 !important;
         background: transparent !important;
-        box-shadow: none !important;
         min-width: 36px;
         position: relative;
         flex-shrink: 0 !important;
+        box-shadow: none !important;
     }
 
-    .trait-info-wrapper, .t-name, .t-steps-row, .t-sep {
-        display: none !important;
-    }
+    .trait-info-wrapper, .t-name, .t-steps-row, .t-sep { display: none !important; }
 
     .trait-hex-container {
         margin: 0 !important;
@@ -202,37 +258,188 @@
         margin: 0 !important;
     }
 
-    .items-section, .selection-panel {
-        display: none !important;
+    /* ------------------------------------------------------------
+       SIRA 3: GEÇİŞ BUTONLARI
+       ------------------------------------------------------------ */
+    .mobile-toggle-container {
+        order: 3 !important;
+        display: flex !important;
+        width: calc(100% - 24px) !important;
+        height: 40px !important;
+        margin: 0 12px 12px 12px !important;
+        gap: 0 !important;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        box-sizing: border-box !important;
+        flex-shrink: 0 !important;
     }
 
+    .mobile-toggle-btn {
+        flex: 1 !important;
+        height: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        color: rgba(255, 255, 255, 0.5) !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .mobile-toggle-btn.active {
+        background: rgba(202, 147, 55, 0.2) !important;
+        color: #f3d19a !important;
+    }
+
+    .mobile-toggle-btn:first-child {
+        border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* ------------------------------------------------------------
+       SIRA 4: EŞYALAR PANELİ
+       ------------------------------------------------------------ */
+    .middle-layout .items-section {
+        order: 4 !important;
+        display: none !important;
+        flex-direction: column !important;
+        width: calc(100% - 24px) !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        margin: 0 12px 12px 12px !important;
+        padding: 12px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .middle-layout .items-section.mobile-active {
+        display: flex !important;
+    }
+
+    .items-section .items-control-bar {
+        display: flex !important;
+        width: 100% !important;
+        padding: 0 0 8px 0 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        margin-bottom: 10px !important;
+        background: transparent !important;
+        flex-shrink: 0 !important;
+    }
+
+    .items-section .item-search-container { display: none !important; }
+
+    .item-tabs-menu {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        width: 100% !important;
+        gap: 8px !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        justify-content: space-between !important;
+    }
+
+    .item-tab-btn {
+        flex: 1 0 auto !important;
+        padding: 6px 12px !important;
+        font-size: 11px !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    #items-container {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 !important;
+        overflow-y: auto !important;
+    }
+
+    #items-container .items-grid {
+        display: grid !important;
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 8px !important;
+        width: 100% !important;
+        padding: 0 !important;
+        justify-items: center !important;
+    }
+
+    .item-card {
+        width: 42px !important;
+        height: 42px !important;
+        margin: 0 auto !important;
+    }
+
+    .items-section .panel-header,
+    .items-section .panel-divider { display: none !important; }
+
+    /* ------------------------------------------------------------
+       SIRA 4: ŞAMPİYONLAR PANELİ
+       ------------------------------------------------------------ */
+    .selection-panel {
+        order: 4 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: calc(100% - 24px) !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        margin: 0 12px 12px 12px !important;
+        padding: 12px !important;
+        box-sizing: border-box !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    .selection-panel.mobile-hidden { display: none !important; }
+    .selection-panel .panel-header { display: none !important; }
+
+    #champions-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)) !important;
+        gap: 8px !important;
+        width: 100% !important;
+        padding: 0 !important;
+        overflow-y: auto !important;
+    }
+
+    /* ============================================================
+       5. FOOTER
+       ============================================================ */
     .site-footer {
         display: flex !important;
         flex-shrink: 0;
         width: 100%;
         border-top: 1px solid rgba(255,255,255,0.1);
-        padding: 15px;
+        padding: 12px;
         justify-content: center;
         align-items: center;
         z-index: 100;
         margin-top: auto;
+        background: #11141d;
     }
 
-    .footer-container {
-        width: 100%;
-    }
+    .footer-container { width: 100%; }
 
     .footer-content-stacked {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 8px;
+        gap: 6px;
     }
 
     .footer-top p, .footer-bottom p {
         margin: 0;
-        font-size: 10px;
+        font-size: 9px;
         color: #666;
+        line-height: 1.3;
     }
 }

@@ -85,6 +85,65 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
 }
 
 /* ============================================================================
+   MOBİL PANEL SEKME SİSTEMİ (360px)
+   ============================================================================ */
+
+export function initMobileTabs() {
+  const champPanel = document.querySelector(".selection-panel");
+
+  let itemPanel = document.querySelector(".items-section");
+
+  if (!itemPanel) {
+    const container = document.getElementById("items-container");
+    if (container) {
+      itemPanel = container.parentElement;
+      itemPanel.classList.add("items-section");
+    }
+  }
+
+  if (!champPanel || !itemPanel) return;
+
+  const tabWrapper = document.createElement("div");
+  tabWrapper.className = "mobile-toggle-container";
+  tabWrapper.innerHTML = `
+    <button class="mobile-toggle-btn active" data-target="champs">Şampiyonlar</button>
+    <button class="mobile-toggle-btn" data-target="items">Eşyalar</button>
+  `;
+
+  const parentContainer = champPanel.parentElement;
+  if (parentContainer) {
+    parentContainer.insertBefore(tabWrapper, champPanel);
+  }
+
+  const btns = tabWrapper.querySelectorAll(".mobile-toggle-btn");
+
+  btns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      btns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const target = btn.dataset.target;
+      if (target === "champs") {
+        champPanel.classList.add("mobile-active");
+        champPanel.classList.remove("mobile-hidden");
+        champPanel.style.display = "";
+
+        itemPanel.classList.remove("mobile-active");
+        itemPanel.classList.add("mobile-hidden");
+      } else {
+        champPanel.classList.remove("mobile-active");
+        champPanel.classList.add("mobile-hidden");
+
+        itemPanel.classList.add("mobile-active");
+        itemPanel.classList.remove("mobile-hidden");
+      }
+    });
+  });
+
+  champPanel.classList.remove("mobile-hidden");
+  itemPanel.classList.add("mobile-hidden");
+}
+/* ============================================================================
     JSON YÜKLEME VE ÖNBELLEKLEME
    ============================================================================ */
 

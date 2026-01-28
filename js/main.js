@@ -2,7 +2,7 @@
    KARMA TFT - ANA KOORDİNATÖR
    ============================================================================ */
 
-import { loadJSON } from "./utils.js";
+import { loadJSON, initMobileTabs } from "./utils.js";
 import { initTooltips } from "./tooltips.js";
 import { initNavigation } from "./header.js";
 import { initTraits, renderTraits, getTraitsData } from "./traits.js";
@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadJSON("data/itemdata.json"),
   ]);
 
+  initMobileTabs();
+
   if (championsData?.champions && traitsData?.traits && itemData) {
     const champions = championsData.champions;
     const traits = traitsData.traits;
@@ -40,6 +42,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     initTooltips(getTraitsData(), allItemsMap, champions);
   }
-
-  
 });

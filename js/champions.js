@@ -16,6 +16,10 @@ export function initChampions(champions) {
   championsGridEl = document.getElementById("champions-grid");
 
   if (championsGridEl) {
+    if (window.innerWidth <= 360) {
+      currentViewMode = "cost";
+    }
+    
     setupViewToggle();
     setupSearch();
   }
