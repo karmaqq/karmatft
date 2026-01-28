@@ -1,4 +1,4 @@
-@media (max-width: 360px) {
+@media (max-width: 480px) {
     /* ============================================================
        1. GENEL AYARLAR
        ============================================================ */
@@ -184,9 +184,9 @@
     .hex-row:nth-child(1) > *:nth-child(n+6),
     .hex-row:nth-child(2) > *:nth-child(n+6) { display: none !important; }
 
-    /* ------------------------------------------------------------
-       SIRA 2: ÖZELLİKLER
-       ------------------------------------------------------------ */
+    /* ============================================================
+       5. SIRA 2: ÖZELLİKLER (TRAITS) PANELİ - GÜNCELLENDİ
+       ============================================================ */
     .traits-panel {
         order: 2 !important;
         display: flex !important;
@@ -200,7 +200,7 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 10px;
         padding: 0 !important;
-        overflow: hidden !important;
+        overflow: hidden !important; /* Dış çerçeve taşmasın */
         box-sizing: border-box !important;
         margin: 6px 12px 12px 12px !important;
     }
@@ -212,13 +212,20 @@
         flex-direction: row !important;
         flex-wrap: nowrap !important;
         align-items: center;
-        min-width: 100%;
-        width: max-content !important;
-        justify-content: center !important;
+        width: 100% !important; /* Genişliği doldur */
+        /* Center yerine flex-start yapıldı ki kaydırma başladığında ilk öğe görünür kalsın */
+        justify-content: flex-start !important; 
         padding: 0 15px !important;
         gap: 12px !important;
         height: 100%;
         margin: 0 !important;
+        overflow-x: auto !important; /* Yatay kaydırma açıldı */
+        scrollbar-width: none !important; /* Firefox scrollbar gizle */
+        -ms-overflow-style: none !important;
+    }
+
+    #trait-list::-webkit-scrollbar {
+        display: none !important; /* Chrome scrollbar gizle */
     }
 
     .trait-item {
@@ -227,12 +234,14 @@
         justify-content: center;
         padding: 0 !important;
         margin: 0 !important;
-        background: transparent !important;
+        background: none !important;
         min-width: 36px;
         position: relative;
         flex-shrink: 0 !important;
         box-shadow: none !important;
     }
+
+  
 
     .trait-info-wrapper, .t-name, .t-steps-row, .t-sep { display: none !important; }
 
@@ -240,6 +249,8 @@
         margin: 0 !important;
         transform: scale(0.75);
         transform-origin: center;
+        background: none !important;
+        box-shadow: none !important;
     }
 
     .trait-count-badge-box {
@@ -339,7 +350,7 @@
         flex-wrap: nowrap !important;
         overflow-x: auto !important;
         width: 100% !important;
-        gap: 8px !important;
+        gap: 10px !important;
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
         justify-content: space-between !important;
@@ -347,7 +358,7 @@
 
     .item-tab-btn {
         flex: 1 0 auto !important;
-        padding: 6px 12px !important;
+        padding: 6px 20px !important;
         font-size: 11px !important;
         text-align: center !important;
         white-space: nowrap !important;
@@ -370,8 +381,8 @@
     }
 
     .item-card {
-        width: 42px !important;
-        height: 42px !important;
+        width: 46px !important;
+        height: 46px !important;
         margin: 0 auto !important;
     }
 
