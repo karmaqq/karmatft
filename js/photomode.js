@@ -1,7 +1,3 @@
-/* ============================================================================
-   FOTOĞRAF MODU DEĞİŞKENLERİ
-   ============================================================================ */
-
 let currentZoom = 1;
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 1.8;
@@ -9,10 +5,6 @@ const ZOOM_STEP = 0.1;
 const PHOTO_MODE_ZOOM = 1.5;
 let isPhotoMode = false;
 let photoModeTooltip = null;
-
-/* ============================================================================
-   BAŞLATMA
-   ============================================================================ */
 
 export function initPhotoMode() {
   const body = document.body;
@@ -27,13 +19,8 @@ export function initPhotoMode() {
   }
 }
 
-/* ============================================================================
-   GİRİŞ: SADECE BUTON İLE
-   ============================================================================ */
-
 function setupPhotoModeButton(btn, body) {
   btn.addEventListener("click", async () => {
-    // Tam ekrana gir
     if (!document.fullscreenElement) {
       await document.documentElement.requestFullscreen().catch(() => {});
     }
@@ -44,10 +31,6 @@ function setupPhotoModeButton(btn, body) {
     applyZoom(body);
   });
 }
-
-/* ============================================================================
-   KONTROLLER (SADECE MOD AÇIKKEN DEVREYE GİRER)
-   ============================================================================ */
 
 function setupKeyboardControls(body) {
   window.addEventListener("keydown", (e) => {
@@ -92,10 +75,6 @@ function setupMouseWheel(body) {
   );
 }
 
-/* ============================================================================
-   SİSTEM FONKSİYONLARI
-   ============================================================================ */
-
 function applyZoom(body) {
   if (currentZoom > 1) {
     body.classList.add("zooming");
@@ -121,10 +100,6 @@ function setupFullscreenListener(body) {
     }
   });
 }
-
-/* ============================================================================
-   TOOLTIP (DOKUNULMADI)
-   ============================================================================ */
 
 function createPhotoModeTooltip(btnElement) {
   photoModeTooltip = document.createElement("div");

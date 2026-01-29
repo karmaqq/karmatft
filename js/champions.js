@@ -2,32 +2,24 @@ import { safeLowercase } from "./utils.js";
 
 let championsData = [];
 let championsGridEl = null;
-let currentViewMode = "all";
+let currentViewMode = "cost";
 let currentSearchTerm = "";
 let lastSelectedChamps = [];
 let lastOnChampClick = null;
 
-/* ============================================================================
-   BAŞLATMA
-   ============================================================================ */
-
 export function initChampions(champions) {
   championsData = champions;
-  championsGridEl = document.getElementById("champions-grid");
+  championsGridEl = document.getElementById("champions-section");
 
   if (championsGridEl) {
     if (window.innerWidth <= 480) {
       currentViewMode = "cost";
     }
-    
+
     setupViewToggle();
     setupSearch();
   }
 }
-
-/* ============================================================================
-   GÖRÜNÜM DEĞİŞTİRME (ALL / COST)
-   ============================================================================ */
 
 function setupViewToggle() {
   const toggleBtn = document.getElementById("toggle-pool-view");
@@ -40,10 +32,6 @@ function setupViewToggle() {
     renderChampionPool(lastSelectedChamps, lastOnChampClick);
   };
 }
-
-/* ============================================================================
-   ARAMA SİSTEMİ
-   ============================================================================ */
 
 function setupSearch() {
   const searchInput = document.getElementById("champ-search");
@@ -102,10 +90,6 @@ function applyChampFilter() {
   }
 }
 
-/* ============================================================================
-   ŞAMPİYON HAVUZU RENDER
-   ============================================================================ */
-
 export function renderChampionPool(
   selectedChamps = lastSelectedChamps,
   onChampClick = lastOnChampClick,
@@ -159,10 +143,6 @@ export function renderChampionPool(
   applyChampFilter();
 }
 
-/* ============================================================================
-   ŞAMPİYON ELEMENT OLUŞTURMA
-   ============================================================================ */
-
 function createChampElement(champ, onChampClick = null) {
   const div = document.createElement("div");
   div.className = `champ-item cost-${champ.cost}`;
@@ -205,10 +185,6 @@ function createChampElement(champ, onChampClick = null) {
   return div;
 }
 
-/* ============================================================================
-   SEÇİLİ ŞAMPİYONLARI GÜNCELLEME
-   ============================================================================ */
-
 export function updateSelectedChampions(selectedChamps) {
   lastSelectedChamps = selectedChamps;
   document.querySelectorAll(".champ-item").forEach((el) => {
@@ -217,10 +193,6 @@ export function updateSelectedChampions(selectedChamps) {
     el.classList.toggle("selected", isSelected);
   });
 }
-
-/* ============================================================================
-   GETTER
-   ============================================================================ */
 
 export function getChampionsData() {
   return championsData;

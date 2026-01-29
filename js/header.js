@@ -1,7 +1,3 @@
-/* ============================================================================
-   HEADER NAVİGASYON MANTIĞI
-   ============================================================================ */
-
 export function initNavigation() {
   const navButtons = document.querySelectorAll(".nav-btn");
   const views = document.querySelectorAll(".view-section");
@@ -22,10 +18,8 @@ export function initNavigation() {
         }
       });
 
-      const mainContainer = document.querySelector(".main-container");
-      if (mainContainer) mainContainer.scrollTop = 0;
-
-      console.log(`Navigasyon: ${targetId} sayfasına geçildi.`);
+      const motherContainer = document.getElementById("mother");
+      if (motherContainer) motherContainer.scrollTop = 0;
     });
   });
 }

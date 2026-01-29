@@ -1,7 +1,3 @@
-/* ============================================================================
-   GÜVENLİ KÜÇÜK HARF
-   ============================================================================ */
-
 export function safeLowercase(text) {
   if (!text) return "";
   return text
@@ -17,10 +13,6 @@ export function safeLowercase(text) {
     .replace(/[^a-z0-9]/g, "");
 }
 
-/* ============================================================================
-   GÜVENLİ İKON
-   ============================================================================ */
-
 export function parseStatIcons(text) {
   if (!text) return "";
   return text.replace(/\[([^\]]+)\]/g, (match, iconName) => {
@@ -31,10 +23,6 @@ export function parseStatIcons(text) {
                      onerror="this.onerror=null; this.src='img/stats/${name}.png'; this.onerror=function(){this.style.display='none'};">`;
   });
 }
-
-/* ============================================================================
-   AKILLI KONUMLANDIRMA
-   ============================================================================ */
 
 export function applySmartPosition(el, anchorRect, context = "trait") {
   if (!anchorRect) return;
@@ -84,31 +72,18 @@ export function applySmartPosition(el, anchorRect, context = "trait") {
   el.style.top = `${top}px`;
 }
 
-/* ============================================================================
-   MOBİL PANEL SEKME SİSTEMİ (360px)
-   ============================================================================ */
-
 export function initMobileTabs() {
-  const champPanel = document.querySelector(".selection-panel");
-
-  let itemPanel = document.querySelector(".items-section");
-
-  if (!itemPanel) {
-    const container = document.getElementById("items-container");
-    if (container) {
-      itemPanel = container.parentElement;
-      itemPanel.classList.add("items-section");
-    }
-  }
+  const champPanel = document.querySelector(".right-panel");
+  const itemPanel = document.querySelector(".items-section");
 
   if (!champPanel || !itemPanel) return;
 
   const tabWrapper = document.createElement("div");
   tabWrapper.className = "mobile-toggle-container";
   tabWrapper.innerHTML = `
-    <button class="mobile-toggle-btn active" data-target="champs">Şampiyonlar</button>
-    <button class="mobile-toggle-btn" data-target="items">Eşyalar</button>
-  `;
+        <button class="mobile-toggle-btn active" data-target="champs">Şampiyonlar</button>
+        <button class="mobile-toggle-btn" data-target="items">Eşyalar</button>
+    `;
 
   const parentContainer = champPanel.parentElement;
   if (parentContainer) {
@@ -126,26 +101,19 @@ export function initMobileTabs() {
       if (target === "champs") {
         champPanel.classList.add("mobile-active");
         champPanel.classList.remove("mobile-hidden");
-        champPanel.style.display = "";
-
         itemPanel.classList.remove("mobile-active");
         itemPanel.classList.add("mobile-hidden");
       } else {
         champPanel.classList.remove("mobile-active");
         champPanel.classList.add("mobile-hidden");
-
         itemPanel.classList.add("mobile-active");
         itemPanel.classList.remove("mobile-hidden");
       }
     });
   });
 
-  champPanel.classList.remove("mobile-hidden");
   itemPanel.classList.add("mobile-hidden");
 }
-/* ============================================================================
-    JSON YÜKLEME VE ÖNBELLEKLEME
-   ============================================================================ */
 
 const jsonCache = new Map();
 const CACHE_DURATION = 5 * 60 * 1000;

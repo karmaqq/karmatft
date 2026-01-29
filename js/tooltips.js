@@ -1,8 +1,4 @@
-/* ============================================================================
-   TOOLTIP YÖNETİMİ
-   ============================================================================ */
-
-import { safeLowercase, parseStatIcons, applySmartPosition } from './utils.js';
+import { safeLowercase, parseStatIcons, applySmartPosition } from "./utils.js";
 
 let globalTooltip = null;
 let champTooltip = null;
@@ -10,96 +6,79 @@ let currentTraitsData = new Map();
 let allItemsMap = new Map();
 let championsData = [];
 
-/* ============================================================================
-   BAŞLATMA
-   ============================================================================ */
-   
 export function initTooltips(traitsDataMap, itemsMap, champions) {
-    currentTraitsData = traitsDataMap;
-    allItemsMap = itemsMap;
-    championsData = champions;
-    
-    globalTooltip = document.getElementById("global-trait-tooltip");
-    champTooltip = document.getElementById("global-champ-tooltip");
-    
-    if (globalTooltip && champTooltip) {
-        setupTooltipEvents();
-    }
+  currentTraitsData = traitsDataMap;
+  allItemsMap = itemsMap;
+  championsData = champions;
+  globalTooltip = document.getElementById("global-trait-tooltip");
+  champTooltip = document.getElementById("global-champ-tooltip");
+  if (globalTooltip && champTooltip) {
+    setupTooltipEvents();
+  }
 }
 
-/* ============================================================================
-   EVENT LISTENER'LAR
-   ============================================================================ */
-
 function setupTooltipEvents() {
-    document.addEventListener("mouseover", handleMouseOver);
-    document.addEventListener("mouseout", handleMouseOut);
+  document.addEventListener("mouseover", handleMouseOver);
+  document.addEventListener("mouseout", handleMouseOut);
 }
 
 function handleMouseOver(e) {
-    
-    const champEl = e.target.closest(".champ-item, .comp-champ");
-    if (champEl) {
-        showChampionTooltip(champEl);
-        return;
-    }
-
-    const traitEl = e.target.closest(".trait-item");
-    if (traitEl) {
-        showTraitTooltip(traitEl);
-        return;
-    }
-
-    const itemCard = e.target.closest(".item-card");
-    if (itemCard) {
-        showItemTooltip(itemCard);
-        return;
-    }
+  const champEl = e.target.closest(".champ-item, .comp-champ");
+  if (champEl) {
+    showChampionTooltip(champEl);
+    return;
+  }
+  const traitEl = e.target.closest(".trait-item");
+  if (traitEl) {
+    showTraitTooltip(traitEl);
+    return;
+  }
+  const itemCard = e.target.closest(".item-card");
+  if (itemCard) {
+    showItemTooltip(itemCard);
+    return;
+  }
 }
 
 function handleMouseOut(e) {
-    if (e.target.closest(".champ-item, .comp-champ")) {
-        hideChampTooltip();
-    }
-    if (e.target.closest(".trait-item, .item-card")) {
-        hideGlobalTooltip();
-    }
+  if (e.target.closest(".champ-item, .comp-champ")) {
+    hideChampTooltip();
+  }
+  if (e.target.closest(".trait-item, .item-card")) {
+    hideGlobalTooltip();
+  }
 }
 
-/* ============================================================================
-   ŞAMPİYON TOOLTIP
-   ============================================================================ */
-
 function showChampionTooltip(champEl) {
-    const champName = champEl.getAttribute("data-name");
-    const champ = championsData.find(c => c.name === champName);
-    
-    if (!champ || !champTooltip) return;
-    
-    hideGlobalTooltip();
-    champTooltip.innerHTML = generateChampionTooltipHTML(champ);
-    champTooltip.className = `champ-tooltip cost-${champ.cost}`;
-    
-    const context = champEl.classList.contains("comp-champ") ? "team" : "champion";
-    applySmartPosition(champTooltip, champEl.getBoundingClientRect(), context);
-    champTooltip.style.display = "block";
+  const champName = champEl.getAttribute("data-name");
+  const champ = championsData.find((c) => c.name === champName);
+  if (!champ || !champTooltip) return;
+  hideGlobalTooltip();
+  champTooltip.innerHTML = generateChampionTooltipHTML(champ);
+  champTooltip.className = `champ-tooltip cost-${champ.cost}`;
+  const context = champEl.classList.contains("comp-champ")
+    ? "team"
+    : "champion";
+  applySmartPosition(champTooltip, champEl.getBoundingClientRect(), context);
+  champTooltip.style.display = "block";
 }
 
 function hideChampTooltip() {
-    if (champTooltip) champTooltip.style.display = "none";
+  if (champTooltip) champTooltip.style.display = "none";
 }
 
 export function generateChampionTooltipHTML(champ) {
-    const traitsHTML = champ.traits.map(t => {
-        const safeIcon = safeLowercase(t);
-        return `
+  const traitsHTML = champ.traits
+    .map((t) => {
+      const safeIcon = safeLowercase(t);
+      return `
             <div class="ct-trait-item">
                 <img src="img/traits/${safeIcon}.png" class="ct-trait-icon" onerror="this.style.display='none'">
                 <span class="ct-trait-name">${t}</span>
             </div>`;
-    }).join("");
-
-    return `
+    })
+    .join("");
+  return `
         <div class="ct-header">
             <span class="ct-name">${champ.name}</span>
             <div class="ct-cost border-cost-${champ.cost}">
@@ -110,96 +89,95 @@ export function generateChampionTooltipHTML(champ) {
         <div class="ct-traits-list">${traitsHTML}</div>`;
 }
 
-/* ============================================================================
-   TRAIT TOOLTIP
-   ============================================================================ */
-
 function showTraitTooltip(traitEl) {
-    const traitKey = traitEl.getAttribute("data-trait-key");
-    const data = currentTraitsData.get(traitKey);
-    
-    if (!data || !globalTooltip) return;
-    
-    hideChampTooltip();
-    globalTooltip.innerHTML = generateTraitTooltipHTML(data);
-    applySmartPosition(globalTooltip, traitEl.getBoundingClientRect(), "trait");
-    globalTooltip.style.display = "block";
+  const traitKey =
+    traitEl.getAttribute("data-trait-key") ||
+    safeLowercase(traitEl.querySelector(".t-name")?.textContent || "");
+  const data = currentTraitsData.get(traitKey);
+  if (!data || !globalTooltip) return;
+  hideChampTooltip();
+  globalTooltip.innerHTML = generateTraitTooltipHTML(data);
+  applySmartPosition(globalTooltip, traitEl.getBoundingClientRect(), "trait");
+  globalTooltip.style.display = "block";
 }
 
 export function generateTraitTooltipHTML(data) {
-    const { traitName, count, steps, traitData } = data;
-    const iconName = safeLowercase(traitName);
-    const finalIconPath = `img/traits/${iconName}.png`;
-    const hasStepDescriptions = steps && steps.some(s => s.desc);
-
-    const thresholdsListHTML = !hasStepDescriptions ? "" : steps.map((s, index) => {
-        const stepThreshold = s.count || s;
-        const isReached = count >= stepThreshold;
-        const nextStep = steps[index + 1];
-        const nextStepCount = nextStep ? (nextStep.count || nextStep) : Infinity;
-        const isCurrentActive = isReached && count < nextStepCount;
-        
-        return `
-            <div class="t-tooltip-step ${isCurrentActive ? 'is-current-active' : ''} ${isReached ? 'is-passed' : ''}">
+  const { traitName, count, steps, traitData } = data;
+  const iconName = safeLowercase(traitName);
+  const finalIconPath = `img/traits/${iconName}.png`;
+  const hasStepDescriptions = steps && steps.some((s) => s.desc);
+  const thresholdsListHTML = !hasStepDescriptions
+    ? ""
+    : steps
+        .map((s, index) => {
+          const stepThreshold = s.count || s;
+          const isReached = count >= stepThreshold;
+          const nextStep = steps[index + 1];
+          const nextStepCount = nextStep
+            ? nextStep.count || nextStep
+            : Infinity;
+          const isCurrentActive = isReached && count < nextStepCount;
+          return `
+            <div class="t-tooltip-step ${isCurrentActive ? "is-current-active" : ""} ${isReached ? "is-passed" : ""}">
                 <span class="t-threshold-val">${stepThreshold}</span>
-                <span class="t-tooltip-desc">${parseStatIcons(s.desc || '')}</span>
+                <span class="t-tooltip-desc">${parseStatIcons(s.desc || "")}</span>
             </div>`;
-    }).join("");
-
-    const divider = `<div class="t-tooltip-divider"></div>`;
-    const hasTop = !!(traitData.generalDesc || traitData.preDesc);
-    const hasBottom = !!(thresholdsListHTML || traitData.postDesc);
-
-    return `
+        })
+        .join("");
+  const divider = `<div class="t-tooltip-divider"></div>`;
+  const hasTop = !!(traitData.generalDesc || traitData.preDesc);
+  const hasBottom = !!(thresholdsListHTML || traitData.postDesc);
+  return `
         <div class="t-tooltip-header">
             <div class="t-header-content">
                  <img src="${finalIconPath}" class="t-header-icon" onerror="this.src='img/traits/default.png'">
                  <span class="t-tooltip-title">${traitData.name || traitName}</span>
             </div>
         </div>
-        ${hasTop || hasBottom ? divider : ''}
+        ${hasTop || hasBottom ? divider : ""}
         <div class="t-tooltip-body">
-            ${traitData.generalDesc ? `<p class="t-tooltip-general">${parseStatIcons(traitData.generalDesc)}</p>` : ''}
-            ${traitData.preDesc ? `<p class="t-tooltip-pre-info">${parseStatIcons(traitData.preDesc)}</p>` : ''}
-            ${(hasTop && hasBottom) ? divider : ''}
-            ${thresholdsListHTML ? `<div class="t-tooltip-steps-list">${thresholdsListHTML}</div>` : ''}
-            ${(thresholdsListHTML && traitData.postDesc) ? divider : ''}
-            ${traitData.postDesc ? `<p class="t-tooltip-post-info">${parseStatIcons(traitData.postDesc)}</p>` : ''}
+            ${traitData.generalDesc ? `<p class="t-tooltip-general">${parseStatIcons(traitData.generalDesc)}</p>` : ""}
+            ${traitData.preDesc ? `<p class="t-tooltip-pre-info">${parseStatIcons(traitData.preDesc)}</p>` : ""}
+            ${hasTop && hasBottom ? divider : ""}
+            ${thresholdsListHTML ? `<div class="t-tooltip-steps-list">${thresholdsListHTML}</div>` : ""}
+            ${thresholdsListHTML && traitData.postDesc ? divider : ""}
+            ${traitData.postDesc ? `<p class="t-tooltip-post-info">${parseStatIcons(traitData.postDesc)}</p>` : ""}
         </div>`;
 }
 
-/* ============================================================================
-   ITEM TOOLTIP
-   ============================================================================ */
-
 function showItemTooltip(itemCard) {
-    const itemId = itemCard.getAttribute("data-id");
-    const item = allItemsMap.get(itemId);
-    
-    if (!item || !globalTooltip) return;
-    
-    hideChampTooltip();
-    globalTooltip.innerHTML = generateItemTooltipHTML(item);
-    applySmartPosition(globalTooltip, itemCard.getBoundingClientRect(), "item");
-    globalTooltip.style.display = "block";
+  const itemId = itemCard.getAttribute("data-id");
+  const item = allItemsMap.get(itemId);
+  if (!item || !globalTooltip) return;
+  hideChampTooltip();
+  globalTooltip.innerHTML = generateItemTooltipHTML(item);
+  applySmartPosition(globalTooltip, itemCard.getBoundingClientRect(), "item");
+  globalTooltip.style.display = "block";
 }
 
 export function generateItemTooltipHTML(item) {
-    const componentsHTML = (item.components && item.components.length > 0) ? `
+  const componentsHTML =
+    item.components && item.components.length > 0
+      ? `
         <div class="item-recipe-group">
             <img src="img/items/${item.components[0]}.png" class="recipe-icon" onerror="this.src='img/items/default.png'">
             <span class="recipe-plus">+</span>
             <img src="img/items/${item.components[1]}.png" class="recipe-icon" onerror="this.src='img/items/default.png'">
         </div>
-    ` : `<div class="item-non-craftable">Üretilemez</div>`;
-
-    const statsHTML = item.stats ? item.stats.map(s => `
+    `
+      : `<div class="item-non-craftable">Üretilemez</div>`;
+  const statsHTML = item.stats
+    ? item.stats
+        .map(
+          (s) => `
         <div class="tooltip-stat">
             ${parseStatIcons(s.icon)} <span>${s.value}</span>
         </div>
-    `).join('') : '';
-
-    return `
+    `,
+        )
+        .join("")
+    : "";
+  return `
         <div class="item-tooltip-top-section">
             <div class="item-header-left">
                 <div class="item-tooltip-title">${item.name}</div>
@@ -213,14 +191,10 @@ export function generateItemTooltipHTML(item) {
 }
 
 function hideGlobalTooltip() {
-    if (globalTooltip) globalTooltip.style.display = "none";
+  if (globalTooltip) globalTooltip.style.display = "none";
 }
 
-/* ============================================================================
-   TOOLTIP GİZLEME (DIŞ MODÜLLER İÇİN)
-   ============================================================================ */
-
 export function hideAllTooltips() {
-    hideChampTooltip();
-    hideGlobalTooltip();
+  hideChampTooltip();
+  hideGlobalTooltip();
 }

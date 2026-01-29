@@ -1,19 +1,16 @@
-/* ============================================================================
-   KARMA TFT - ANA KOORDİNATÖR
-   ============================================================================ */
-
 import { loadJSON, initMobileTabs } from "./utils.js";
 import { initTooltips } from "./tooltips.js";
 import { initNavigation } from "./header.js";
-import { initTraits, renderTraits, getTraitsData, initTraitSidebar } from "./traits.js";
-import { initChampions, getChampionsData } from "./champions.js";
+import {
+  initTraits,
+  updateTraits,
+  getTraitsData,
+  initTraitSidebar,
+} from "./traits.js";
+import { initChampions } from "./champions.js";
 import { initItems, allItemsMap } from "./items.js";
 import { initPlanner } from "./planner.js";
 import { initPhotoMode } from "./photomode.js";
-
-/* ============================================================================
-   UYGULAMA BAŞLATMA
-   ============================================================================ */
 
 document.addEventListener("DOMContentLoaded", async () => {
   const [championsData, traitsData, itemData] = await Promise.all([
@@ -23,7 +20,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   ]);
 
   initMobileTabs();
-
   initTraitSidebar();
 
   if (championsData?.champions && traitsData?.traits && itemData) {
@@ -31,7 +27,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const traits = traitsData.traits;
 
     initNavigation();
-
     initTraits(traits);
     initChampions(champions);
 
@@ -39,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     initPhotoMode();
 
     initPlanner(champions, (selectedComp) => {
-      renderTraits(selectedComp);
+      updateTraits(selectedComp);
     });
 
     initTooltips(getTraitsData(), allItemsMap, champions);

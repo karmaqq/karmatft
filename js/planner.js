@@ -1,7 +1,3 @@
-/* ============================================================================
-   TAKIM PLANLAYICI
-   ============================================================================ */
-
 import { hideAllTooltips } from "./tooltips.js";
 import { renderChampionPool, updateSelectedChampions } from "./champions.js";
 
@@ -11,10 +7,6 @@ let championsData = [];
 
 const MAX_SLOTS = 28;
 const MAX_TEAM_SIZE = 10;
-
-/* ============================================================================
-   BAŞLATMA
-   ============================================================================ */
 
 export function initPlanner(champions, onUpdate) {
   championsData = champions;
@@ -26,10 +18,6 @@ export function initPlanner(champions, onUpdate) {
 
   renderChampionPool(selectedComp, handleChampionClick);
 }
-
-/* ============================================================================
-   ÖZEL BİRİM KURALLARI (SUMMON LOGIC)
-   ============================================================================ */
 
 function applySpecialRules() {
   const traitCounts = {};
@@ -53,7 +41,6 @@ function applySpecialRules() {
         selectedComp.push({
           ...atakhanData,
           slotId: 14,
-          freeSlot,
           freeSlot: true,
         });
       }
@@ -94,10 +81,6 @@ function findFirstFreeSlot() {
   );
 }
 
-/* ============================================================================
-   RESET VE GLOBAL DROP
-   ============================================================================ */
-
 function setupResetButton() {
   const resetBtn = document.getElementById("reset-team");
   if (resetBtn) resetBtn.addEventListener("click", resetTeam);
@@ -122,10 +105,6 @@ function setupGlobalDrop() {
   });
   document.addEventListener("dragover", (e) => e.preventDefault());
 }
-
-/* ============================================================================
-   HEX SLOT İNİT
-   ============================================================================ */
 
 function initBoardSlots() {
   for (let i = 0; i < MAX_SLOTS; i++) {
@@ -159,13 +138,8 @@ function initBoardSlots() {
   }
 }
 
-/* ============================================================================
-   ŞAMPİYON EKLEME / ÇIKARMA
-   ============================================================================ */
-
 function handleChampionClick(champ) {
   hideAllTooltips();
-
   if (champ.name === "Tibbers" && !selectedComp.some((c) => c.name === "Annie"))
     return;
   toggleChampion(champ);
@@ -231,10 +205,6 @@ function moveChampion(fromSlotId, toSlotId) {
     updateUI();
   }
 }
-
-/* ============================================================================
-   UI GÜNCELLEME
-   ============================================================================ */
 
 function updateUI() {
   applySpecialRules();
