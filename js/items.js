@@ -1,17 +1,9 @@
-/* ============================================================================
-   EŞYA YÖNETİMİ
-   ============================================================================ */
-
 import { safeLowercase } from "./utils.js";
 
 export let allItemsMap = new Map();
 let itemCategories = {};
 let currentItemSearchTerm = "";
 let itemsContainerEl = null;
-
-/* ============================================================================
-   BAŞLATMA
-   ============================================================================ */
 
 export async function initItems() {
   const response = await fetch("data/itemdata.json");
@@ -28,10 +20,6 @@ export async function initItems() {
   }
 }
 
-/* ============================================================================
-   EŞYA MAP OLUŞTURMA
-   ============================================================================ */
-
 function buildItemMap() {
   allItemsMap.clear();
   for (const cat in itemCategories) {
@@ -40,10 +28,6 @@ function buildItemMap() {
     });
   }
 }
-
-/* ============================================================================
-   TAB SİSTEMİ
-   ============================================================================ */
 
 function setupTabs() {
   const tabs = document.querySelectorAll(".item-tab-btn");
@@ -56,10 +40,6 @@ function setupTabs() {
     });
   });
 }
-
-/* ============================================================================
-   ARAMA SİSTEMİ
-   ============================================================================ */
 
 function setupSearch() {
   const searchInput = document.getElementById("item-search");
@@ -96,10 +76,6 @@ export function handleItemSearch(term) {
   }
 }
 
-/* ============================================================================
-   KATEGORİ RENDER
-   ============================================================================ */
-
 export function renderCategory(catKey) {
   if (!itemsContainerEl) return;
 
@@ -112,24 +88,20 @@ export function renderCategory(catKey) {
         catKey === "base" || catKey === "component" ? "png" : "avif";
 
       return `
-            <div class="item-card" data-id="${item.id}" data-name="${safeLowercase(item.name)}">
-                <div class="item-icon-wrapper">
-                    <img src="img/items/${item.id}.${extension}" 
-                         alt="${item.name}" 
-                         onerror="this.onerror=null; this.src='img/items/default.png';">
+                <div class="item-card" data-id="${item.id}" data-name="${safeLowercase(item.name)}">
+                    <div class="item-icon-wrapper">
+                        <img src="img/items/${item.id}.${extension}" 
+                             alt="${item.name}" 
+                             onerror="this.onerror=null; this.src='img/items/default.png';">
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
     })
     .join("");
 
   itemsContainerEl.innerHTML = `<div class="items-grid">${itemsHTML}</div>`;
   applyItemFilter();
 }
-
-/* ============================================================================
-   ARAMA SONUÇLARI RENDER
-   ============================================================================ */
 
 function renderSearchResults() {
   if (!itemsContainerEl) return;
@@ -148,12 +120,12 @@ function renderSearchResults() {
           ? "png"
           : "avif";
       return `
-            <div class="item-card" data-id="${item.id}" data-name="${safeLowercase(item.name)}">
-                <div class="item-icon-wrapper">
-                    <img src="img/items/${item.id}.${extension}" alt="${item.name}" onerror="this.src='img/items/default.png'">
+                <div class="item-card" data-id="${item.id}" data-name="${safeLowercase(item.name)}">
+                    <div class="item-icon-wrapper">
+                        <img src="img/items/${item.id}.${extension}" alt="${item.name}" onerror="this.src='img/items/default.png'">
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
     })
     .join("");
 
@@ -162,10 +134,6 @@ function renderSearchResults() {
       ? `<div class="items-grid">${itemsHTML}</div>`
       : `<div class="no-results">Eşya bulunamadı.</div>`;
 }
-
-/* ============================================================================
-   FİLTRE UYGULAMA
-   ============================================================================ */
 
 function applyItemFilter() {
   const cards = document.querySelectorAll(".item-card");

@@ -1,25 +1,13 @@
-/* ============================================================================
-   ÖZELLİK (TRAIT) YÖNETİMİ
-   ============================================================================ */
-
 import { safeLowercase } from "./utils.js";
 
 let TRAIT_THRESHOLDS = {};
 let currentTraitsData = new Map();
 let traitListEl = null;
 
-/* ============================================================================
-   BAŞLATMA
-   ============================================================================ */
-
 export function initTraits(traitThresholds) {
   TRAIT_THRESHOLDS = traitThresholds;
-  traitListEl = document.getElementById("trait-list");
+  traitListEl = document.getElementById("traits-section");
 }
-
-/* ============================================================================
-   TRAIT BİLGİSİNİ BULMA
-   ============================================================================ */
 
 function findTraitInfo(key) {
   const safeKey = safeLowercase(key);
@@ -35,11 +23,7 @@ function findTraitInfo(key) {
   return null;
 }
 
-/* ============================================================================
-   TRAIT RENDER VE PUANLAMA
-   ============================================================================ */
-
-export function renderTraits(selectedComp) {
+export function updateTraits(selectedComp) {
   if (!traitListEl) return;
 
   traitListEl.innerHTML = "";
@@ -110,10 +94,6 @@ export function renderTraits(selectedComp) {
     .forEach((data) => traitListEl.appendChild(createTraitElement(data)));
 }
 
-/* ============================================================================
-   TRAIT ELEMENT OLUŞTURMA
-   ============================================================================ */
-
 function createTraitElement(data) {
   const li = document.createElement("li");
   const { traitName, count, activeTier, isActive, steps, type } = data;
@@ -159,47 +139,47 @@ function createTraitElement(data) {
 }
 
 export function initTraitSidebar() {
-  const panel = document.querySelector(".traits-panel");
+  const panel = document.querySelector(".left-panel");
   if (!panel) return;
 
   let startX = 0;
 
-  // 1. Dokunmatik Sürükleme (Swipe)
-  panel.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-  }, { passive: true });
+  panel.addEventListener(
+    "touchstart",
+    (e) => {
+      startX = e.touches[0].clientX;
+    },
+    { passive: true },
+  );
 
-  panel.addEventListener("touchmove", (e) => {
-    const currentX = e.touches[0].clientX;
-    const diff = currentX - startX;
+  panel.addEventListener(
+    "touchmove",
+    (e) => {
+      const currentX = e.touches[0].clientX;
+      const diff = currentX - startX;
 
-    if (diff > 40) { 
-      panel.classList.add("expanded");
-    } else if (diff < -40) {
-      panel.classList.remove("expanded");
-    }
-  }, { passive: true });
+      if (diff > 40) {
+        panel.classList.add("expanded");
+      } else if (diff < -40) {
+        panel.classList.remove("expanded");
+      }
+    },
+    { passive: true },
+  );
 
-  // 2. Tıklama Kontrolü
   panel.addEventListener("click", (e) => {
-    // Eğer panel kapalıysa, tıklandığında aç
     if (!panel.classList.contains("expanded")) {
       panel.classList.add("expanded");
-      e.stopPropagation(); // Dışarı tıklama olayını tetiklemesini engelle
+      e.stopPropagation();
     }
   });
 
-  // 3. Dışarı tıklandığında veya Sola kaydırıldığında kapat
   document.addEventListener("click", (e) => {
     if (panel.classList.contains("expanded") && !panel.contains(e.target)) {
       panel.classList.remove("expanded");
     }
   });
 }
-
-/* ============================================================================
-   EXPORT
-   ============================================================================ */
 
 export function getTraitsData() {
   return currentTraitsData;

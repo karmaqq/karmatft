@@ -34,12 +34,8 @@
             <button class="nav-btn active" data-target="planner-view">
               Takım
             </button>
-            <button class="nav-btn" data-target="champs-view">
-              Şampiyon
-            </button>
-            <button class="nav-btn" data-target="augments-view">
-              Eklenti
-            </button>
+            <button class="nav-btn" data-target="champs-view">Şampiyon</button>
+            <button class="nav-btn" data-target="augments-view">Eklenti</button>
             <button class="nav-btn" data-target="profile-view">Profil</button>
           </nav>
 
@@ -50,26 +46,28 @@
       </div>
     </header>
 
-    <main id="app" class="main-container">
+    <main id="mother" class="mother">
       <div id="meta-view" class="view-section">
         <div class="empty-state-panel">
-          <h2>Meta Comps Yakında...</h2>
+          <div class="panel-header">
+            <h2>Meta Komplar Yakında...</h2>
+          </div>
         </div>
       </div>
 
       <div id="planner-view" class="view-section active">
-        <aside class="panel traits-panel">
+        <aside id="left-panel" class="left-panel">
           <div class="panel-header">
             <h2>Özellikler</h2>
           </div>
-          <div id="trait-list"></div>
+          <div id="traits-section" class="traits-section"></div>
         </aside>
 
-        <div class="middle-layout">
-          <section class="panel team-panel">
+        <div id="mid-panel" class="mid-panel">
+          <section class="canvas-area">
             <div class="panel-header">
               <h2>Takımın (<span id="team-count">0</span>/10)</h2>
-              <div style="display: flex; gap: 10px">
+              <div class="panel-actions">
                 <button id="photo-mode-btn" class="btn-photo-mode">
                   📸 Fotoğraf Modu
                 </button>
@@ -78,7 +76,7 @@
                 </button>
               </div>
             </div>
-            <div id="active-team-grid">
+            <div id="canvas" class="canvas">
               <div class="hex-row">
                 <div class="empty-slot" id="slot-0"></div>
                 <div class="empty-slot" id="slot-1"></div>
@@ -118,39 +116,49 @@
             </div>
           </section>
 
-          <section class="panel items-section">
-            <div class="items-control-bar">
-              <div id="item-tabs" class="item-tabs-menu">
-                <button class="item-tab-btn active" data-cat="normal">
-                  Normal
-                </button>
-                <button class="item-tab-btn" data-cat="artifact">
-                  Yadigar
-                </button>
-                <button class="item-tab-btn" data-cat="radiant">
-                  Işıltılı
-                </button>
-                <button class="item-tab-btn" data-cat="emblem">Amblem</button>
-                <button class="item-tab-btn" data-cat="special">Özel</button>
+          <section id="items-section" class="items-section">
+            <div class="panel-header">
+              <div class="item-search-row">
+                <div class="item-search-container">
+                  <input
+                    type="text"
+                    id="item-search"
+                    placeholder="Eşya ara..."
+                  />
+                  <button id="clear-item-search" style="display: none">
+                    &times;
+                  </button>
+                </div>
               </div>
-              <div class="item-search-container">
-                <input type="text" id="item-search" placeholder="Eşya ara..." />
-                <button id="clear-item-search" style="display: none">
-                  &times;
-                </button>
+
+              <div class="item-tabs-row">
+                <div id="item-tabs" class="item-tabs-menu">
+                  <button class="item-tab-btn active" data-cat="normal">
+                    Normal
+                  </button>
+                  <button class="item-tab-btn" data-cat="artifact">
+                    Yadigar
+                  </button>
+                  <button class="item-tab-btn" data-cat="radiant">
+                    Işıltılı
+                  </button>
+                  <button class="item-tab-btn" data-cat="emblem">Amblem</button>
+                  <button class="item-tab-btn" data-cat="special">Özel</button>
+                </div>
               </div>
             </div>
+
             <div id="items-container" class="items-grid"></div>
           </section>
         </div>
 
-        <section class="panel selection-panel">
+        <section id="right-panel" class="right-panel">
           <div class="panel-header">
             <div class="champ-controls-wrapper">
               <button id="toggle-pool-view" class="view-toggle-btn">
                 Şampiyonları Sırala
               </button>
-              <div class="item-search-container">
+              <div class="search-wrapper">
                 <input
                   type="text"
                   id="champ-search"
@@ -162,25 +170,31 @@
               </div>
             </div>
           </div>
-          <div id="champions-grid"></div>
+          <div id="champions-section" class="champions-section"></div>
         </section>
       </div>
 
       <div id="champs-view" class="view-section">
         <div class="empty-state-panel">
-          <h2>Şampiyon Veritabanı Yakında...</h2>
+          <div class="panel-header">
+            <h2>Şampiyonlar Yakında...</h2>
+          </div>
         </div>
       </div>
 
       <div id="augments-view" class="view-section">
         <div class="empty-state-panel">
-          <h2>Eklenti Listesi Yakında...</h2>
+          <div class="panel-header">
+            <h2>Eklentiler Yakında...</h2>
+          </div>
         </div>
       </div>
 
       <div id="profile-view" class="view-section">
         <div class="empty-state-panel">
-          <h2>Kullanıcı Profili Yakında...</h2>
+          <div class="panel-header">
+            <h2>Profil Üzerinde Çalışıyorum.</h2>
+          </div>
         </div>
       </div>
     </main>
@@ -194,14 +208,11 @@
               geliştirildi.
             </p>
           </div>
-
           <div class="footer-bottom">
             <p>
               Karma TFT isn't endorsed by Riot Games and doesn't reflect the
               views or opinions of Riot Games or anyone officially involved in
-              producing or managing Riot Games properties. Riot Games, and all
-              associated properties are trademarks or registered trademarks of
-              Riot Games, Inc.
+              producing or managing Riot Games properties.
             </p>
           </div>
         </div>
